@@ -20,7 +20,7 @@ const AdminDashboard = () => {
     setLoading(true);
     try {
       const res = await axios.get(
-        "const API = import.meta.env.VITE_API_URL;/api/orders/admin/dashboard",
+        "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/orders/admin/dashboard",
         {
           withCredentials: true,
         },
@@ -206,7 +206,7 @@ const AdminDashboard = () => {
       };
 
       await axios.put(
-        "const API = import.meta.env.VITE_API_URL;/api/orders/reset-monthly-data",
+        "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/orders/reset-monthly-data",
         {},
         {
           withCredentials: true,

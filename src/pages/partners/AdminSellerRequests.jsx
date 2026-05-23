@@ -46,7 +46,7 @@ export default function AdminSellerRequests() {
     else setPolling(true);
     try {
       const { data } = await axios.get(
-        "const API = import.meta.env.VITE_API_URL;/api/seller-requests/admin/all",
+        "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/seller-requests/admin/all",
         { withCredentials: true }, // ✅ cookie
       );
       setRequests(Array.isArray(data) ? data : []);
@@ -86,7 +86,7 @@ export default function AdminSellerRequests() {
     setActing((p) => ({ ...p, [id]: "accepting" }));
     try {
       const { data } = await axios.put(
-        `const API = import.meta.env.VITE_API_URL;/api/seller-requests/admin/${id}/accept`,
+        `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/seller-requests/admin/${id}/accept`,
         { adminReply: reply },
         { withCredentials: true }, // ✅ cookie
       );
@@ -108,7 +108,7 @@ export default function AdminSellerRequests() {
     setActing((p) => ({ ...p, [id]: "declining" }));
     try {
       const { data } = await axios.put(
-        `const API = import.meta.env.VITE_API_URL;/api/seller-requests/admin/${id}/decline`,
+        `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/seller-requests/admin/${id}/decline`,
         { adminReply: reply },
         { withCredentials: true }, // ✅ cookie
       );
@@ -126,7 +126,7 @@ export default function AdminSellerRequests() {
     setActing((p) => ({ ...p, [`chat_${id}`]: true }));
     try {
       const { data } = await axios.post(
-        `const API = import.meta.env.VITE_API_URL;/api/seller-requests/${id}/chat`,
+        `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/seller-requests/${id}/chat`,
         { message: msg, sender: "admin" },
         { withCredentials: true }, // ✅ cookie
       );

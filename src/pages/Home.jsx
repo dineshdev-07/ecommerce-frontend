@@ -109,11 +109,18 @@ const Home = ({ search = "" }) => {
 
     try {
       const [prodRes, adsRes, offRes] = await Promise.all([
-        fetch("const API = import.meta.env.VITE_API_URL;/api/products", {
-          credentials: "include",
-        }),
-        fetch("const API = import.meta.env.VITE_API_URL;/api/ads"),
-        fetch("const API = import.meta.env.VITE_API_URL;/api/offers"),
+        fetch(
+          "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/products",
+          {
+            credentials: "include",
+          },
+        ),
+        fetch(
+          "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/ads",
+        ),
+        fetch(
+          "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/offers",
+        ),
       ]);
       const [products, ads, offers] = await Promise.all([
         prodRes.json(),
@@ -145,7 +152,7 @@ const Home = ({ search = "" }) => {
     if (!window.confirm("Remove this product from homepage?")) return;
     try {
       const res = await fetch(
-        `const API = import.meta.env.VITE_API_URL;/api/products/${id}/pin`,
+        `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/products/${id}/pin`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -169,7 +176,7 @@ const Home = ({ search = "" }) => {
   const updateOfferLink = async (id, newLink) => {
     try {
       await fetch(
-        `const API = import.meta.env.VITE_API_URL;/api/offers/${id}`,
+        `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/offers/${id}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -189,7 +196,7 @@ const Home = ({ search = "" }) => {
     fd.append("image", file);
     try {
       await fetch(
-        `const API = import.meta.env.VITE_API_URL;/api/offers/${id}`,
+        `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/offers/${id}`,
         {
           method: "PUT",
           credentials: "include",
@@ -205,10 +212,13 @@ const Home = ({ search = "" }) => {
 
   const deleteOffer = async (id) => {
     if (!window.confirm("Delete this offer?")) return;
-    await fetch(`const API = import.meta.env.VITE_API_URL;/api/offers/${id}`, {
-      method: "DELETE",
-      credentials: "include",
-    });
+    await fetch(
+      `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/offers/${id}`,
+      {
+        method: "DELETE",
+        credentials: "include",
+      },
+    );
     bustCache();
     setOffers(offers.filter((o) => o._id !== id));
   };
@@ -364,7 +374,7 @@ const Home = ({ search = "" }) => {
                   const fd = new FormData();
                   fd.append("image", file);
                   await fetch(
-                    "const API = import.meta.env.VITE_API_URL;/api/offers",
+                    "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/offers",
                     {
                       method: "POST",
                       credentials: "include",

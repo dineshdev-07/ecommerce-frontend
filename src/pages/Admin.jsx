@@ -126,7 +126,7 @@ function Admin() {
       if (selectedFile) fd.append("image", selectedFile);
 
       await axios.post(
-        "const API = import.meta.env.VITE_API_URL;/api/products",
+        "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/products",
         fd,
         {
           withCredentials: true,

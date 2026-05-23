@@ -113,7 +113,7 @@ export default function BecomePartnerPage() {
   const fetchProfile = async () => {
     try {
       const { data } = await axios.get(
-        "const API = import.meta.env.VITE_API_URL;/api/delivery-partners/mine",
+        "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/delivery-partners/mine",
         {
           withCredentials: true,
         },
@@ -127,7 +127,7 @@ export default function BecomePartnerPage() {
   const fetchOrders = async () => {
     try {
       const { data } = await axios.get(
-        "const API = import.meta.env.VITE_API_URL;/api/delivery-partners/my-orders",
+        "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/delivery-partners/my-orders",
         {
           withCredentials: true,
         },
@@ -177,7 +177,7 @@ export default function BecomePartnerPage() {
       fd.append("district", district.trim());
       files.forEach((f) => fd.append("images", f));
       const { data } = await axios.post(
-        "const API = import.meta.env.VITE_API_URL;/api/delivery-partners",
+        "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/delivery-partners",
         fd,
         {
           withCredentials: true,
@@ -209,7 +209,7 @@ export default function BecomePartnerPage() {
     setOtp(orderId, { loading: true });
     try {
       const { data } = await axios.post(
-        `const API = import.meta.env.VITE_API_URL;/api/delivery-partners/orders/${orderId}/generate-otp`,
+        `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/delivery-partners/orders/${orderId}/generate-otp`,
         {},
         { withCredentials: true },
       );
@@ -231,7 +231,7 @@ export default function BecomePartnerPage() {
     setOtp(orderId, { loading: true });
     try {
       await axios.post(
-        `const API = import.meta.env.VITE_API_URL;/api/delivery-partners/orders/${orderId}/verify-otp`,
+        `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/delivery-partners/orders/${orderId}/verify-otp`,
         { otp: s.inputOtp.trim() },
         { withCredentials: true },
       );

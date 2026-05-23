@@ -182,7 +182,7 @@ const WishlistPage = () => {
     const fetchWishlist = async () => {
       try {
         const { data } = await axios.get(
-          "const API = import.meta.env.VITE_API_URL;/api/wishlist",
+          "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/wishlist",
           config,
         );
         setProducts(data);

@@ -2,6 +2,8 @@ import { useEffect, useState, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 
+const API = import.meta.env.VITE_API_URL; // ✅ FIX
+
 const CategoryPage = () => {
   const { categoryName } = useParams();
   const navigate = useNavigate();
@@ -13,19 +15,17 @@ const CategoryPage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch(
-          "const API = import.meta.env.VITE_API_URL;/api/products",
-          {
-            credentials: "include",
-          },
-        );
+        const res = await fetch(`${API}/api/products`, {
+          credentials: "include",
+        });
+
         const data = await res.json();
 
         if (Array.isArray(data)) {
           const categoryFiltered = data.filter(
             (p) =>
               p.category?.toLowerCase().trim() ===
-              categoryName.toLowerCase().trim(),
+              categoryName.toLowerCase().trim()
           );
           setAllProducts(categoryFiltered);
         }
@@ -43,7 +43,7 @@ const CategoryPage = () => {
     return allProducts.filter(
       (product) =>
         product.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.brand?.toLowerCase().includes(searchTerm.toLowerCase()),
+        product.brand?.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }, [searchTerm, allProducts]);
 
@@ -56,37 +56,30 @@ const CategoryPage = () => {
   }
 
   return (
-    <div className="pb-20 px-4 max-w-7xl mx-auto rounded-2xl border border-gray-300 shadow-sm">
-      <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+    <div className="pb-20 px-4 max-w-7xl mx-auto">
+      <div className="flex justify-between items-center mb-8">
         <div className="flex items-center">
           <button onClick={() => navigate(-1)} className="mr-4 text-2xl">
-            <i className="fa-solid fa-arrow-left"></i>
+            ←
           </button>
-          <h1 className="text-3xl font-black capitalize">
+          <h1 className="text-3xl font-bold capitalize">
             {categoryName} Products
           </h1>
         </div>
 
-        <div className="relative w-full md:w-80">
-          <input
-            type="text"
-            placeholder="Search in this category..."
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#6FAF8E] outline-none transition-all"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <span className="absolute left-3 top-2.5">
-            <i className="fa-solid fa-magnifying-glass"></i>
-          </span>
-        </div>
+        <input
+          type="text"
+          placeholder="Search..."
+          className="border p-2 rounded"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
       </div>
 
       {filteredProducts.length === 0 ? (
-        <div className="text-center py-24 text-gray-500 text-lg">
-          No products found.
-        </div>
+        <p>No products found</p>
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 justify-items-center">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {filteredProducts.map((product) => (
             <ProductCard key={product._id} product={product} />
           ))}

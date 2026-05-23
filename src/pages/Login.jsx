@@ -16,7 +16,7 @@ function Login({ setIsLoggedIn, setIsAdmin }) {
 
     try {
       const res = await fetch(
-        "const API = import.meta.env.VITE_API_URL;/api/users/login",
+        "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/users/login",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

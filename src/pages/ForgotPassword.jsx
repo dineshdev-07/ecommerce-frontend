@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 
 const api = axios.create({
-  baseURL: "const API = import.meta.env.VITE_API_URL;",
+  baseURL: "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;",
   withCredentials: true,
 });
 
