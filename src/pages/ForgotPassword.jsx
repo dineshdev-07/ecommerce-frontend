@@ -13,8 +13,8 @@ import {
 } from "lucide-react";
 
 const api = axios.create({
-  baseURL: "http://localhost:5000",
-  withCredentials: true, 
+  baseURL: "http://const API = import.meta.env.VITE_API_URL;",
+  withCredentials: true,
 });
 
 const ForgotPassword = () => {
@@ -233,7 +233,6 @@ const ForgotPassword = () => {
                     {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
                   </button>
                 </div>
-
 
                 {newPassword && (
                   <div className="space-y-1.5">

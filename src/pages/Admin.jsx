@@ -125,12 +125,16 @@ function Admin() {
 
       if (selectedFile) fd.append("image", selectedFile);
 
-      await axios.post("http://localhost:5000/api/products", fd, {
-        withCredentials: true,
-        headers: {
-          "Content-Type": "multipart/form-data",
+      await axios.post(
+        "http://const API = import.meta.env.VITE_API_URL;/api/products",
+        fd,
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         },
-      });
+      );
 
       alert("✅ Product added successfully");
       setFormData(EMPTY_FORM);

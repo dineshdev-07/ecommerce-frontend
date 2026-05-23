@@ -24,9 +24,12 @@ export const CartProvider = ({ children }) => {
 
   const fetchCart = async () => {
     try {
-      const { data } = await axios.get("http://localhost:5000/api/cart", {
-        withCredentials: true,
-      });
+      const { data } = await axios.get(
+        "http://const API = import.meta.env.VITE_API_URL;/api/cart",
+        {
+          withCredentials: true,
+        },
+      );
       const rawItems = Array.isArray(data)
         ? data
         : data.items || data.cartItems || [];
@@ -43,7 +46,7 @@ export const CartProvider = ({ children }) => {
   const addToCart = async (product, quantity = 1) => {
     try {
       const { data } = await axios.post(
-        "http://localhost:5000/api/cart",
+        "http://const API = import.meta.env.VITE_API_URL;/api/cart",
         { productId: product._id, quantity },
         { withCredentials: true },
       );

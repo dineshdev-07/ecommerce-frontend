@@ -91,7 +91,7 @@ const TN_DISTRICTS = [
 
 export default function BecomePartnerPage() {
   const navigate = useNavigate();
-  const userInfo = localStorage.getItem("userInfo"); // cookie auth — just check if logged in
+  const userInfo = localStorage.getItem("userInfo"); 
 
   const [profile, setProfile] = useState(null);
   const [orders, setOrders] = useState([]);
@@ -113,7 +113,7 @@ export default function BecomePartnerPage() {
   const fetchProfile = async () => {
     try {
       const { data } = await axios.get(
-        "http://localhost:5000/api/delivery-partners/mine",
+        "http://const API = import.meta.env.VITE_API_URL;/api/delivery-partners/mine",
         {
           withCredentials: true,
         },
@@ -127,7 +127,7 @@ export default function BecomePartnerPage() {
   const fetchOrders = async () => {
     try {
       const { data } = await axios.get(
-        "http://localhost:5000/api/delivery-partners/my-orders",
+        "http://const API = import.meta.env.VITE_API_URL;/api/delivery-partners/my-orders",
         {
           withCredentials: true,
         },
@@ -177,7 +177,7 @@ export default function BecomePartnerPage() {
       fd.append("district", district.trim());
       files.forEach((f) => fd.append("images", f));
       const { data } = await axios.post(
-        "http://localhost:5000/api/delivery-partners",
+        "http://const API = import.meta.env.VITE_API_URL;/api/delivery-partners",
         fd,
         {
           withCredentials: true,
@@ -209,7 +209,7 @@ export default function BecomePartnerPage() {
     setOtp(orderId, { loading: true });
     try {
       const { data } = await axios.post(
-        `http://localhost:5000/api/delivery-partners/orders/${orderId}/generate-otp`,
+        `http://const API = import.meta.env.VITE_API_URL;/api/delivery-partners/orders/${orderId}/generate-otp`,
         {},
         { withCredentials: true },
       );
@@ -231,7 +231,7 @@ export default function BecomePartnerPage() {
     setOtp(orderId, { loading: true });
     try {
       await axios.post(
-        `http://localhost:5000/api/delivery-partners/orders/${orderId}/verify-otp`,
+        `http://const API = import.meta.env.VITE_API_URL;/api/delivery-partners/orders/${orderId}/verify-otp`,
         { otp: s.inputOtp.trim() },
         { withCredentials: true },
       );
@@ -347,7 +347,7 @@ export default function BecomePartnerPage() {
                 {profile.adminReply && (
                   <div className="bg-white/80 rounded-xl p-3 sm:p-4 border border-white/60">
                     <p className="text-[9px] font-black text-[#6FAF8E] uppercase tracking-widest mb-1.5">
-                     FreshCart Response
+                      FreshCart Response
                     </p>
                     <p className="text-xs sm:text-sm text-gray-700">
                       {profile.adminReply}

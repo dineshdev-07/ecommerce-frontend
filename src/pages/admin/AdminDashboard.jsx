@@ -20,7 +20,7 @@ const AdminDashboard = () => {
     setLoading(true);
     try {
       const res = await axios.get(
-        "http://localhost:5000/api/orders/admin/dashboard",
+        "http://const API = import.meta.env.VITE_API_URL;/api/orders/admin/dashboard",
         {
           withCredentials: true,
         },
@@ -206,7 +206,7 @@ const AdminDashboard = () => {
       };
 
       await axios.put(
-        "http://localhost:5000/api/orders/reset-monthly-data",
+        "http://const API = import.meta.env.VITE_API_URL;/api/orders/reset-monthly-data",
         {},
         {
           withCredentials: true,

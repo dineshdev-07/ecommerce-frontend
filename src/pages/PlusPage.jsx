@@ -29,7 +29,7 @@ const LoyaltyPage = () => {
   const fetchUserData = async () => {
     try {
       const { data } = await axios.get(
-        "http://localhost:5000/api/users/profile",
+        "http://const API = import.meta.env.VITE_API_URL;/api/users/profile",
         {
           withCredentials: true,
         },
@@ -60,7 +60,7 @@ const LoyaltyPage = () => {
     try {
       setProcessing(true);
       await axios.post(
-        "http://localhost:5000/api/users/activate-plus",
+        "http://const API = import.meta.env.VITE_API_URL;/api/users/activate-plus",
         {},
         config,
       );

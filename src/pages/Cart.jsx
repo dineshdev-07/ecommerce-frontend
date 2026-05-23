@@ -76,7 +76,7 @@ const Cart = () => {
     fullAddress: "",
     pinCode: "",
     phone: "",
-    district:""
+    district: "",
   });
   const [locating, setLocating] = useState(false);
   const [editingAddress, setEditingAddress] = useState(null);
@@ -92,7 +92,7 @@ const Cart = () => {
       if (!userInfo?._id) return;
       try {
         const { data } = await axios.get(
-          "http://localhost:5000/api/users/profile",
+          "http://const API = import.meta.env.VITE_API_URL;/api/users/profile",
           config,
         );
         setDbUser(data);
@@ -175,7 +175,7 @@ const Cart = () => {
     if (qty < 1) return;
     try {
       await axios.put(
-        `http://localhost:5000/api/cart/${productId}`,
+        `http://const API = import.meta.env.VITE_API_URL;/api/cart/${productId}`,
         { quantity: qty },
         config,
       );
@@ -193,7 +193,10 @@ const Cart = () => {
 
   const removeFromCart = async (productId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/cart/${productId}`, config);
+      await axios.delete(
+        `http://const API = import.meta.env.VITE_API_URL;/api/cart/${productId}`,
+        config,
+      );
       setCartItems(
         cartItems.filter((i) => (i.product?._id || i.product) !== productId),
       );
@@ -238,7 +241,7 @@ const Cart = () => {
       return alert("Fill all fields");
     try {
       const { data } = await axios.post(
-        "http://localhost:5000/api/users/address",
+        "http://const API = import.meta.env.VITE_API_URL;/api/users/address",
         addressInput,
         config,
       );
@@ -266,7 +269,7 @@ const Cart = () => {
       return alert("Fill all fields including district");
     try {
       const { data } = await axios.put(
-        `http://localhost:5000/api/users/address/${editingAddress._id}`,
+        `http://const API = import.meta.env.VITE_API_URL;/api/users/address/${editingAddress._id}`,
         editingAddress,
         config,
       );
@@ -310,14 +313,14 @@ const Cart = () => {
     try {
       if (paymentMethod === "ONLINE") {
         const { data: orderData } = await axios.post(
-          "http://localhost:5000/api/orders",
+          "http://const API = import.meta.env.VITE_API_URL;/api/orders",
           buildOrderPayload("ONLINE", false),
           config,
         );
         const mongoOrderId = orderData._id;
 
         const { data: rzpData } = await axios.post(
-          "http://localhost:5000/api/payment/create-order",
+          "http://const API = import.meta.env.VITE_API_URL;/api/payment/create-order",
           { amount: grandTotal },
           config,
         );
@@ -331,7 +334,7 @@ const Cart = () => {
           handler: async (res) => {
             try {
               await axios.post(
-                "http://localhost:5000/api/orders/verify",
+                "http://const API = import.meta.env.VITE_API_URL;/api/orders/verify",
                 {
                   razorpay_order_id: res.razorpay_order_id,
                   razorpay_payment_id: res.razorpay_payment_id,
@@ -340,7 +343,10 @@ const Cart = () => {
                 },
                 config,
               );
-              await axios.delete("http://localhost:5000/api/cart", config);
+              await axios.delete(
+                "http://const API = import.meta.env.VITE_API_URL;/api/cart",
+                config,
+              );
               setCartItems([]);
               setOrderSuccess(true);
             } catch (err) {
@@ -350,13 +356,19 @@ const Cart = () => {
 
               if (status === 401) {
                 try {
-                  await axios.post("http://localhost:5000/api/orders/verify", {
-                    razorpay_order_id: res.razorpay_order_id,
-                    razorpay_payment_id: res.razorpay_payment_id,
-                    razorpay_signature: res.razorpay_signature,
-                    orderId: mongoOrderId,
-                  });
-                  await axios.delete("http://localhost:5000/api/cart", config);
+                  await axios.post(
+                    "http://const API = import.meta.env.VITE_API_URL;/api/orders/verify",
+                    {
+                      razorpay_order_id: res.razorpay_order_id,
+                      razorpay_payment_id: res.razorpay_payment_id,
+                      razorpay_signature: res.razorpay_signature,
+                      orderId: mongoOrderId,
+                    },
+                  );
+                  await axios.delete(
+                    "http://const API = import.meta.env.VITE_API_URL;/api/cart",
+                    config,
+                  );
                   setCartItems([]);
                   setOrderSuccess(true);
                   return;
@@ -380,11 +392,14 @@ const Cart = () => {
         }).open();
       } else {
         await axios.post(
-          "http://localhost:5000/api/orders",
+          "http://const API = import.meta.env.VITE_API_URL;/api/orders",
           buildOrderPayload("COD", false),
           config,
         );
-        await axios.delete("http://localhost:5000/api/cart", config);
+        await axios.delete(
+          "http://const API = import.meta.env.VITE_API_URL;/api/cart",
+          config,
+        );
         setCartItems([]);
         setOrderSuccess(true);
       }

@@ -61,7 +61,7 @@ export default function SellerRequestPage() {
   const fetchRequest = async () => {
     try {
       const { data } = await axios.get(
-        "http://localhost:5000/api/seller-requests/mine",
+        "http://const API = import.meta.env.VITE_API_URL;/api/seller-requests/mine",
         { withCredentials: true }, // ✅ cookie
       );
       setRequest(data);
@@ -113,7 +113,7 @@ export default function SellerRequestPage() {
       fd.append("message", message.trim());
       files.forEach((f) => fd.append("images", f));
       const { data } = await axios.post(
-        "http://localhost:5000/api/seller-requests",
+        "http://const API = import.meta.env.VITE_API_URL;/api/seller-requests",
         fd,
         {
           withCredentials: true, // ✅ cookie
@@ -137,7 +137,7 @@ export default function SellerRequestPage() {
     setSendingChat(true);
     try {
       const { data } = await axios.post(
-        `http://localhost:5000/api/seller-requests/${request._id}/chat`,
+        `http://const API = import.meta.env.VITE_API_URL;/api/seller-requests/${request._id}/chat`,
         { message: chatMsg.trim(), sender: "user" },
         { withCredentials: true }, // ✅ cookie
       );

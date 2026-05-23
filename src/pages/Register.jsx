@@ -4,7 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 
 const api = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: "http://const API = import.meta.env.VITE_API_URL;",
   withCredentials: true,
 });
 
@@ -106,7 +106,7 @@ const Register = () => {
             </Link>
           </div>
         </div>
-        
+
         {/* LEFT SIDE */}
         <div className="w-1/2 bg-[#f8f9f8] flex items-center justify-center px-10">
           <div className="w-full max-w-sm">
@@ -222,8 +222,6 @@ const Register = () => {
             )}
           </div>
         </div>
-
-        
       </div>
     </div>
   );

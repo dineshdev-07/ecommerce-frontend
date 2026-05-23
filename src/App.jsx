@@ -428,10 +428,13 @@ function MobileDrawer({
                 <button
                   onClick={async () => {
                     try {
-                      await fetch("http://localhost:5000/api/users/logout", {
-                        method: "POST",
-                        credentials: "include",
-                      });
+                      await fetch(
+                        "http://const API = import.meta.env.VITE_API_URL;/api/users/logout",
+                        {
+                          method: "POST",
+                          credentials: "include",
+                        },
+                      );
                     } catch (err) {
                       console.error("Logout error:", err);
                     } finally {
@@ -545,7 +548,7 @@ function AppContent() {
     }
     try {
       const res = await fetch(
-        `http://localhost:5000/api/products/suggestions?q=${query}`,
+        `http://const API = import.meta.env.VITE_API_URL;/api/products/suggestions?q=${query}`,
       );
       const data = await res.json();
       setSuggestions((Array.isArray(data) ? data : []).slice(0, 3));
@@ -558,10 +561,13 @@ function AppContent() {
 
   const handleLogout = async () => {
     try {
-      await fetch("http://localhost:5000/api/users/logout", {
-        method: "POST",
-        credentials: "include",
-      });
+      await fetch(
+        "http://const API = import.meta.env.VITE_API_URL;/api/users/logout",
+        {
+          method: "POST",
+          credentials: "include",
+        },
+      );
     } catch (err) {
       console.error("Logout error:", err);
     } finally {
@@ -574,9 +580,12 @@ function AppContent() {
   const fetchAdminAlerts = useCallback(async () => {
     if (!isAdmin) return;
     try {
-      const oRes = await fetch("http://localhost:5000/api/orders/admin", {
-        credentials: "include",
-      });
+      const oRes = await fetch(
+        "http://const API = import.meta.env.VITE_API_URL;/api/orders/admin",
+        {
+          credentials: "include",
+        },
+      );
       const oData = await oRes.json();
       const orders = Array.isArray(oData.orders) ? oData.orders : oData;
       setDeliveryAlertCount(
@@ -587,7 +596,7 @@ function AppContent() {
       );
 
       const dRes = await fetch(
-        "http://localhost:5000/api/orders/admin/dashboard",
+        "http://const API = import.meta.env.VITE_API_URL;/api/orders/admin/dashboard",
         {
           credentials: "include",
         },
@@ -597,7 +606,7 @@ function AppContent() {
         setLowStockCount(dData.lowStockProducts.length);
 
       const sRes = await fetch(
-        "http://localhost:5000/api/seller-requests/admin/all",
+        "http://const API = import.meta.env.VITE_API_URL;/api/seller-requests/admin/all",
         {
           credentials: "include",
         },
@@ -610,7 +619,7 @@ function AppContent() {
       );
 
       const pRes = await fetch(
-        "http://localhost:5000/api/delivery-partners/admin/pending-count",
+        "http://const API = import.meta.env.VITE_API_URL;/api/delivery-partners/admin/pending-count",
         {
           credentials: "include",
         },
@@ -643,8 +652,10 @@ function AppContent() {
     lowStockCount;
 
   return (
-    <div className="bg-white
-border-b border-brand-light/30">
+    <div
+      className="bg-white
+border-b border-brand-light/30"
+    >
       <style>{`
         .nav-link-anim { position: relative; }
         .nav-link-anim::after {

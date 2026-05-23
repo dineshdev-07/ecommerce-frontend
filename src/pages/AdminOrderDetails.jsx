@@ -274,7 +274,7 @@ const DeliveryPartnerSection = ({ order, onRefresh }) => {
         order.shippingAddress?.postalCode ||
         order.shippingAddress?.pincode ||
         "";
-      const url = `http://localhost:5000/api/delivery-partners/admin/active${pincode ? "?pincode=" + pincode : ""}`;
+      const url = `http://const API = import.meta.env.VITE_API_URL;/api/delivery-partners/admin/active${pincode ? "?pincode=" + pincode : ""}`;
       const { data } = await axios.get(url, { withCredentials: true });
       setPartners(Array.isArray(data) ? data : []);
     } catch {
@@ -288,7 +288,7 @@ const DeliveryPartnerSection = ({ order, onRefresh }) => {
     setAssigning(true);
     try {
       await axios.put(
-        "http://localhost:5000/api/delivery-partners/admin/orders/assign",
+        "http://const API = import.meta.env.VITE_API_URL;/api/delivery-partners/admin/orders/assign",
         { partnerId: selected, orderIds: [order._id] },
         { withCredentials: true },
       );
@@ -306,7 +306,7 @@ const DeliveryPartnerSection = ({ order, onRefresh }) => {
     setUnassigning(true);
     try {
       await axios.put(
-        `http://localhost:5000/api/delivery-partners/admin/orders/${order._id}/unassign`,
+        `http://const API = import.meta.env.VITE_API_URL;/api/delivery-partners/admin/orders/${order._id}/unassign`,
         {},
         { withCredentials: true },
       );
@@ -678,7 +678,7 @@ const AdminOrderDetails = () => {
     try {
       setLoading(true);
       const { data } = await axios.get(
-        `http://localhost:5000/api/orders/admin/${id}`,
+        `http://const API = import.meta.env.VITE_API_URL;/api/orders/admin/${id}`,
         { withCredentials: true },
       );
       setOrder(data);
@@ -698,8 +698,8 @@ const AdminOrderDetails = () => {
       setBtnLoading(true);
       const url =
         action === "cancel"
-          ? `http://localhost:5000/api/orders/admin/${id}/cancel`
-          : `http://localhost:5000/api/orders/${id}/${action}`;
+          ? `http://const API = import.meta.env.VITE_API_URL;/api/orders/admin/${id}/cancel`
+          : `http://const API = import.meta.env.VITE_API_URL;/api/orders/${id}/${action}`;
       await axios.put(url, {}, { withCredentials: true });
       fetchOrder();
     } catch (err) {
@@ -929,7 +929,7 @@ const AdminOrderDetails = () => {
                       src={
                         item.image?.startsWith("http")
                           ? item.image
-                          : `http://localhost:5000${item.image}`
+                          : `http://const API = import.meta.env.VITE_API_URL;${item.image}`
                       }
                       className="w-10 h-10 sm:w-12 sm:h-12 object-contain bg-white rounded-lg p-1 shrink-0"
                       alt=""

@@ -28,7 +28,7 @@ export default function SearchResultsPage() {
     if (!searchTerm) return;
     setLoading(true);
     fetch(
-      `http://localhost:5000/api/products/search?q=${encodeURIComponent(searchTerm)}`,
+      `http://const API = import.meta.env.VITE_API_URL;/api/products/search?q=${encodeURIComponent(searchTerm)}`,
     )
       .then((res) => res.json())
       .then((data) => {

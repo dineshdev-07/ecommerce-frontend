@@ -8,9 +8,12 @@ export const WishlistProvider = ({ children }) => {
 
   const fetchWishlist = async () => {
     try {
-      const { data } = await axios.get("http://localhost:5000/api/wishlist", {
-        withCredentials: true,
-      });
+      const { data } = await axios.get(
+        "http://const API = import.meta.env.VITE_API_URL;/api/wishlist",
+        {
+          withCredentials: true,
+        },
+      );
       setWishlist(data.map((p) => (typeof p === "object" ? p._id : p)));
     } catch (err) {
       console.error("Wishlist fetch error:", err);
@@ -25,7 +28,7 @@ export const WishlistProvider = ({ children }) => {
     );
     try {
       await axios.post(
-        `http://localhost:5000/api/wishlist/${productId}`,
+        `http://const API = import.meta.env.VITE_API_URL;/api/wishlist/${productId}`,
         {},
         { withCredentials: true },
       );

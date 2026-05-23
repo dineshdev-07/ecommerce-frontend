@@ -109,9 +109,11 @@ const Home = ({ search = "" }) => {
 
     try {
       const [prodRes, adsRes, offRes] = await Promise.all([
-        fetch("http://localhost:5000/api/products", { credentials: "include" }),
-        fetch("http://localhost:5000/api/ads"),
-        fetch("http://localhost:5000/api/offers"),
+        fetch("http://const API = import.meta.env.VITE_API_URL;/api/products", {
+          credentials: "include",
+        }),
+        fetch("http://const API = import.meta.env.VITE_API_URL;/api/ads"),
+        fetch("http://const API = import.meta.env.VITE_API_URL;/api/offers"),
       ]);
       const [products, ads, offers] = await Promise.all([
         prodRes.json(),
@@ -142,12 +144,15 @@ const Home = ({ search = "" }) => {
   const handleRemoveFromHome = async (id) => {
     if (!window.confirm("Remove this product from homepage?")) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/products/${id}/pin`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({}),
-      });
+      const res = await fetch(
+        `http://const API = import.meta.env.VITE_API_URL;/api/products/${id}/pin`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({}),
+        },
+      );
       if (!res.ok) {
         alert("Failed to remove product");
         return;
@@ -163,12 +168,15 @@ const Home = ({ search = "" }) => {
 
   const updateOfferLink = async (id, newLink) => {
     try {
-      await fetch(`http://localhost:5000/api/offers/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ link: newLink }),
-      });
+      await fetch(
+        `http://const API = import.meta.env.VITE_API_URL;/api/offers/${id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ link: newLink }),
+        },
+      );
       bustCache();
       fetchData(true);
     } catch (err) {
@@ -180,11 +188,14 @@ const Home = ({ search = "" }) => {
     const fd = new FormData();
     fd.append("image", file);
     try {
-      await fetch(`http://localhost:5000/api/offers/${id}`, {
-        method: "PUT",
-        credentials: "include",
-        body: fd,
-      });
+      await fetch(
+        `http://const API = import.meta.env.VITE_API_URL;/api/offers/${id}`,
+        {
+          method: "PUT",
+          credentials: "include",
+          body: fd,
+        },
+      );
       bustCache();
       fetchData(true);
     } catch (err) {
@@ -194,10 +205,13 @@ const Home = ({ search = "" }) => {
 
   const deleteOffer = async (id) => {
     if (!window.confirm("Delete this offer?")) return;
-    await fetch(`http://localhost:5000/api/offers/${id}`, {
-      method: "DELETE",
-      credentials: "include",
-    });
+    await fetch(
+      `http://const API = import.meta.env.VITE_API_URL;/api/offers/${id}`,
+      {
+        method: "DELETE",
+        credentials: "include",
+      },
+    );
     bustCache();
     setOffers(offers.filter((o) => o._id !== id));
   };
@@ -339,10 +353,7 @@ const Home = ({ search = "" }) => {
 
       <section className="my-6 sm:my-10" id="offers-section ">
         <div className="flex justify-between items-start gap-3 mb-3 sm:mb-5 md:mb-6 ">
-          <SectionTitle
-            eyebrow="Save naturally"
-            title="Special Offers"
-          />
+          <SectionTitle eyebrow="Save naturally" title="Special Offers" />
           {isAdmin && (
             <label className="shrink-0 bg-[#2E7D32] text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg cursor-pointer text-xs sm:text-sm font-bold hover:bg-[#1B5E20] transition">
               + New Offer
@@ -355,11 +366,14 @@ const Home = ({ search = "" }) => {
                   if (!file) return;
                   const fd = new FormData();
                   fd.append("image", file);
-                  await fetch("http://localhost:5000/api/offers", {
-                    method: "POST",
-                    credentials: "include",
-                    body: fd,
-                  });
+                  await fetch(
+                    "http://const API = import.meta.env.VITE_API_URL;/api/offers",
+                    {
+                      method: "POST",
+                      credentials: "include",
+                      body: fd,
+                    },
+                  );
                   bustCache();
                   fetchData(true);
                 }}

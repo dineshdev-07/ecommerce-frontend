@@ -113,9 +113,9 @@ const OrderDetails = () => {
     try {
       setLoading(true);
       const { data } = await axios.get(
-        `http://localhost:5000/api/orders/${id}`,
+        `http://const API = import.meta.env.VITE_API_URL;/api/orders/${id}`,
         {
-          withCredentials: true, 
+          withCredentials: true,
         },
       );
       setOrder(data);
@@ -137,7 +137,7 @@ const OrderDetails = () => {
   const downloadInvoice = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/orders/${order._id}/invoice`,
+        `http://const API = import.meta.env.VITE_API_URL;/api/orders/${order._id}/invoice`,
         {
           credentials: "include",
         },
@@ -225,7 +225,7 @@ const OrderDetails = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#F4F7F6] pb-12 rounded-2xl border border-gray-300 shadow-sm" >
+    <div className="min-h-screen bg-[#F4F7F6] pb-12 rounded-2xl border border-gray-300 shadow-sm">
       <header className="sticky top-0 bg-white/95 backdrop-blur-md border-b px-3 sm:px-6 lg:px-8 py-3 sm:py-4 shadow-sm z-30">
         <div className="max-w-5xl mx-auto flex items-center justify-between gap-3">
           <div className="flex items-center gap-2 min-w-0">
@@ -318,7 +318,7 @@ const OrderDetails = () => {
                         src={
                           item.image?.startsWith("http")
                             ? item.image
-                            : `http://localhost:5000${item.image}`
+                            : `http://const API = import.meta.env.VITE_API_URL;${item.image}`
                         }
                         className="max-h-full object-contain"
                         alt={item.name}

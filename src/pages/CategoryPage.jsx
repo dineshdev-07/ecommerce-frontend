@@ -13,9 +13,12 @@ const CategoryPage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/products", {
-          credentials: "include",
-        });
+        const res = await fetch(
+          "http://const API = import.meta.env.VITE_API_URL;/api/products",
+          {
+            credentials: "include",
+          },
+        );
         const data = await res.json();
 
         if (Array.isArray(data)) {
