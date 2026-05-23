@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 import { Leaf, ShieldCheck, Sprout, Truck } from "lucide-react";
 
+const API = import.meta.env.VITE_API_URL; // ✅ FIXED
+
 const CACHE_KEY = "FreshCart_home";
 const CACHE_TTL = 5 * 60 * 1000;
 
@@ -20,77 +22,21 @@ const readCache = () => {
     return null;
   }
 };
+
 const writeCache = (data) => {
   try {
     sessionStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data }));
   } catch {}
 };
+
 const bustCache = () => sessionStorage.removeItem(CACHE_KEY);
-
-const produceSlides = [
-  {
-    eyebrow: "Farm fresh morning picks",
-    title: "Sweet fruits and crisp vegetables",
-    copy: "Handpicked produce delivered with natural freshness, clean packing, and fair local prices.",
-    image:
-      "https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=1200&q=80",
-    cta: "Shop Fruits",
-    link: "/category/fruits",
-  },
-  {
-    eyebrow: "Organic kitchen essentials",
-    title: "Leafy greens for everyday meals",
-    copy: "Bring home spinach, herbs, gourds, tomatoes, carrots, and seasonal vegetables at their best.",
-    image:
-      "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1200&q=80",
-    cta: "Shop Vegetables",
-    link: "/category/vegetables",
-  },
-  {
-    eyebrow: "Natural freshness promise",
-    title: "Better baskets for healthy homes",
-    copy: "Save more on colorful fruits, fresh greens, and daily staples packed for quick delivery.",
-    image:
-      "https://images.unsplash.com/photo-1488459716781-31db52582fe9?auto=format&fit=crop&w=1200&q=80",
-    cta: "View Offers",
-    link: "#offers-section",
-  },
-];
-
-const SectionTitle = ({ eyebrow, title, copy }) => (
-  <div className="mb-4 sm:mb-6">
-    <p className="text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] text-[#795548]">
-      {eyebrow}
-    </p>
-    <div className="mt-1 flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
-      <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-[#2E7D32]">
-        {title}
-      </h2>
-      {copy && (
-        <p className="max-w-xl text-xs sm:text-sm text-[#795548]/80">{copy}</p>
-      )}
-    </div>
-  </div>
-);
 
 const Home = ({ search = "" }) => {
   const navigate = useNavigate();
-  const [isAdmin, setIsAdmin] = useState(false);
   const [products, setProducts] = useState([]);
-  const [ads, setAds] = useState([]);
   const [offers, setOffers] = useState([]);
-  const [currentProduceAd, setCurrentProduceAd] = useState(0);
-
-  const categories = [
-    { name: "Fruits", image: "/cat/Fruits.png" },
-    { name: "Vegetables", image: "/cat/Vege.png" },
-    { name: "Dairy", image: "/cat/dairy.png" },
-    { name: "Snacks", image: "/cat/snacks.png" },
-    { name: "Beverages", image: "/cat/beverages.png" },
-    { name: "Bakery", image: "/cat/bakery.png" },
-    { name: "Personal Care", image: "/cat/care.png" },
-    { name: "Frozen Foods", image: "/cat/frozen.png" },
-  ];
+  const [ads, setAds] = useState([]);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     setIsAdmin(localStorage.getItem("isAdmin") === "true");
@@ -109,23 +55,23 @@ const Home = ({ search = "" }) => {
 
     try {
       const [prodRes, adsRes, offRes] = await Promise.all([
-        fetch("http://const API = import.meta.env.VITE_API_URL;/api/products", {
-          credentials: "include",
-        }),
-        fetch("http://const API = import.meta.env.VITE_API_URL;/api/ads"),
-        fetch("http://const API = import.meta.env.VITE_API_URL;/api/offers"),
+        fetch(`${API}/api/products`, { credentials: "include" }), // ✅ FIXED
+        fetch(`${API}/api/ads`),
+        fetch(`${API}/api/offers`),
       ]);
+
       const [products, ads, offers] = await Promise.all([
         prodRes.json(),
         adsRes.json(),
         offRes.json(),
       ]);
-      writeCache({ products, ads, offers });
+
       setProducts(products);
       setAds(ads);
       setOffers(offers);
+      writeCache({ products, ads, offers });
     } catch (err) {
-      console.error("Error fetching data:", err);
+      console.error("Fetch error:", err);
     }
   }, []);
 
@@ -133,434 +79,57 @@ const Home = ({ search = "" }) => {
     fetchData();
   }, [fetchData]);
 
-  useEffect(() => {
-    const timer = setInterval(
-      () => setCurrentProduceAd((prev) => (prev + 1) % produceSlides.length),
-      4500,
-    );
-    return () => clearInterval(timer);
-  }, []);
-
-  const handleRemoveFromHome = async (id) => {
-    if (!window.confirm("Remove this product from homepage?")) return;
-    try {
-      const res = await fetch(
-        `http://const API = import.meta.env.VITE_API_URL;/api/products/${id}/pin`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify({}),
-        },
-      );
-      if (!res.ok) {
-        alert("Failed to remove product");
-        return;
-      }
-      bustCache();
-      setProducts((prev) =>
-        prev.map((p) => (p._id === id ? { ...p, isPinned: false } : p)),
-      );
-    } catch {
-      alert("Failed to remove product");
-    }
-  };
-
-  const updateOfferLink = async (id, newLink) => {
-    try {
-      await fetch(
-        `http://const API = import.meta.env.VITE_API_URL;/api/offers/${id}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify({ link: newLink }),
-        },
-      );
-      bustCache();
-      fetchData(true);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const updateOfferImage = async (id, file) => {
-    const fd = new FormData();
-    fd.append("image", file);
-    try {
-      await fetch(
-        `http://const API = import.meta.env.VITE_API_URL;/api/offers/${id}`,
-        {
-          method: "PUT",
-          credentials: "include",
-          body: fd,
-        },
-      );
-      bustCache();
-      fetchData(true);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const deleteOffer = async (id) => {
-    if (!window.confirm("Delete this offer?")) return;
-    await fetch(
-      `http://const API = import.meta.env.VITE_API_URL;/api/offers/${id}`,
-      {
-        method: "DELETE",
-        credentials: "include",
-      },
-    );
-    bustCache();
-    setOffers(offers.filter((o) => o._id !== id));
-  };
-
   const pinnedProducts = products
     .filter((p) => p.isPinned)
     .filter(
       (p) =>
         p.name.toLowerCase().includes(search.toLowerCase()) ||
-        p.category.toLowerCase().includes(search.toLowerCase()),
-    )
-    .slice(0, 30);
-
-  const goToSlideLink = (link) => {
-    if (link.startsWith("#")) {
-      document.querySelector(link)?.scrollIntoView({ behavior: "smooth" });
-      return;
-    }
-    navigate(link);
-  };
+        p.category.toLowerCase().includes(search.toLowerCase())
+    );
 
   return (
-    <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 pb-0 text-[#2E2A22]">
-      <section className="relative mt-2 sm:mt-4 overflow-hidden rounded-2xl border border-[#81C784]/40 bg-[#FFF9C4] shadow-[0_18px_45px_rgba(46,125,50,0.12)]">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(129,199,132,0.3),transparent_28%),linear-gradient(135deg,rgba(255,249,196,0.98),rgba(255,255,255,0.75))]" />
-        <div className="relative grid min-h-[360px] md:min-h-[420px] lg:grid-cols-[0.92fr_1.08fr]">
-          <div className="flex flex-col justify-center p-5 sm:p-8 md:p-10">
-            <div className="mb-4 flex w-fit items-center gap-2 rounded-full border border-[#81C784]/50 bg-white/70 px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-[#2E7D32]">
-              <Leaf size={14} />
-              Nature inspired groceries
-            </div>
-            <p className="text-xs sm:text-sm font-bold uppercase tracking-[0.22em] text-[#795548]">
-              {produceSlides[currentProduceAd].eyebrow}
-            </p>
-            <h1 className="mt-2 max-w-xl text-3xl sm:text-4xl md:text-5xl font-black leading-tight text-[#2E7D32]">
-              {produceSlides[currentProduceAd].title}
-            </h1>
-            <p className="mt-3 max-w-lg text-sm sm:text-base leading-7 text-[#795548]">
-              {produceSlides[currentProduceAd].copy}
-            </p>
-            <div className="mt-6 flex flex-wrap items-center gap-3">
-              <button
-                onClick={() =>
-                  goToSlideLink(produceSlides[currentProduceAd].link)
-                }
-                className="rounded-full bg-[#2E7D32] px-5 py-2.5 text-sm font-black text-white shadow-lg shadow-[#2E7D32]/20 transition hover:bg-[#1B5E20]"
-              >
-                {produceSlides[currentProduceAd].cta}
-              </button>
-              <button
-                onClick={() =>
-                  document
-                    .getElementById("category-section")
-                    ?.scrollIntoView({ behavior: "smooth" })
-                }
-                className="rounded-full border border-[#795548]/30 bg-white/70 px-5 py-2.5 text-sm font-bold text-[#795548] transition hover:border-[#2E7D32] hover:text-[#2E7D32]"
-              >
-                Browse Categories
-              </button>
-            </div>
-            <div className="mt-7 grid grid-cols-3 gap-2 sm:max-w-md">
-              {[
-                { icon: Sprout, text: "Organic picks" },
-                { icon: Truck, text: "Fast delivery" },
-                { icon: ShieldCheck, text: "Fresh packed" },
-              ].map(({ icon: Icon, text }) => (
-                <div
-                  key={text}
-                  className="rounded-xl border border-[#81C784]/30 bg-white/65 px-2 py-2 text-center text-[10px] font-bold text-[#2E7D32]"
-                >
-                  <Icon className="mx-auto mb-1" size={16} />
-                  {text}
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="relative min-h-[260px] overflow-hidden lg:min-h-full">
-            {produceSlides.map((slide, i) => (
-              <img
-                key={slide.title}
-                src={slide.image}
-                alt={slide.title}
-                className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
-                  i === currentProduceAd ? "opacity-100" : "opacity-0"
-                }`}
-              />
-            ))}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#2E7D32]/70 via-transparent to-transparent lg:bg-gradient-to-r lg:from-[#FFF9C4] lg:via-transparent lg:to-transparent" />
-            <div className="absolute bottom-4 left-4 flex gap-2">
-              {produceSlides.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setCurrentProduceAd(i)}
-                  aria-label={`Show produce slide ${i + 1}`}
-                  className={`h-2 rounded-full transition-all ${
-                    i === currentProduceAd
-                      ? "w-8 bg-[#FFF9C4]"
-                      : "w-2 bg-white/70"
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+    <div className="max-w-7xl mx-auto p-4">
 
-      <section
-        className="my-6 rounded-2xl border border-[#81C784]/30 bg-[#FFF9C4]/70 p-4 sm:my-10 sm:p-6 md:my-12"
-        id="category-section"
-      >
-        <SectionTitle eyebrow="Shop fresh" title="Category" />
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-4">
-          {categories.map((cat) => (
-            <div
-              key={cat.name}
-              onClick={() => navigate(`/category/${cat.name.toLowerCase()}`)}
-              className="group  text-center flex
-                flex-col
-                items-center
-                justify-center "
-            >
-              <div
-                className="w-36 rounded-xl border border-brand-light/20 hover:border-brand-primary/30 bg-white p-4 shadow-sm transition-all 
-                group-hover:-translate-y-1  duration-300 sm:rounded-2xl sm:p-2 md:p-3   "
-              >
-                <img
-                  src={cat.image}
-                  alt={cat.name}
-                  className="w-32 aspect-square  object-contain group-hover:scale-110 transition-transform duration-300 "
-                />
-              </div>
-              <p className="text-center text-sm md:text-base font-medium text-gray-700">
-                {cat.name}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* HERO */}
+      <div className="bg-green-100 p-6 rounded-xl mb-6">
+        <h1 className="text-3xl font-bold text-green-700">
+          FreshCart 🌱
+        </h1>
+        <p className="text-gray-600 mt-2">
+          Fresh groceries delivered to your door
+        </p>
+      </div>
 
-      <section className="my-6 sm:my-10" id="offers-section ">
-        <div className="flex justify-between items-start gap-3 mb-3 sm:mb-5 md:mb-6 ">
-          <SectionTitle eyebrow="Save naturally" title="Special Offers" />
-          {isAdmin && (
-            <label className="shrink-0 bg-[#2E7D32] text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg cursor-pointer text-xs sm:text-sm font-bold hover:bg-[#1B5E20] transition">
-              + New Offer
-              <input
-                type="file"
-                hidden
-                accept="image/*"
-                onChange={async (e) => {
-                  const file = e.target.files[0];
-                  if (!file) return;
-                  const fd = new FormData();
-                  fd.append("image", file);
-                  await fetch(
-                    "http://const API = import.meta.env.VITE_API_URL;/api/offers",
-                    {
-                      method: "POST",
-                      credentials: "include",
-                      body: fd,
-                    },
-                  );
-                  bustCache();
-                  fetchData(true);
-                }}
-              />
-            </label>
-          )}
-        </div>
-
-        <div className="flex gap-3 sm:gap-4 overflow-x-auto pb-3 sm:pb-4 scrollbar-hide ">
+      {/* OFFERS */}
+      <div className="mb-8">
+        <h2 className="text-xl font-bold mb-3">Special Offers</h2>
+        <div className="flex gap-4 overflow-x-auto">
           {offers.map((offer) => (
-            <div
+            <img
               key={offer._id}
-              className="relative shrink-0 w-[80%] xs:w-[75%] sm:w-[60%] md:w-[48%] lg:w-[32%] aspect-[16/9] rounded-xl sm:rounded-2xl overflow-hidden border border-[#81C784]/30 shadow-[0_14px_35px_rgba(46,125,50,0.16)] group cursor-pointer bg-[#FFF9C4]"
-              onClick={() => offer.link && navigate(offer.link)}
-            >
-              <img
-                src={offer.image}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                alt="Offer border "
-              />
-              {isAdmin && (
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2 sm:gap-3">
-                  <label className="bg-white text-black px-3 sm:px-4 py-1.5 sm:py-2 rounded-full cursor-pointer font-bold text-[10px] sm:text-xs">
-                    Change Image
-                    <input
-                      type="file"
-                      hidden
-                      onChange={(e) => {
-                        e.stopPropagation();
-                        updateOfferImage(offer._id, e.target.files[0]);
-                      }}
-                    />
-                  </label>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      deleteOffer(offer._id);
-                    }}
-                    className="bg-red-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-[10px] sm:text-xs font-bold"
-                  >
-                    Delete
-                  </button>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      const lnk = prompt("Enter link:", offer.link);
-                      if (lnk !== null) updateOfferLink(offer._id, lnk);
-                    }}
-                    className="bg-blue-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-[10px] sm:text-xs font-bold"
-                  >
-                    Set Link
-                  </button>
-                </div>
-              )}
-            </div>
+              src={offer.image}
+              alt="offer"
+              className="w-64 h-36 object-cover rounded-lg"
+            />
           ))}
         </div>
-      </section>
+      </div>
 
-      <section className="my-6 rounded-2xl border border-[#81C784]/30 bg-white p-4 shadow-sm sm:my-10 sm:p-6 md:my-14">
-        <div className="flex justify-between items-center mb-4 sm:mb-6 md:mb-8">
-          <div>
-            <p className="text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] text-[#795548]">
-              Customer favorites
-            </p>
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-[#2E7D32]">
-              Featured Products
-            </h2>
-            {isAdmin && (
-              <p className="text-[10px] sm:text-xs text-[#795548]/60 mt-0.5">
-                {products.filter((p) => p.isPinned).length}/30 products
-              </p>
-            )}
+      {/* PRODUCTS */}
+      <div>
+        <h2 className="text-xl font-bold mb-4">Featured Products</h2>
+
+        {pinnedProducts.length === 0 ? (
+          <p className="text-gray-500">No products available</p>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {pinnedProducts.map((product) => (
+              <ProductCard key={product._id} product={product} />
+            ))}
           </div>
-          {isAdmin && (
-            <button
-              onClick={() => navigate("/admin/products")}
-              className="bg-[#2E7D32] hover:bg-[#1B5E20] text-white px-3 sm:px-5 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-xs sm:text-sm font-bold shadow transition"
-            >
-              + Add/Manage
-            </button>
-          )}
-        </div>
+        )}
+      </div>
 
-        <div className="grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2.5 xs:gap-3 sm:gap-4 md:gap-5 lg:gap-6">
-          {pinnedProducts.length > 0 ? (
-            pinnedProducts.map((product) => (
-              <div key={product._id} className="relative group">
-                <ProductCard product={product} />
-                {isAdmin && (
-                  <button
-                    onClick={() => handleRemoveFromHome(product._id)}
-                    className="absolute -top-2 -right-2 bg-red-600 text-white w-6 h-6 sm:w-7 sm:h-7 rounded-full text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity shadow-lg z-10 hover:bg-red-700"
-                    aria-label="Remove product from homepage"
-                  >
-                    x
-                  </button>
-                )}
-              </div>
-            ))
-          ) : (
-            <p className="col-span-full text-center text-[#795548]/60 text-sm py-8">
-              No products available
-            </p>
-          )}
-        </div>
-      </section>
-
-      <footer className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] bg-[#2E7D32] text-[#FFF9C4] pt-8 sm:pt-12 md:pt-16 pb-5 sm:pb-8 mt-10 sm:mt-14 md:mt-20   shadow-[0_-8px_24px_rgba(46,125,50,0.2)] overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 md:gap-10">
-          <div className="space-y-2 sm:space-y-3 text-center sm:text-left">
-            <h2 className="text-lg sm:text-xl md:text-2xl font-black text-[#FFF9C4]/75  tracking-tight">
-              FreshCart
-            </h2>
-            <p className="text-[11px] sm:text-xs md:text-sm text-[#FFF9C4]/75 leading-relaxed max-w-[220px] mx-auto sm:mx-0">
-              Your destination for farm-fresh produce. Quality you can taste.
-            </p>
-          </div>
-
-          <div className="text-center sm:text-left">
-            <h3 className="text-[#81C784] font-bold mb-3 sm:mb-4 uppercase text-[10px] sm:text-xs tracking-widest">
-              Explore
-            </h3>
-            <ul className="text-[11px] sm:text-xs md:text-sm space-y-2 sm:space-y-3 text-[#FFF9C4]/75">
-              <li>
-                <button
-                  onClick={() =>
-                    window.scrollTo({ top: 0, behavior: "smooth" })
-                  }
-                  className="hover:text-white transition"
-                >
-                  Home
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() =>
-                    document
-                      .getElementById("category-section")
-                      ?.scrollIntoView({ behavior: "smooth" })
-                  }
-                  className="hover:text-white transition"
-                >
-                  Shop Categories
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => navigate("/myorders")}
-                  className="hover:text-white transition"
-                >
-                  Track Order
-                </button>
-              </li>
-            </ul>
-          </div>
-
-          <div className="text-center sm:text-left">
-            <h3 className="text-[#81C784] font-bold mb-3 sm:mb-4 uppercase text-[10px] sm:text-xs tracking-widest">
-              Support
-            </h3>
-            <div className="text-[11px] sm:text-xs md:text-sm space-y-1.5 sm:space-y-2 text-[#FFF9C4]/75">
-              <p>
-                <span className="text-[#81C784]">Email:</span>{" "}
-                support@freshcart.com
-              </p>
-              <p>
-                <span className="text-[#81C784]">Call:</span> +91 98765 43210
-              </p>
-              <div className="sm:pt-4 flex justify-center sm:justify-start gap-2 sm:gap-3">
-                <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#795548] flex items-center justify-center text-[10px] sm:text-xs hover:bg-[#81C784] hover:text-[#2E7D32] cursor-pointer transition">
-                  IG
-                </span>
-                <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#795548] flex items-center justify-center text-[10px] sm:text-xs hover:bg-[#81C784] hover:text-[#2E7D32] cursor-pointer transition">
-                  FB
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="max-w-7xl m-auto px-4 sm:px-6 md:px-8 border-t border-[#81C784]/25  sm:mt-10 md:mt-8 pt-4 sm:pt-5 flex flex-col xs:flex-row justify-between items-center gap-3">
-          <p className="text-[8px] sm:text-[9px] md:text-[10px] text-[#FFF9C4]/60 tracking-widest uppercase text-center">
-            @Copyright {new Date().getFullYear()} FreshCart. All Rights
-            Reserved.
-          </p>
-        </div>
-      </footer>
     </div>
   );
 };

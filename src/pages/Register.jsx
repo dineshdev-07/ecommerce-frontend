@@ -4,7 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 
 const api = axios.create({
-  baseURL: "http://const API = import.meta.env.VITE_API_URL;",
+  baseURL: "const API = import.meta.env.VITE_API_URL;",
   withCredentials: true,
 });
 

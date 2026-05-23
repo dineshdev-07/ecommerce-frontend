@@ -14,7 +14,7 @@ const CategoryPage = () => {
     const fetchProducts = async () => {
       try {
         const res = await fetch(
-          "http://const API = import.meta.env.VITE_API_URL;/api/products",
+          "const API = import.meta.env.VITE_API_URL;/api/products",
           {
             credentials: "include",
           },

@@ -196,7 +196,7 @@ const CategoryPage = () => {
       try {
         setLoading(true);
         const { data } = await axios.get(
-          `http://const API = import.meta.env.VITE_API_URL;/api/products?category=${encodeURIComponent(categoryName)}`,
+          `const API = import.meta.env.VITE_API_URL;/api/products?category=${encodeURIComponent(categoryName)}`,
         );
         setProducts(Array.isArray(data) ? data : data.products || []);
       } catch (err) {

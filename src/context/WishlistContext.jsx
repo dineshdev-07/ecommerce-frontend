@@ -9,7 +9,7 @@ export const WishlistProvider = ({ children }) => {
   const fetchWishlist = async () => {
     try {
       const { data } = await axios.get(
-        "http://const API = import.meta.env.VITE_API_URL;/api/wishlist",
+        "const API = import.meta.env.VITE_API_URL;/api/wishlist",
         {
           withCredentials: true,
         },
@@ -28,7 +28,7 @@ export const WishlistProvider = ({ children }) => {
     );
     try {
       await axios.post(
-        `http://const API = import.meta.env.VITE_API_URL;/api/wishlist/${productId}`,
+        `const API = import.meta.env.VITE_API_URL;/api/wishlist/${productId}`,
         {},
         { withCredentials: true },
       );

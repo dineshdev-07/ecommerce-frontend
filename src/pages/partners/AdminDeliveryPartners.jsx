@@ -38,7 +38,7 @@ export default function AdminDeliveryPartners() {
     else setPolling(true);
     try {
       const { data } = await axios.get(
-        "http://const API = import.meta.env.VITE_API_URL;/api/delivery-partners/admin/all",
+        "const API = import.meta.env.VITE_API_URL;/api/delivery-partners/admin/all",
         { withCredentials: true }, // ✅ cookie
       );
       setPartners(Array.isArray(data) ? data : []);
@@ -60,7 +60,7 @@ export default function AdminDeliveryPartners() {
     setActing((p) => ({ ...p, [id]: "accepting" }));
     try {
       const { data } = await axios.put(
-        `http://const API = import.meta.env.VITE_API_URL;/api/delivery-partners/admin/${id}/accept`,
+        `const API = import.meta.env.VITE_API_URL;/api/delivery-partners/admin/${id}/accept`,
         { adminReply: reply },
         { withCredentials: true }, // ✅ cookie
       );
@@ -81,7 +81,7 @@ export default function AdminDeliveryPartners() {
     setActing((p) => ({ ...p, [id]: "declining" }));
     try {
       const { data } = await axios.put(
-        `http://const API = import.meta.env.VITE_API_URL;/api/delivery-partners/admin/${id}/decline`,
+        `const API = import.meta.env.VITE_API_URL;/api/delivery-partners/admin/${id}/decline`,
         { adminReply: reply },
         { withCredentials: true }, // ✅ cookie
       );

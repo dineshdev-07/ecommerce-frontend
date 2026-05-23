@@ -16,7 +16,7 @@ function Login({ setIsLoggedIn, setIsAdmin }) {
 
     try {
       const res = await fetch(
-        "http://const API = import.meta.env.VITE_API_URL;/api/users/login",
+        "const API = import.meta.env.VITE_API_URL;/api/users/login",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -53,7 +53,6 @@ function Login({ setIsLoggedIn, setIsAdmin }) {
           >
             <h1 className="text-3xl font-black text-gray-900">Sign in</h1>
 
-         
             <div className="mt-5 flex justify-center gap-3">
               {["f", "G+", "in"].map((item) => (
                 <div

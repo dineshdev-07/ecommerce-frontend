@@ -113,7 +113,7 @@ const OrderDetails = () => {
     try {
       setLoading(true);
       const { data } = await axios.get(
-        `http://const API = import.meta.env.VITE_API_URL;/api/orders/${id}`,
+        `const API = import.meta.env.VITE_API_URL;/api/orders/${id}`,
         {
           withCredentials: true,
         },
@@ -137,7 +137,7 @@ const OrderDetails = () => {
   const downloadInvoice = async () => {
     try {
       const response = await fetch(
-        `http://const API = import.meta.env.VITE_API_URL;/api/orders/${order._id}/invoice`,
+        `const API = import.meta.env.VITE_API_URL;/api/orders/${order._id}/invoice`,
         {
           credentials: "include",
         },
@@ -318,7 +318,7 @@ const OrderDetails = () => {
                         src={
                           item.image?.startsWith("http")
                             ? item.image
-                            : `http://const API = import.meta.env.VITE_API_URL;${item.image}`
+                            : `const API = import.meta.env.VITE_API_URL;${item.image}`
                         }
                         className="max-h-full object-contain"
                         alt={item.name}
