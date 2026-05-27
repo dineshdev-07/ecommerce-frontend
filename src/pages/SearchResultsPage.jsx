@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import ProductCard from "../components/ProductCard";
 import { ArrowLeft, SlidersHorizontal, X, Search } from "lucide-react";
-
+const API = import.meta.env.VITE_API_URL;
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
@@ -28,7 +28,7 @@ export default function SearchResultsPage() {
     if (!searchTerm) return;
     setLoading(true);
     fetch(
-      `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/products/search?q=${encodeURIComponent(searchTerm)}`,
+      `${API}/api/products/search?q=${encodeURIComponent(searchTerm)}`,
     )
       .then((res) => res.json())
       .then((data) => {

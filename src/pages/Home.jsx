@@ -5,6 +5,7 @@ import { Leaf, ShieldCheck, Sprout, Truck } from "lucide-react";
 
 const CACHE_KEY = "FreshCart_home";
 const CACHE_TTL = 5 * 60 * 1000;
+const API = import.meta.env.VITE_API_URL;
 
 const readCache = () => {
   try {
@@ -110,16 +111,16 @@ const Home = ({ search = "" }) => {
     try {
       const [prodRes, adsRes, offRes] = await Promise.all([
         fetch(
-          "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/products",
+          `${API}/api/products`,
           {
             credentials: "include",
           },
         ),
         fetch(
-          "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/ads",
+          `${API}/api/ads`,
         ),
         fetch(
-          "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/offers",
+          `${API}/api/offers`,
         ),
       ]);
       const [products, ads, offers] = await Promise.all([
@@ -152,7 +153,7 @@ const Home = ({ search = "" }) => {
     if (!window.confirm("Remove this product from homepage?")) return;
     try {
       const res = await fetch(
-        `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/products/${id}/pin`,
+        `${API}/api/products/${id}/pin`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -176,7 +177,7 @@ const Home = ({ search = "" }) => {
   const updateOfferLink = async (id, newLink) => {
     try {
       await fetch(
-        `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/offers/${id}`,
+        `${API}/api/offers/${id}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -196,7 +197,7 @@ const Home = ({ search = "" }) => {
     fd.append("image", file);
     try {
       await fetch(
-        `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/offers/${id}`,
+        `${API}/api/offers/${id}`,
         {
           method: "PUT",
           credentials: "include",
@@ -213,7 +214,7 @@ const Home = ({ search = "" }) => {
   const deleteOffer = async (id) => {
     if (!window.confirm("Delete this offer?")) return;
     await fetch(
-      `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/offers/${id}`,
+      `${API}/api/offers/${id}`,
       {
         method: "DELETE",
         credentials: "include",
@@ -374,7 +375,7 @@ const Home = ({ search = "" }) => {
                   const fd = new FormData();
                   fd.append("image", file);
                   await fetch(
-                    "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/offers",
+                    `${API}/api/offers`,
                     {
                       method: "POST",
                       credentials: "include",

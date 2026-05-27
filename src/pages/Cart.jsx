@@ -62,6 +62,7 @@ const TN_DISTRICTS = [
   "Virudhunagar",
 ];
 
+const API = import.meta.env.VITE_API_URL;
 const Cart = () => {
   const { cartItems, fetchCart, setCartItems } = useCart();
   const navigate = useNavigate();
@@ -92,7 +93,7 @@ const Cart = () => {
       if (!userInfo?._id) return;
       try {
         const { data } = await axios.get(
-          "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/users/profile",
+          `${API}/api/users/profile`,
           config,
         );
         setDbUser(data);
@@ -175,7 +176,7 @@ const Cart = () => {
     if (qty < 1) return;
     try {
       await axios.put(
-        `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/cart/${productId}`,
+        `${API}/api/cart/${productId}`,
         { quantity: qty },
         config,
       );
@@ -194,7 +195,7 @@ const Cart = () => {
   const removeFromCart = async (productId) => {
     try {
       await axios.delete(
-        `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/cart/${productId}`,
+        `${API}/api/cart/${productId}`,
         config,
       );
       setCartItems(
@@ -241,7 +242,7 @@ const Cart = () => {
       return alert("Fill all fields");
     try {
       const { data } = await axios.post(
-        "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/users/address",
+        `${API}/api/users/address`,
         addressInput,
         config,
       );
@@ -269,7 +270,7 @@ const Cart = () => {
       return alert("Fill all fields including district");
     try {
       const { data } = await axios.put(
-        `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/users/address/${editingAddress._id}`,
+        `${API}/api/users/address/${editingAddress._id}`,
         editingAddress,
         config,
       );
@@ -313,14 +314,14 @@ const Cart = () => {
     try {
       if (paymentMethod === "ONLINE") {
         const { data: orderData } = await axios.post(
-          "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/orders",
+          `${API}/api/orders`,
           buildOrderPayload("ONLINE", false),
           config,
         );
         const mongoOrderId = orderData._id;
 
         const { data: rzpData } = await axios.post(
-          "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/payment/create-order",
+         `${API}/api/payment/create-order`,
           { amount: grandTotal },
           config,
         );
@@ -334,7 +335,7 @@ const Cart = () => {
           handler: async (res) => {
             try {
               await axios.post(
-                "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/orders/verify",
+                `${API}/api/orders/verify`,
                 {
                   razorpay_order_id: res.razorpay_order_id,
                   razorpay_payment_id: res.razorpay_payment_id,
@@ -344,7 +345,7 @@ const Cart = () => {
                 config,
               );
               await axios.delete(
-                "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/cart",
+                `${API}/api/cart`,
                 config,
               );
               setCartItems([]);
@@ -357,7 +358,7 @@ const Cart = () => {
               if (status === 401) {
                 try {
                   await axios.post(
-                    "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/orders/verify",
+                    `${API}/api/orders/verify`,
                     {
                       razorpay_order_id: res.razorpay_order_id,
                       razorpay_payment_id: res.razorpay_payment_id,
@@ -366,7 +367,7 @@ const Cart = () => {
                     },
                   );
                   await axios.delete(
-                    "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/cart",
+                    `${API}/api/cart`,
                     config,
                   );
                   setCartItems([]);
@@ -392,12 +393,12 @@ const Cart = () => {
         }).open();
       } else {
         await axios.post(
-          "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/orders",
+          `${API}/api/orders`,
           buildOrderPayload("COD", false),
           config,
         );
         await axios.delete(
-          "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/cart",
+          `${API}/api/cart`,
           config,
         );
         setCartItems([]);

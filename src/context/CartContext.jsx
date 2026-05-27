@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 
 const CartContext = createContext();
+const API = import.meta.env.VITE_API_URL;
 
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
@@ -25,7 +26,7 @@ export const CartProvider = ({ children }) => {
   const fetchCart = async () => {
     try {
       const { data } = await axios.get(
-        "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/cart",
+        `${API}/api/cart`,
         {
           withCredentials: true,
         },
@@ -46,7 +47,7 @@ export const CartProvider = ({ children }) => {
   const addToCart = async (product, quantity = 1) => {
     try {
       const { data } = await axios.post(
-        "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/cart",
+        `${API}/api/cart`,
         { productId: product._id, quantity },
         { withCredentials: true },
       );

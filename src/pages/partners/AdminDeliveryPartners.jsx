@@ -13,7 +13,7 @@ import {
   MapPin,
   Phone,
 } from "lucide-react";
-
+const API = import.meta.env.VITE_API_URL;
 const STATUS_CHIP = {
   pending: "bg-amber-100 text-amber-700",
   accepted: "bg-green-100 text-green-700",
@@ -38,7 +38,7 @@ export default function AdminDeliveryPartners() {
     else setPolling(true);
     try {
       const { data } = await axios.get(
-        "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/delivery-partners/admin/all",
+        `${API}/api/delivery-partners/admin/all`,
         { withCredentials: true }, // ✅ cookie
       );
       setPartners(Array.isArray(data) ? data : []);
@@ -60,7 +60,7 @@ export default function AdminDeliveryPartners() {
     setActing((p) => ({ ...p, [id]: "accepting" }));
     try {
       const { data } = await axios.put(
-        `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/delivery-partners/admin/${id}/accept`,
+        `${API}/api/delivery-partners/admin/${id}/accept`,
         { adminReply: reply },
         { withCredentials: true }, // ✅ cookie
       );
@@ -81,7 +81,7 @@ export default function AdminDeliveryPartners() {
     setActing((p) => ({ ...p, [id]: "declining" }));
     try {
       const { data } = await axios.put(
-        `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/delivery-partners/admin/${id}/decline`,
+        `${API}/api/delivery-partners/admin/${id}/decline`,
         { adminReply: reply },
         { withCredentials: true }, // ✅ cookie
       );

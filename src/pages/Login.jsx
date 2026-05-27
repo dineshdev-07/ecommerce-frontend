@@ -7,7 +7,7 @@ function Login({ setIsLoggedIn, setIsAdmin }) {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
-
+const API = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
 
   const submitHandler = async (e) => {
@@ -16,7 +16,7 @@ function Login({ setIsLoggedIn, setIsAdmin }) {
 
     try {
       const res = await fetch(
-        "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/users/login",
+        `${API}/api/users/login`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

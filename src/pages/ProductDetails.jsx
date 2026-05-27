@@ -59,6 +59,7 @@ const TN_DISTRICTS = [
   "Virudhunagar",
 ];
 
+const API = import.meta.env.VITE_API_URL;
 const ProductDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -111,7 +112,7 @@ const ProductDetails = () => {
         setLoading(true);
         if (userInfo?._id || true) {
           const profileRes = await axios.get(
-            "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/users/profile",
+            `${API}/api/users/profile`,
             config,
           );
           setDbUser(profileRes.data);
@@ -121,13 +122,13 @@ const ProductDetails = () => {
         }
 
         const { data } = await axios.get(
-          `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/products/${id}`,
+          `${API}/api/products/${id}`,
         );
         setProduct(data);
         setMainImage(data.images?.[0] || "");
 
         const simRes = await axios.get(
-          `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/products/category/${data.category}`,
+          `${API}/api/products/category/${data.category}`,
         );
         setSimilarProducts(simRes.data.filter((p) => p._id !== id));
       } catch (err) {
@@ -160,7 +161,7 @@ const ProductDetails = () => {
   const handleAdminUpdate = async () => {
     try {
       await axios.put(
-        `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/products/update/${product._id}`,
+        `${API}/api/products/update/${product._id}`,
         {
           quantity: Number(editQuantity),
           manufacturingDate: editMfgDate,
@@ -174,7 +175,7 @@ const ProductDetails = () => {
       alert("Product Updated Successfully");
       setShowAdminEdit(false);
       const { data } = await axios.get(
-        `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/products/${id}`,
+        `${API}/api/products/${id}`,
         config,
       );
       setProduct(data);
@@ -221,7 +222,7 @@ const ProductDetails = () => {
       return alert("Fill all fields including district");
     try {
       const { data } = await axios.post(
-        "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/users/address",
+        `${API}/api/users/address`,
         addressInput,
         config,
       );
@@ -250,7 +251,7 @@ const ProductDetails = () => {
       return alert("Fill all fields including district");
     try {
       const { data } = await axios.put(
-        `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/users/address/${editingAddress._id}`,
+        `${API}/api/users/address/${editingAddress._id}`,
         editingAddress,
         config,
       );
@@ -268,7 +269,7 @@ const ProductDetails = () => {
   const deleteAddress = async (addrId) => {
     try {
       const { data } = await axios.delete(
-        `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/users/address/${addrId}`,
+        `${API}/api/users/address/${addrId}`,
         config,
       );
       setDbUser({ ...dbUser, addresses: data });
@@ -346,14 +347,14 @@ const ProductDetails = () => {
           orderStatus: "Not Paid",
         };
         const { data: orderData } = await axios.post(
-          "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/orders",
+          `${API}/api/orders`,
           orderPayload,
           config,
         );
         const mongoOrderId = orderData._id;
 
         const { data: rzpData } = await axios.post(
-          "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/payment/create-order",
+          `${API}/api/payment/create-order`,
           { amount: finalPrice + deliveryCharge },
           config,
         );
@@ -366,7 +367,7 @@ const ProductDetails = () => {
           handler: async (res) => {
             try {
               await axios.post(
-                "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/orders/verify",
+                `${API}/api/orders/verify`,
                 {
                   razorpay_order_id: res.razorpay_order_id,
                   razorpay_payment_id: res.razorpay_payment_id,
@@ -428,7 +429,7 @@ const ProductDetails = () => {
 
     try {
       await axios.post(
-        "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/orders",
+        `${API}/api/orders`,
         orderData,
         config,
       );
@@ -479,7 +480,7 @@ const ProductDetails = () => {
           src={
             mainImage?.startsWith("http")
               ? mainImage
-              : `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;${mainImage}`
+              : `${API}${mainImage}`
           }
           className="h-96 object-contain"
           alt={product.name}

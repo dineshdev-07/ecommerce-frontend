@@ -17,7 +17,7 @@ import {
   ChevronDown,
   ChevronUp,
 } from "lucide-react";
-
+const API = import.meta.env.VITE_API_URL;
 const geocodeAddress = async (addr) => {
   try {
     const q = encodeURIComponent(
@@ -85,8 +85,8 @@ function AssignModal({
           : "";
         const url =
           lat && lng
-            ? `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/delivery-partners/admin/active?lat=${lat}&lng=${lng}${pincodeParam}${districtParam}`
-            : `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/delivery-partners/admin/active?${pincodeParam.slice(1)}${districtParam}`;
+            ? `${API}/api/delivery-partners/admin/active?lat=${lat}&lng=${lng}${pincodeParam}${districtParam}`
+            : `${API}/api/delivery-partners/admin/active?${pincodeParam.slice(1)}${districtParam}`;
 
         const { data } = await axios.get(url, { withCredentials: true });
         setPartners(Array.isArray(data) ? data : []);
@@ -104,7 +104,7 @@ function AssignModal({
     setAssigning(true);
     try {
       await axios.put(
-        "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/delivery-partners/admin/orders/assign",
+        `${API}/api/delivery-partners/admin/orders/assign`,
         { partnerId: chosen, orderIds: selectedOrders },
         { withCredentials: true },
       );
@@ -294,7 +294,7 @@ function UnassignModal({ order, onClose, onDone }) {
     setLoading(true);
     try {
       await axios.put(
-        `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/delivery-partners/admin/orders/${order._id}/unassign`,
+        `${API}/api/delivery-partners/admin/orders/${order._id}/unassign`,
         {},
         { withCredentials: true },
       );
@@ -376,7 +376,7 @@ function AdminOrders() {
     try {
       setLoading(true);
       const { data } = await axios.get(
-        "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/orders/admin",
+        `${API}/api/orders/admin`,
         {
           withCredentials: true,
         },
@@ -413,7 +413,7 @@ function AdminOrders() {
     if (!window.confirm("Mark this order as delivered?")) return;
     try {
       await axios.put(
-        `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/orders/${id}/deliver`,
+        `${API}/api/orders/${id}/deliver`,
         {},
         { withCredentials: true },
       );
@@ -427,7 +427,7 @@ function AdminOrders() {
     if (!window.confirm("Confirm refund has been processed?")) return;
     try {
       await axios.put(
-        `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/orders/${id}/refund`,
+        `${API}/api/orders/${id}/refund`,
         {},
         { withCredentials: true },
       );
@@ -447,7 +447,7 @@ function AdminOrders() {
       return;
     try {
       await axios.delete(
-        "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/orders/reset",
+        `${API}/api/orders/reset`,
         {
           withCredentials: true,
         },

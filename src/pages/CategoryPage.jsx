@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 
-const API = import.meta.env.VITE_API_URL; // ✅ FIX
+const API = import.meta.env.VITE_API_URL;
 
 const CategoryPage = () => {
   const { categoryName } = useParams();

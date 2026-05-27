@@ -31,6 +31,8 @@ const EMPTY_FORM = {
   images: [],
 };
 
+const API = import.meta.env.VITE_API_URL;
+
 const FIELDS = [
   {
     key: "name",
@@ -126,7 +128,7 @@ function Admin() {
       if (selectedFile) fd.append("image", selectedFile);
 
       await axios.post(
-        "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/products",
+        `${API}/api/products`,
         fd,
         {
           withCredentials: true,

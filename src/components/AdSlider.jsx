@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const BASE_URL = "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;";
+const BASE_URL =import.meta.env.VITE_API_URL;
 
 const AdSlider = () => {
   const isAdmin = localStorage.getItem("isAdmin") === "true";

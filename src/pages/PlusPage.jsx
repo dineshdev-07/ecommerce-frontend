@@ -10,7 +10,7 @@ import {
   ChevronLeft,
   Check,
 } from "lucide-react";
-
+const API = import.meta.env.VITE_API_URL;
 const LoyaltyPage = () => {
   const navigate = useNavigate();
   const [points, setPoints] = useState(0);
@@ -29,12 +29,8 @@ const LoyaltyPage = () => {
   const fetchUserData = async () => {
     try {
       const { data } = await axios.get(
-        "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/users/profile",
-        {
-          withCredentials: true,
-        },
-      );
-
+        `${API}/api/users/profile`
+       ) 
       setPoints(data.loyaltyPoints || 0);
       setIsPlus(data.isPlusMember || false);
       setStreak(data.streakCount || 0);
@@ -60,7 +56,7 @@ const LoyaltyPage = () => {
     try {
       setProcessing(true);
       await axios.post(
-        "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/users/activate-plus",
+        `${API}/api/users/activate-plus`,
         {},
         config,
       );

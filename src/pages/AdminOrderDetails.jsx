@@ -28,6 +28,8 @@ import {
   AlertCircle,
 } from "lucide-react";
 
+const API = import.meta.env.VITE_API_URL;
+
 const OfferBadge = ({ item }) => {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
@@ -274,7 +276,7 @@ const DeliveryPartnerSection = ({ order, onRefresh }) => {
         order.shippingAddress?.postalCode ||
         order.shippingAddress?.pincode ||
         "";
-      const url = `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/delivery-partners/admin/active${pincode ? "?pincode=" + pincode : ""}`;
+      const url = `${API}/api/delivery-partners/admin/active${pincode ? "?pincode=" + pincode : ""}`;
       const { data } = await axios.get(url, { withCredentials: true });
       setPartners(Array.isArray(data) ? data : []);
     } catch {
@@ -288,7 +290,7 @@ const DeliveryPartnerSection = ({ order, onRefresh }) => {
     setAssigning(true);
     try {
       await axios.put(
-        "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/delivery-partners/admin/orders/assign",
+        `${API}/api/delivery-partners/admin/orders/assign`,
         { partnerId: selected, orderIds: [order._id] },
         { withCredentials: true },
       );
@@ -306,7 +308,7 @@ const DeliveryPartnerSection = ({ order, onRefresh }) => {
     setUnassigning(true);
     try {
       await axios.put(
-        `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/delivery-partners/admin/orders/${order._id}/unassign`,
+        `${API}/api/delivery-partners/admin/orders/${order._id}/unassign`,
         {},
         { withCredentials: true },
       );
@@ -678,7 +680,7 @@ const AdminOrderDetails = () => {
     try {
       setLoading(true);
       const { data } = await axios.get(
-        `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/orders/admin/${id}`,
+        `${API}/api/orders/admin/${id}`,
         { withCredentials: true },
       );
       setOrder(data);
@@ -698,8 +700,8 @@ const AdminOrderDetails = () => {
       setBtnLoading(true);
       const url =
         action === "cancel"
-          ? `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/orders/admin/${id}/cancel`
-          : `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/orders/${id}/${action}`;
+          ? `${API}/api/orders/admin/${id}/cancel`
+          : `${API}/api/orders/${id}/${action}`;
       await axios.put(url, {}, { withCredentials: true });
       fetchOrder();
     } catch (err) {
@@ -929,7 +931,7 @@ const AdminOrderDetails = () => {
                       src={
                         item.image?.startsWith("http")
                           ? item.image
-                          : `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;${item.image}`
+                          : `${API},${item.image}`
                       }
                       className="w-10 h-10 sm:w-12 sm:h-12 object-contain bg-white rounded-lg p-1 shrink-0"
                       alt=""

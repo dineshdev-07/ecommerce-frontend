@@ -12,10 +12,11 @@ const AdminProductsPage = () => {
   const [togglingId, setTogglingId] = useState(null);
   const navigate = useNavigate();
 
+  const API = import.meta.env.VITE_API_URL;
   const fetchProducts = async () => {
     try {
       const res = await fetch(
-        "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/products",
+        `${API}/api/products`,
         {
           credentials: "include",
         },
@@ -43,7 +44,7 @@ const AdminProductsPage = () => {
     setTogglingId(productId);
     try {
       const res = await fetch(
-        `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/products/${productId}/pin`,
+        `${API}/api/products/${productId}/pin`,
         {
           method: "PUT",
           credentials: "include",
@@ -172,7 +173,7 @@ const AdminProductsPage = () => {
               const imgPath = product.images?.[0] || product.image;
               const imageUrl = imgPath?.startsWith("http")
                 ? imgPath
-                : `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;${imgPath?.startsWith("/") ? "" : "/"}${imgPath || ""}`;
+                : `${API}${imgPath?.startsWith("/") ? "" : "/"}${imgPath || ""}`;
               const isToggling = togglingId === product._id;
 
               return (

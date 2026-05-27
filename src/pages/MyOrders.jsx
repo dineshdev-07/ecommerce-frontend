@@ -7,12 +7,12 @@ const MyOrders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingCancel, setLoadingCancel] = useState({});
-
+const API = import.meta.env.VITE_API_URL;
   const fetchOrders = async () => {
     try {
       setLoading(true);
       const { data } = await axios.get(
-        "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/orders/myorders",
+        `${API}/api/orders/myorders`,
         {
           withCredentials: true,
         },
@@ -53,7 +53,7 @@ const MyOrders = () => {
     try {
       setLoadingCancel((prev) => ({ ...prev, [orderId]: true }));
       await axios.put(
-        `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/orders/${orderId}/cancel`,
+        `${API}/api/orders/${orderId}/cancel`,
         {},
         {
           withCredentials: true,
@@ -71,7 +71,7 @@ const MyOrders = () => {
   const downloadInvoice = async (orderId) => {
     try {
       const response = await fetch(
-        `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/orders/${orderId}/invoice`,
+        `${API}/api/orders/${orderId}/invoice`,
         {
           credentials: "include",
         },

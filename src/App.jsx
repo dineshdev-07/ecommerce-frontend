@@ -56,6 +56,8 @@ import {
 import { CartProvider, useCart } from "./context/CartContext";
 import { WishlistProvider, useWishlist } from "./context/WishlistContext";
 
+const API = import.meta.env.VITE_API_URL;
+
 function ScrollToTop() {
   const { pathname } = useLocation();
 
@@ -429,7 +431,7 @@ function MobileDrawer({
                   onClick={async () => {
                     try {
                       await fetch(
-                        "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/users/logout",
+                      `${API}/api/users/logout`,
                         {
                           method: "POST",
                           credentials: "include",
@@ -548,7 +550,7 @@ function AppContent() {
     }
     try {
       const res = await fetch(
-        `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/products/suggestions?q=${query}`,
+      `${API}/api/products/suggestions?q=${query}`,
       );
       const data = await res.json();
       setSuggestions((Array.isArray(data) ? data : []).slice(0, 3));
@@ -562,7 +564,7 @@ function AppContent() {
   const handleLogout = async () => {
     try {
       await fetch(
-        "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/users/logout",
+        `${API}/api/users/logout`,
         {
           method: "POST",
           credentials: "include",
@@ -581,7 +583,7 @@ function AppContent() {
     if (!isAdmin) return;
     try {
       const oRes = await fetch(
-        "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/orders/admin",
+        `${API}/api/orders/admin`,
         {
           credentials: "include",
         },
@@ -596,7 +598,7 @@ function AppContent() {
       );
 
       const dRes = await fetch(
-        "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/orders/admin/dashboard",
+        `${API}/api/orders/admin/dashboar`,
         {
           credentials: "include",
         },
@@ -606,7 +608,7 @@ function AppContent() {
         setLowStockCount(dData.lowStockProducts.length);
 
       const sRes = await fetch(
-        "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/seller-requests/admin/all",
+        `${API}/api/seller-requests/admin/all`,
         {
           credentials: "include",
         },
@@ -619,7 +621,7 @@ function AppContent() {
       );
 
       const pRes = await fetch(
-        "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/delivery-partners/admin/pending-count",
+        `${API}/api/delivery-partners/admin/pending-count`,
         {
           credentials: "include",
         },

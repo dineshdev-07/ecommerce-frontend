@@ -10,7 +10,7 @@ import {
   faFilePdf,
   faUsers,
 } from "@fortawesome/free-solid-svg-icons";
-
+const API = import.meta.env.VITE_API_URL;
 const AdminDashboard = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -20,7 +20,7 @@ const AdminDashboard = () => {
     setLoading(true);
     try {
       const res = await axios.get(
-        "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/orders/admin/dashboard",
+        `${API}/api/orders/admin/dashboard`,
         {
           withCredentials: true,
         },
@@ -206,7 +206,7 @@ const AdminDashboard = () => {
       };
 
       await axios.put(
-        "const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/orders/reset-monthly-data",
+        `${API}/api/orders/reset-monthly-data`,
         {},
         {
           withCredentials: true,

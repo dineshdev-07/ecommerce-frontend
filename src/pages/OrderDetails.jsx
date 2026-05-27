@@ -15,6 +15,8 @@ import {
   Truck,
 } from "lucide-react";
 
+const API = import.meta.env.VITE_API_URL
+
 const DeliveryTracker = ({ order }) => {
   if (order.isCancelled) return null;
 
@@ -113,7 +115,7 @@ const OrderDetails = () => {
     try {
       setLoading(true);
       const { data } = await axios.get(
-        `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/orders/${id}`,
+        `${API}/api/orders/${id}`,
         {
           withCredentials: true,
         },
@@ -137,7 +139,7 @@ const OrderDetails = () => {
   const downloadInvoice = async () => {
     try {
       const response = await fetch(
-        `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;/api/orders/${order._id}/invoice`,
+        `${API}/api/orders/${order._id}/invoice`,
         {
           credentials: "include",
         },
@@ -318,7 +320,7 @@ const OrderDetails = () => {
                         src={
                           item.image?.startsWith("http")
                             ? item.image
-                            : `const API = import.meta.env.VITE_API_URL;.VITE_API_URL;${item.image}`
+                            : `${API}${item.image}`
                         }
                         className="max-h-full object-contain"
                         alt={item.name}
