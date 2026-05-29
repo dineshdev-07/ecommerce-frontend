@@ -12,6 +12,8 @@ import {
   EyeOff,
 } from "lucide-react";
 
+const API = import.meta.env.VITE_API_URL;
+
 const api = axios.create({
   baseURL: `${API}`,
   withCredentials: true,

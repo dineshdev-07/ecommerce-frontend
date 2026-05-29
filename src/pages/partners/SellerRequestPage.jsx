@@ -58,6 +58,8 @@ export default function SellerRequestPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const chatBottomRef = useRef(null);
 
+const API = import.meta.env.VITE_API_URL;
+
   const fetchRequest = async () => {
     try {
       const { data } = await axios.get(

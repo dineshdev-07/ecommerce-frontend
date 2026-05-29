@@ -14,6 +14,8 @@ import {
   RefreshCw,
 } from "lucide-react";
 
+const API = import.meta.env.VITE_API_URL;
+
 const STATUS_CHIP = {
   pending: "bg-amber-100 text-amber-700",
   accepted: "bg-green-100 text-green-700",

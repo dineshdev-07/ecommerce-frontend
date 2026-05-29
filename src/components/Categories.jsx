@@ -7,6 +7,7 @@ import { useWishlist } from "../context/WishlistContext";
 import { calculateDiscountedPrice } from "../utils/offerUtils";
 import { Heart } from "lucide-react";
 import specialOfferBadge from "../assets/Offer badge.png";
+const API = import.meta.env.VITE_API_URL;
 
 /* ── Mini product card matching ProductCard UI ── */
 const CategoryProductCard = ({ product, isLowestPriceItem = false }) => {
