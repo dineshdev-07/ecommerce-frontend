@@ -11,6 +11,9 @@ import {
   Check,
 } from "lucide-react";
 const API = import.meta.env.VITE_API_URL;
+
+const config = { withCredentials: true };
+
 const LoyaltyPage = () => {
   const navigate = useNavigate();
   const [points, setPoints] = useState(0);
@@ -29,8 +32,9 @@ const LoyaltyPage = () => {
   const fetchUserData = async () => {
     try {
       const { data } = await axios.get(
-        `${API}/api/users/profile`
-       ) 
+        `${API}/api/users/profile`,
+        config,
+      );
       setPoints(data.loyaltyPoints || 0);
       setIsPlus(data.isPlusMember || false);
       setStreak(data.streakCount || 0);
@@ -56,7 +60,7 @@ const LoyaltyPage = () => {
     try {
       setProcessing(true);
       await axios.post(
-        `${API}/api/users/activate-plus`,
+        `${API}/api/users/upgrade-plus`,
         {},
         config,
       );

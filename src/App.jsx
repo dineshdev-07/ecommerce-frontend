@@ -598,7 +598,7 @@ function AppContent() {
       );
 
       const dRes = await fetch(
-        `${API}/api/orders/admin/dashboar`,
+        `${API}/api/orders/admin/dashboard`,
         {
           credentials: "include",
         },

@@ -2,12 +2,14 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 
+const API = import.meta.env.VITE_API_URL;
+
 function Login({ setIsLoggedIn, setIsAdmin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
-const API = import.meta.env.VITE_API_URL;
+
   const navigate = useNavigate();
 
   const submitHandler = async (e) => {
