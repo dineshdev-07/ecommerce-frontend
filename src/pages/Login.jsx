@@ -16,6 +16,7 @@ function Login({ setIsLoggedIn, setIsAdmin }) {
     e.preventDefault();
     setError("");
 
+    console.log("API URL =", API);
     try {
       const res = await fetch(
         `${API}/api/users/login`,
