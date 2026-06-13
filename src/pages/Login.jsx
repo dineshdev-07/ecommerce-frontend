@@ -28,6 +28,7 @@ function Login({ setIsLoggedIn, setIsAdmin }) {
       );
 
       const data = await res.json();
+      console.log("LOGIN DATA:", data);
 
       if (!res.ok) {
         setError(data.message || "Login failed");

@@ -17,30 +17,49 @@ const AdminDashboard = () => {
   const [error, setError] = useState("");
 
   const fetchDashboard = useCallback(async () => {
-    setLoading(true);
-    try {
-      const res = await axios.get(
-        `${API}/api/orders/admin/dashboard`,
-        {
-          withCredentials: true,
-        },
-      );
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
-      console.log("FRONTEND RECEIVED DATA:", res.data);
+  if (!userInfo?.isAdmin) {
+    setError("Admin access required");
+    return;
+  }
 
-      setData(res.data);
-      setError("");
-    } catch (err) {
-      console.error("FRONTEND ERROR:", err);
+  setLoading(true);
+
+  try {
+    const res = await axios.get(
+      `${API}/api/orders/admin/dashboard`,
+      {
+        withCredentials: true,
+      }
+    );
+
+    setData(res.data);
+    setError("");
+  } catch (err) {
+    console.error("FRONTEND ERROR:", err);
+
+    if (err.response?.status === 401) {
+      setError("Admin login required");
+    } else {
       setError("Failed to fetch dashboard data ❌");
-    } finally {
-      setLoading(false);
     }
-  }, []);
+  } finally {
+    setLoading(false);
+  }
+}, []);
 
-  useEffect(() => {
-    fetchDashboard();
-  }, [fetchDashboard]);
+ useEffect(() => {
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
+  // Stop API call if user is not admin
+  if (!userInfo?.isAdmin) {
+    setLoading(false);
+    return;
+  }
+
+  fetchDashboard();
+}, [fetchDashboard]);
 
   const normalizedData = {
     totalRevenue: data?.totalRevenue ?? 0,
