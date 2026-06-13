@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
+
 const API = import.meta.env.VITE_API_URL;
 const api = axios.create({
   baseURL: `${API}`,
@@ -64,6 +65,12 @@ const Register = () => {
     if (!isPasswordValid(password)) {
       return setError("Password not strong enough");
     }
+console.log("REGISTER DATA:", {
+    name,
+    email,
+    password,
+    otp,
+  });
 
     try {
       const { data } = await api.post("/api/users/register", {
@@ -156,70 +163,94 @@ const Register = () => {
               </div>
             )}
 
-            {/* STEP 2 */}
+         
             {step === 2 && (
-              <form onSubmit={submitHandler} className="space-y-4">
-                <input
-                  placeholder="OTP"
-                  value={otp}
-                  onChange={(e) => setOtp(e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg border bg-white"
-                  required
-                />
+  <form
+    onSubmit={submitHandler}
+    autoComplete="off"
+    className="space-y-4"
+  >
+    <input
+      type="text"
+      name="otp"
+      placeholder="OTP"
+      autoComplete="off"
+      value={otp}
+      onChange={(e) => setOtp(e.target.value)}
+      className="w-full px-4 py-3 rounded-lg border bg-white"
+      required
+    />
 
-                <input
-                  placeholder="Full Name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg border bg-white"
-                  required
-                />
+    <input
+      type="text"
+      name="fullName"
+      placeholder="Full Name"
+      autoComplete="name"
+      value={name}
+      onChange={(e) => setName(e.target.value)}
+      className="w-full px-4 py-3 rounded-lg border bg-white"
+      required
+    />
 
-                <div className="relative">
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="w-full px-4 py-3 rounded-lg border bg-white"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-3 text-gray-500"
-                  >
-                    {showPassword ? <Eye size={16} /> : <EyeOff size={16} />}
-                  </button>
-                </div>
+    <input
+      type="email"
+      name="registerEmail"
+      placeholder="Email"
+      autoComplete="email"
+      value={email}
+      onChange={(e) => setEmail(e.target.value)}
+      className="w-full px-4 py-3 rounded-lg border bg-white"
+      required
+    />
 
-                {/* PASSWORD STRENGTH */}
-                <div className="flex gap-1">
-                  {[1, 2, 3, 4].map((i) => (
-                    <div
-                      key={i}
-                      className={`h-1 flex-1 rounded ${
-                        i <= strength ? strengthColors[strength] : "bg-gray-200"
-                      }`}
-                    />
-                  ))}
-                </div>
+    <div className="relative">
+      <input
+        type={showPassword ? "text" : "password"}
+        name="registerPassword"
+        placeholder="Create Password"
+        autoComplete="new-password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        className="w-full px-4 py-3 rounded-lg border bg-white"
+        required
+      />
 
-                <button
-                  type="submit"
-                  className="w-full bg-green-500 text-white py-3 rounded-lg font-semibold hover:bg-green-600"
-                >
-                  Create Account
-                </button>
+      <button
+        type="button"
+        onClick={() => setShowPassword(!showPassword)}
+        className="absolute right-3 top-3 text-gray-500"
+      >
+        {showPassword ? <Eye size={16} /> : <EyeOff size={16} />}
+      </button>
+    </div>
 
-                <button
-                  type="button"
-                  onClick={handleSendOTP}
-                  className="text-sm text-gray-400"
-                >
-                  Resend OTP
-                </button>
-              </form>
-            )}
+    <div className="flex gap-1">
+      {[1, 2, 3, 4].map((i) => (
+        <div
+          key={i}
+          className={`h-1 flex-1 rounded ${
+            i <= strength ? strengthColors[strength] : "bg-gray-200"
+          }`}
+        />
+      ))}
+    </div>
+
+    <button
+      type="submit"
+      className="w-full bg-green-500 text-white py-3 rounded-lg font-semibold hover:bg-green-600"
+    >
+      Create Account
+    </button>
+
+    <button
+      type="button"
+      onClick={handleSendOTP}
+      className="text-sm text-gray-400"
+    >
+      Resend OTP
+    </button>
+  </form>
+)}
           </div>
         </div>
       </div>
