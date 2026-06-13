@@ -28,9 +28,7 @@ function Login({ setIsLoggedIn, setIsAdmin }) {
       );
 
       const data = await res.json();
-//       console.log("FULL LOGIN RESPONSE");
-// console.log(data);
-// console.log("TOKEN =", data.token);
+
 
       if (!res.ok) {
         setError(data.message || "Login failed");
