@@ -65,12 +65,6 @@ const Register = () => {
     if (!isPasswordValid(password)) {
       return setError("Password not strong enough");
     }
-console.log("REGISTER DATA:", {
-    name,
-    email,
-    password,
-    otp,
-  });
 
     try {
       const { data } = await api.post("/api/users/register", {

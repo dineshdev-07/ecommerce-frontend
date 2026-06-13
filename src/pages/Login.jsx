@@ -16,7 +16,7 @@ function Login({ setIsLoggedIn, setIsAdmin }) {
     e.preventDefault();
     setError("");
 
-    console.log("API URL =", API);
+    // console.log("API URL =", API);
     try {
       const res = await fetch(
         `${API}/api/users/login`,
@@ -43,7 +43,20 @@ function Login({ setIsLoggedIn, setIsAdmin }) {
     } catch {
       setError("Server error. Please try again.");
     }
+    
   };
+  const logout = () => {
+  localStorage.removeItem("userInfo");
+  localStorage.removeItem("isAdmin");
+
+  setEmail("");
+  setPassword("");
+
+  setIsLoggedIn(false);
+  setIsAdmin(false);
+
+  navigate("/login");
+};
 
   return (
     <div className="min-h-screen bg-[#e9eceb] flex items-center justify-center px-4">
@@ -74,6 +87,7 @@ function Login({ setIsLoggedIn, setIsAdmin }) {
             <input
               type="email"
               placeholder="Email"
+               autoComplete="off"
               className="mt-4 w-full px-4 py-3 rounded-md bg-gray-100 text-sm outline-none focus:ring-2 focus:ring-[#6FAF8E]"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -84,6 +98,7 @@ function Login({ setIsLoggedIn, setIsAdmin }) {
               <input
                 type={showPassword ? "text" : "password"}
                 placeholder="Password"
+                 autoComplete="new-password"
                 className="mt-3 w-full px-4 py-3 rounded-md bg-gray-100 text-sm outline-none focus:ring-2 focus:ring-[#6FAF8E]"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
