@@ -82,7 +82,7 @@ const Cart = () => {
   const [locating, setLocating] = useState(false);
   const [editingAddress, setEditingAddress] = useState(null);
   const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
- const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
+
 
 const config = {
   headers: {
@@ -98,7 +98,7 @@ const config = {
   useEffect(() => {
     const syncUser = async () => {
       if (!userInfo?._id) return;
-      
+
       try {
         const { data } = await axios.get(
           `${API}/api/users/profile`,
