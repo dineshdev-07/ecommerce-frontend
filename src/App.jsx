@@ -603,8 +603,8 @@ const { data } = await axios.get(
 
   
 
-const { data } = await axios.get(
-  `${API}/api/orders/admin/dashboard${id}`,
+const { data: dashboardData } = await axios.get(
+  `${API}/api/orders/admin/dashboard`,
   {
     headers: {
       Authorization: `Bearer ${userInfo.token}`,
