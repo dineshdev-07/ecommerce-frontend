@@ -181,6 +181,8 @@ const WishlistPage = () => {
   useEffect(() => {
     const fetchWishlist = async () => {
       try {
+
+        console.log("TOKEN:", userInfo?.token);
         const { data } = await axios.get(
           `${API}/api/wishlist`,
           config,
