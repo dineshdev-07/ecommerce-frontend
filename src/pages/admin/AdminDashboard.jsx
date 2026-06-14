@@ -27,7 +27,7 @@ const AdminDashboard = () => {
   setLoading(true);
 
   try {
-   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
 
 const { data } = await axios.get(
   `${API}/api/orders/admin/dashboard${id}`,
@@ -53,7 +53,7 @@ const { data } = await axios.get(
 }, []);
 
  useEffect(() => {
-  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+ 
 
   // Stop API call if user is not admin
   if (!userInfo?.isAdmin) {
@@ -222,7 +222,7 @@ const { data } = await axios.get(
   const handleResetMonthly = async () => {
     if (!window.confirm("Reset all monthly stats?")) return;
     try {
-      const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+      
       const config = {
         headers: { Authorization: `Bearer ${userInfo?.token}` },
       };

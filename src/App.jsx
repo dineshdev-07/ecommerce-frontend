@@ -601,7 +601,7 @@ const { data } = await axios.get(
         orders.filter((o) => o.isCancelled && o.isPaid && !o.isRefunded).length,
       );
 
-      const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  
 
 const { data } = await axios.get(
   `${API}/api/orders/admin/dashboard${id}`,
