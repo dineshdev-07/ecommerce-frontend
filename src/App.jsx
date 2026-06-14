@@ -582,12 +582,16 @@ function AppContent() {
   const fetchAdminAlerts = useCallback(async () => {
     if (!isAdmin) return;
     try {
-      const oRes = await fetch(
-        `${API}/api/orders/admin`,
-        {
-          credentials: "include",
-        },
-      );
+      const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
+const { data } = await axios.get(
+  `${API}/api/orders/admin/${id}`,
+  {
+    headers: {
+      Authorization: `Bearer ${userInfo.token}`,
+    },
+  }
+);
       const oData = await oRes.json();
       const orders = Array.isArray(oData.orders) ? oData.orders : oData;
       setDeliveryAlertCount(
@@ -597,12 +601,16 @@ function AppContent() {
         orders.filter((o) => o.isCancelled && o.isPaid && !o.isRefunded).length,
       );
 
-      const dRes = await fetch(
-        `${API}/api/orders/admin/dashboard`,
-        {
-          credentials: "include",
-        },
-      );
+      const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
+const { data } = await axios.get(
+  `${API}/api/orders/admin/dashboard${id}`,
+  {
+    headers: {
+      Authorization: `Bearer ${userInfo.token}`,
+    },
+  }
+);
       const dData = await dRes.json();
       if (dData.lowStockProducts)
         setLowStockCount(dData.lowStockProducts.length);

@@ -375,12 +375,16 @@ function AdminOrders() {
   const fetchOrders = useCallback(async () => {
     try {
       setLoading(true);
-      const { data } = await axios.get(
-        `${API}/api/orders/admin`,
-        {
-          withCredentials: true,
-        },
-      );
+     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
+const { data } = await axios.get(
+  `${API}/api/orders/admin/${id}`,
+  {
+    headers: {
+      Authorization: `Bearer ${userInfo.token}`,
+    },
+  }
+);
       setOrders(data.orders ? data.orders : data);
     } catch {
       console.error("Error fetching orders");

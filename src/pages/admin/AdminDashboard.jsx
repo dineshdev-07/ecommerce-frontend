@@ -27,13 +27,16 @@ const AdminDashboard = () => {
   setLoading(true);
 
   try {
-    const res = await axios.get(
-      `${API}/api/orders/admin/dashboard`,
-      {
-        withCredentials: true,
-      }
-    );
+   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
+const { data } = await axios.get(
+  `${API}/api/orders/admin/dashboard${id}`,
+  {
+    headers: {
+      Authorization: `Bearer ${userInfo.token}`,
+    },
+  }
+);
     setData(res.data);
     setError("");
   } catch (err) {

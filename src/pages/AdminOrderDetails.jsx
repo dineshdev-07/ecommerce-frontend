@@ -679,10 +679,16 @@ const AdminOrderDetails = () => {
   const fetchOrder = useCallback(async () => {
     try {
       setLoading(true);
-      const { data } = await axios.get(
-        `${API}/api/orders/admin/${id}`,
-        { withCredentials: true },
-      );
+      const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
+const { data } = await axios.get(
+  `${API}/api/orders/admin/${id}`,
+  {
+    headers: {
+      Authorization: `Bearer ${userInfo.token}`,
+    },
+  }
+);
       setOrder(data);
     } catch {
       setError("Order not found ❌");
