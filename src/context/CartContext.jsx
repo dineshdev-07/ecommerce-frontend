@@ -59,6 +59,7 @@ export const CartProvider = ({ children }) => {
           withCredentials: true,
         },
       );
+      console.log("ADD TO CART RESPONSE:", data)
       const rawItems = Array.isArray(data)
         ? data
         : data.items || data.cartItems || [];
