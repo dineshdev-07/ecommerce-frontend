@@ -84,12 +84,16 @@ const Cart = () => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
 
 
+const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
 const config = {
   headers: {
-    Authorization: `Bearer ${userInfo.token}`,
+    Authorization: `Bearer ${userInfo?.token}`,
   },
   withCredentials: true,
 };
+axios.get(`${API}/api/cart`, config);
+axios.post(`${API}/api/cart`, body, config);
 
   const isNewUser = dbUser?.firstOrderCompleted === false;
   const loyaltyPoints = Number(dbUser?.loyaltyPoints || 0);
