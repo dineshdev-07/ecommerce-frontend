@@ -83,9 +83,6 @@ const Cart = () => {
   const [editingAddress, setEditingAddress] = useState(null);
   const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
 
-
-const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-
 const config = {
   headers: {
     Authorization: `Bearer ${userInfo?.token}`,
