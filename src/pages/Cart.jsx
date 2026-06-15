@@ -89,8 +89,7 @@ const config = {
   },
   withCredentials: true,
 };
-axios.get(`${API}/api/cart`, config);
-axios.post(`${API}/api/cart`, body, config);
+
 
   const isNewUser = dbUser?.firstOrderCompleted === false;
   const loyaltyPoints = Number(dbUser?.loyaltyPoints || 0);
