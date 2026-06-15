@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 const CartContext = createContext();
 const API = import.meta.env.VITE_API_URL;
@@ -25,12 +25,9 @@ export const CartProvider = ({ children }) => {
 
   const fetchCart = async () => {
     try {
-      const { data } = await axios.get(
-        `${API}/api/cart`,
-        {
-          withCredentials: true,
-        },
-      );
+      const { data } = await axios.get(`${API}/api/cart`, {
+        withCredentials: true,
+      });
       const rawItems = Array.isArray(data)
         ? data
         : data.items || data.cartItems || [];
@@ -46,10 +43,21 @@ export const CartProvider = ({ children }) => {
 
   const addToCart = async (product, quantity = 1) => {
     try {
+      const token = JSON.parse(localStorage.getItem("userInfo"))?.token;
+
+      console.log("CART TOKEN:", token);
       const { data } = await axios.post(
         `${API}/api/cart`,
-        { productId: product._id, quantity },
-        { withCredentials: true },
+        {
+          productId: product._id,
+          quantity,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        },
       );
       const rawItems = Array.isArray(data)
         ? data
