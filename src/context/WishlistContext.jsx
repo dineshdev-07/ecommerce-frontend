@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 const WishlistContext = createContext();
 
@@ -9,12 +9,13 @@ export const WishlistProvider = ({ children }) => {
 
   const fetchWishlist = async () => {
     try {
-      const { data } = await axios.get(
-        `${API}/api/wishlist`,
-        {
-          withCredentials: true,
-        },
-      );
+      const { data } = 
+      axios.get(`${API}/api/wishlist`, {
+  headers: {
+    Authorization: `Bearer ${userInfo?.token}`,
+  },
+  withCredentials: true,
+});
       setWishlist(data.map((p) => (typeof p === "object" ? p._id : p)));
     } catch (err) {
       console.error("Wishlist fetch error:", err);
@@ -27,12 +28,18 @@ export const WishlistProvider = ({ children }) => {
         ? prev.filter((id) => id !== productId)
         : [...prev, productId],
     );
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     try {
       await axios.post(
-        `${API}/api/wishlist/${productId}`,
-        {},
-        { withCredentials: true },
-      );
+  `${API}/api/wishlist/${productId}`,
+  {},
+  {
+    headers: {
+      Authorization: `Bearer ${userInfo?.token}`,
+    },
+    withCredentials: true,
+  }
+);
     } catch (err) {
       fetchWishlist();
       console.error("Toggle wishlist error:", err);
