@@ -7,7 +7,7 @@ const API = import.meta.env.VITE_API_URL;
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
 
-  const mergeCartData = (items) => {
+  const mergeCartData = (items = []) => {
     const merged = items.reduce((acc, current) => {
       const productId = current.product?._id || current.product || current._id;
       const existing = acc.find(
@@ -37,7 +37,13 @@ export const CartProvider = ({ children }) => {
         },
       });
 
-      setCartItems(res.data);
+      const items = Array.isArray(res.data)
+  ? res.data
+  : res.data.items || res.data.cartItems || [];
+  console.log("CART RESPONSE:", res.data);
+console.log("CART ITEMS:", res.data.cartItems);
+
+setCartItems(res.data.cartItems || []);
     } catch (err) {
       console.error(err);
     }

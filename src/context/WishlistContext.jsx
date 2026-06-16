@@ -5,19 +5,28 @@ const WishlistContext = createContext();
 
 const API = import.meta.env.VITE_API_URL;
 const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
 export const WishlistProvider = ({ children }) => {
   const [wishlist, setWishlist] = useState([]);
 
   const fetchWishlist = async () => {
     try {
-      const { data } = 
+      const { data } = await
       axios.get(`${API}/api/wishlist`, {
   headers: {
     Authorization: `Bearer ${userInfo?.token}`,
   },
   withCredentials: true,
 });
-      setWishlist(data.map((p) => (typeof p === "object" ? p._id : p)));
+
+console.log("WISHLIST RESPONSE:", data);
+
+ if (Array.isArray(data)) {
+  setWishlist(data.map((p) => (typeof p === "object" ? p._id : p)));
+} else {
+  console.log("Data is not an array:", data);
+  setWishlist([]);
+}
     } catch (err) {
       console.error("Wishlist fetch error:", err);
     }
