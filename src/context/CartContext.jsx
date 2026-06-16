@@ -4,9 +4,6 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 const CartContext = createContext();
 const API = import.meta.env.VITE_API_URL;
 
-const getToken = () =>
-  JSON.parse(localStorage.getItem("userInfo"))?.token;
-
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
 
@@ -26,23 +23,25 @@ export const CartProvider = ({ children }) => {
     return merged;
   };
 
- const fetchCart = async () => {
- const token = getToken
-console.log("FETCH TOKEN:", token);
-  if (!token) return; // Don't call API
+  const fetchCart = async () => {
+    const token = JSON.parse(localStorage.getItem("userInfo"))?.token;
+    console.log("TOKEN:", token);
+    console.log("API:", `${API}/api/cart`);
 
-  try {
-    const res = await axios.get(`${API}/api/cart`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    if (!token) return; // Don't call API
 
-    setCartItems(res.data);
-  } catch (err) {
-    console.error(err);
-  }
-};
+    try {
+      const res = await axios.get(`${API}/api/cart`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setCartItems(res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   useEffect(() => {
     fetchCart();
@@ -50,7 +49,7 @@ console.log("FETCH TOKEN:", token);
 
   const addToCart = async (product, quantity = 1) => {
     try {
-      const token = getToken
+      const token = JSON.parse(localStorage.getItem("userInfo"))?.token;
 
       console.log("CART TOKEN:", token);
       const { data } = await axios.post(
@@ -66,7 +65,7 @@ console.log("FETCH TOKEN:", token);
           withCredentials: true,
         },
       );
-      console.log("ADD TO CART RESPONSE:", data)
+      console.log("ADD TO CART RESPONSE:", data);
       const rawItems = Array.isArray(data)
         ? data
         : data.items || data.cartItems || [];
