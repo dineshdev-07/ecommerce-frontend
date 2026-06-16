@@ -4,6 +4,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 const WishlistContext = createContext();
 
 const API = import.meta.env.VITE_API_URL;
+
 const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
 export const WishlistProvider = ({ children }) => {

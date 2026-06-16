@@ -10,7 +10,9 @@ import {
   faFilePdf,
   faUsers,
 } from "@fortawesome/free-solid-svg-icons";
+
 const API = import.meta.env.VITE_API_URL;
+
 const AdminDashboard = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);

@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { createContext, useContext, useState, useEffect } from "react";
 
 const CartContext = createContext();
+
 const API = import.meta.env.VITE_API_URL;
 
 export const CartProvider = ({ children }) => {

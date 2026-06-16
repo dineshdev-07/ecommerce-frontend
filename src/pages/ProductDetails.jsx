@@ -60,6 +60,7 @@ const TN_DISTRICTS = [
 ];
 
 const API = import.meta.env.VITE_API_URL;
+
 const ProductDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();

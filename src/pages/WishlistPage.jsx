@@ -6,7 +6,9 @@ import { useWishlist } from "../context/WishlistContext";
 import { useCart } from "../context/CartContext";
 import { calculateDiscountedPrice } from "../utils/offerUtils";
 import specialOfferBadge from "../assets/Offer badge.png";
+
 const API = import.meta.env.VITE_API_URL;
+
 const WishlistProductCard = ({
   product,
   isLowestPriceItem = false,

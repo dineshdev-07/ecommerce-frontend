@@ -64,7 +64,7 @@ const API = import.meta.env.VITE_API_URL;
     try {
       const { data } = await axios.get(
         `${API}/api/seller-requests/mine`,
-        { withCredentials: true }, // ✅ cookie
+        { withCredentials: true }, 
       );
       setRequest(data);
     } catch (err) {
@@ -118,7 +118,7 @@ const API = import.meta.env.VITE_API_URL;
         `${API}/api/seller-requests`,
         fd,
         {
-          withCredentials: true, // ✅ cookie
+          withCredentials: true, 
           headers: { "Content-Type": "multipart/form-data" },
         },
       );
@@ -141,7 +141,7 @@ const API = import.meta.env.VITE_API_URL;
       const { data } = await axios.post(
         `${API}/api/seller-requests/${request._id}/chat`,
         { message: chatMsg.trim(), sender: "user" },
-        { withCredentials: true }, // ✅ cookie
+        { withCredentials: true }, 
       );
       setRequest(data);
       setChatMsg("");
