@@ -7,15 +7,6 @@ const API = import.meta.env.VITE_API_URL;
 
 const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
-const { data } = await axios.get(
-  `${API}/api/orders/myorders`,
-  {
-    headers: {
-      Authorization: `Bearer ${userInfo?.token}`,
-    },
-  }
-);
-
 const MyOrders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -68,12 +59,14 @@ const MyOrders = () => {
     try {
       setLoadingCancel((prev) => ({ ...prev, [orderId]: true }));
       await axios.put(
-        `${API}/api/orders/${orderId}/cancel`,
-        {},
-        {
-          withCredentials: true,
-        },
-      );
+  `${API}/api/orders/${orderId}/cancel`,
+  {},
+  {
+    headers: {
+      Authorization: `Bearer ${userInfo?.token}`,
+    },
+  }
+);
       alert("Order cancelled ❌");
       fetchOrders();
     } catch (error) {
