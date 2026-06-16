@@ -25,10 +25,8 @@ export const CartProvider = ({ children }) => {
 
   const fetchCart = async () => {
     const token = JSON.parse(localStorage.getItem("userInfo"))?.token;
-    console.log("TOKEN:", token);
-    console.log("API:", `${API}/api/cart`);
-
-    if (!token) return; // Don't call API
+  
+    if (!token) return; 
 
     try {
       const res = await axios.get(`${API}/api/cart`, {
@@ -40,8 +38,6 @@ export const CartProvider = ({ children }) => {
       const items = Array.isArray(res.data)
   ? res.data
   : res.data.items || res.data.cartItems || [];
-  console.log("CART RESPONSE:", res.data);
-console.log("CART ITEMS:", res.data.cartItems);
 
 setCartItems(res.data.cartItems || []);
     } catch (err) {
@@ -57,7 +53,6 @@ setCartItems(res.data.cartItems || []);
     try {
       const token = JSON.parse(localStorage.getItem("userInfo"))?.token;
 
-      console.log("CART TOKEN:", token);
       const { data } = await axios.post(
         `${API}/api/cart`,
         {
@@ -71,13 +66,12 @@ setCartItems(res.data.cartItems || []);
           withCredentials: true,
         },
       );
-      console.log("ADD TO CART RESPONSE:", data);
+      
       const rawItems = Array.isArray(data)
         ? data
         : data.items || data.cartItems || [];
-        console.log("ADD RESPONSE:", data);
-console.log("RAW ITEMS:", rawItems);
-console.log("IS ARRAY:", Array.isArray(rawItems));
+        
+
       setCartItems(mergeCartData(rawItems));
     } catch (err) {
       console.error("Add to Cart Error:", err);

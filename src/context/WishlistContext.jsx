@@ -19,8 +19,6 @@ export const WishlistProvider = ({ children }) => {
   withCredentials: true,
 });
 
-console.log("WISHLIST RESPONSE:", data);
-
  if (Array.isArray(data)) {
   setWishlist(data.map((p) => (typeof p === "object" ? p._id : p)));
 } else {
