@@ -18,53 +18,44 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const fetchDashboard = useCallback(async () => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
-  if (!userInfo?.isAdmin) {
-    setError("Admin access required");
-    return;
-  }
-
-  setLoading(true);
-
-  try {
-
-
-const { data } = await axios.get(
-  `${API}/api/orders/admin/dashboard${id}`,
-  {
-    headers: {
-      Authorization: `Bearer ${userInfo.token}`,
-    },
-  }
-);
-    setData(res.data);
-    setError("");
-  } catch (err) {
-    console.error("FRONTEND ERROR:", err);
-
-    if (err.response?.status === 401) {
-      setError("Admin login required");
-    } else {
-      setError("Failed to fetch dashboard data ❌");
+  const fetchDashboard = useCallback(async () => {
+    if (!userInfo?.isAdmin) {
+      setError("Admin access required");
+      return;
     }
-  } finally {
-    setLoading(false);
-  }
-}, []);
+    setLoading(true);
 
- useEffect(() => {
- 
+    try {
+      const res = await axios.get(`${API}/api/orders/admin/dashboard`, {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      });
+      setData(res.data);
+      setError("");
+    } catch (err) {
+      console.error("FRONTEND ERROR:", err);
 
-  // Stop API call if user is not admin
-  if (!userInfo?.isAdmin) {
-    setLoading(false);
-    return;
-  }
+      if (err.response?.status === 401) {
+        setError("Admin login required");
+      } else {
+        setError("Failed to fetch dashboard data ❌");
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
-  fetchDashboard();
-}, [fetchDashboard]);
+  useEffect(() => {
+    if (!userInfo?.isAdmin) {
+      setLoading(false);
+      return;
+    }
+
+    fetchDashboard();
+  }, [fetchDashboard]);
 
   const normalizedData = {
     totalRevenue: data?.totalRevenue ?? 0,
@@ -89,7 +80,6 @@ const { data } = await axios.get(
     const margin = 40;
     const brandColor = "#6FAF8E";
 
-    // 1. BRANDED HEADER
     doc.setFillColor(brandColor);
     doc.rect(0, 0, pageWidth, 100, "F");
 
@@ -107,7 +97,6 @@ const { data } = await axios.get(
       75,
     );
 
-    // 2. STATISTICS GRID
     let yPos = 140;
     const cardWidth = (pageWidth - margin * 2 - 20) / 2;
     const cardHeight = 65;
@@ -224,7 +213,6 @@ const { data } = await axios.get(
   const handleResetMonthly = async () => {
     if (!window.confirm("Reset all monthly stats?")) return;
     try {
-      
       const config = {
         headers: { Authorization: `Bearer ${userInfo?.token}` },
       };
@@ -233,7 +221,9 @@ const { data } = await axios.get(
         `${API}/api/orders/reset-monthly-data`,
         {},
         {
-          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${userInfo?.token}`,
+          },
         },
       );
 
