@@ -69,6 +69,9 @@ export const CartProvider = ({ children }) => {
       const rawItems = Array.isArray(data)
         ? data
         : data.items || data.cartItems || [];
+        console.log("ADD RESPONSE:", data);
+console.log("RAW ITEMS:", rawItems);
+console.log("IS ARRAY:", Array.isArray(rawItems));
       setCartItems(mergeCartData(rawItems));
     } catch (err) {
       console.error("Add to Cart Error:", err);
