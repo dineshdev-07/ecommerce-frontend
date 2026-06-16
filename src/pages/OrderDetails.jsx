@@ -1,6 +1,6 @@
+import axios from "axios";
 import React, { useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import axios from "axios";
 import {
   ChevronLeft,
   Package,

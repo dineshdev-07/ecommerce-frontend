@@ -1,10 +1,10 @@
+import axios from "axios";
 import React, {
   useEffect,
   useState,
   useLayoutEffect,
   useCallback,
 } from "react";
-import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Bike,
@@ -17,7 +17,9 @@ import {
   ChevronDown,
   ChevronUp,
 } from "lucide-react";
+
 const API = import.meta.env.VITE_API_URL;
+
 const geocodeAddress = async (addr) => {
   try {
     const q = encodeURIComponent(
@@ -375,16 +377,15 @@ function AdminOrders() {
   const fetchOrders = useCallback(async () => {
     try {
       setLoading(true);
-     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+      const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+      console.log(userInfo);
+      console.log(userInfo?.token);
 
-const { data } = await axios.get(
-  `${API}/api/orders/admin/${id}`,
-  {
-    headers: {
-      Authorization: `Bearer ${userInfo.token}`,
-    },
-  }
-);
+      const { data } = await axios.get(`${API}/api/orders/admin`, {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      });
       setOrders(data.orders ? data.orders : data);
     } catch {
       console.error("Error fetching orders");
@@ -450,12 +451,9 @@ const { data } = await axios.get(
     )
       return;
     try {
-      await axios.delete(
-        `${API}/api/orders/reset`,
-        {
-          withCredentials: true,
-        },
-      );
+      await axios.delete(`${API}/api/orders/reset`, {
+        withCredentials: true,
+      });
       setOrders([]);
       alert("Dashboard Reset 🧨");
     } catch (err) {

@@ -585,7 +585,7 @@ function AppContent() {
       const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
 const { data } = await axios.get(
-  `${API}/api/orders/admin/${id}`,
+  `${API}/api/orders/admin`,
   {
     headers: {
       Authorization: `Bearer ${userInfo.token}`,

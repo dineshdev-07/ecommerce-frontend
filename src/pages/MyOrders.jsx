@@ -1,7 +1,18 @@
-import React, { useEffect, useState, useLayoutEffect } from "react";
 import axios from "axios";
+import React, { useEffect, useState, useLayoutEffect } from "react";
 import { Link } from "react-router-dom";
 import { Package } from "lucide-react";
+
+const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
+const { data } = await axios.get(
+  `${API}/api/orders/myorders`,
+  {
+    headers: {
+      Authorization: `Bearer ${userInfo?.token}`,
+    },
+  }
+);
 
 const MyOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -14,7 +25,9 @@ const API = import.meta.env.VITE_API_URL;
       const { data } = await axios.get(
         `${API}/api/orders/myorders`,
         {
-          withCredentials: true,
+          headers: {
+      Authorization: `Bearer ${userInfo?.token}`,
+    },
         },
       );
       setOrders(Array.isArray(data) ? data : []);
