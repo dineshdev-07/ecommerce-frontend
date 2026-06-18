@@ -20,6 +20,8 @@ import {
 
 const API = import.meta.env.VITE_API_URL;
 
+const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
 const geocodeAddress = async (addr) => {
   try {
     const q = encodeURIComponent(
