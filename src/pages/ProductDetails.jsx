@@ -109,43 +109,49 @@ const ProductDetails = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        setLoading(true);
+  try {
+    setLoading(true);
 
-        // Profile fetch (optional)
-        try {
-          const profileRes = await axios.get(
-            `${API}/api/users/profile`,
-            config,
-          );
-          
-          setDbUser(profileRes.data);
+    // Profile request
+    try {
+      const profileRes = await axios.get(
+        `${API}/api/users/profile`,
+        config
+      );
 
-          if (profileRes.data.addresses?.length > 0) {
-            setSelectedAddress(profileRes.data.addresses[0]);
-          }
-        } catch (err) {
-          console.error("Fetch Error:", err);
-        }
-        // Product fetch
-        const { data } = await axios.get(`${API}/api/products/${id}`);
-        console.log("Product ID:", id);
-          console.log("Product Data:",data);
+      setDbUser(profileRes.data);
 
-        setProduct(data);
-        setMainImage(data.images?.[0] || "");
-
-        const simRes = await axios.get(
-          `${API}/api/products/category/${data.category}`,
-        );
-
-        setSimilarProducts(simRes.data.filter((p) => p._id !== id));
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
+      if (profileRes.data.addresses?.length > 0) {
+        setSelectedAddress(profileRes.data.addresses[0]);
       }
-    };
+    } catch (err) {
+      console.log("User not logged in");
+    }
+
+    // Product request
+    const { data } = await axios.get(
+      `${API}/api/products/${id}`
+    );
+
+    console.log("Product ID:", id);
+    console.log("Product Data:", data);
+
+    setProduct(data);
+    setMainImage(data.images?.[0] || "");
+
+    const simRes = await axios.get(
+      `${API}/api/products/category/${data.category}`
+    );
+
+    setSimilarProducts(
+      simRes.data.filter((p) => p._id !== id)
+    );
+  } catch (err) {
+    console.error("Product Fetch Error:", err);
+  } finally {
+    setLoading(false);
+  }
+};
     fetchData();
     window.scrollTo(0, 0);
   }, [id]);
