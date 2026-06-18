@@ -18,14 +18,12 @@ function Login({ setIsLoggedIn, setIsAdmin }) {
 
     // console.log("API URL =", API);
     try {
-      const res = await fetch(
-        `${API}/api/users/login`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password }),
-        },
-      );
+      const res = await fetch(`${API}/api/users/login`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  credentials: "include",
+  body: JSON.stringify({ email, password }),
+});
 
       const data = await res.json();
 
