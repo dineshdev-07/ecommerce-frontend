@@ -109,35 +109,46 @@ const ProductDetails = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        setLoading(true);
-        if (userInfo?._id || true) {
-          const profileRes = await axios.get(
-            `${API}/api/users/profile`,
-            config,
-          );
-          setDbUser(profileRes.data);
-          if (profileRes.data.addresses?.length > 0) {
-            setSelectedAddress(profileRes.data.addresses[0]);
-          }
-        }
+  try {
+    setLoading(true);
 
-        const { data } = await axios.get(
-          `${API}/api/products/${id}`,
-        );
-        setProduct(data);
-        setMainImage(data.images?.[0] || "");
+    // Profile fetch (optional)
+    try {
+      const profileRes = await axios.get(
+        `${API}/api/users/profile`,
+        config
+      );
 
-        const simRes = await axios.get(
-          `${API}/api/products/category/${data.category}`,
-        );
-        setSimilarProducts(simRes.data.filter((p) => p._id !== id));
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
+      setDbUser(profileRes.data);
+
+      if (profileRes.data.addresses?.length > 0) {
+        setSelectedAddress(profileRes.data.addresses[0]);
       }
-    };
+    } catch (err) {
+      console.log("User not logged in");
+    }
+
+    // Product fetch
+    const { data } = await axios.get(
+      `${API}/api/products/${id}`
+    );
+
+    setProduct(data);
+    setMainImage(data.images?.[0] || "");
+
+    const simRes = await axios.get(
+      `${API}/api/products/category/${data.category}`
+    );
+
+    setSimilarProducts(
+      simRes.data.filter((p) => p._id !== id)
+    );
+  } catch (err) {
+    console.error(err);
+  } finally {
+    setLoading(false);
+  }
+};
     fetchData();
     window.scrollTo(0, 0);
   }, [id]);
@@ -175,10 +186,7 @@ const ProductDetails = () => {
       );
       alert("Product Updated Successfully");
       setShowAdminEdit(false);
-      const { data } = await axios.get(
-        `${API}/api/products/${id}`,
-        config,
-      );
+      const { data } = await axios.get(`${API}/api/products/${id}`, config);
       setProduct(data);
     } catch {
       alert("Update Failed");
@@ -429,11 +437,7 @@ const ProductDetails = () => {
     };
 
     try {
-      await axios.post(
-        `${API}/api/orders`,
-        orderData,
-        config,
-      );
+      await axios.post(`${API}/api/orders`, orderData, config);
       setOrderSuccess(true);
       setShowPaymentModal(false);
     } catch {
@@ -447,6 +451,13 @@ const ProductDetails = () => {
         Loading...
       </div>
     );
+  if (!product) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        Product not found
+      </div>
+    );
+  }
 
   const isOutOfStock = product.quantity === 0;
   const isLowStock = product.quantity > 0 && product.quantity <= 10;
@@ -478,11 +489,7 @@ const ProductDetails = () => {
 
       <div className="bg-white p-6 flex justify-center border-b">
         <img
-          src={
-            mainImage?.startsWith("http")
-              ? mainImage
-              : `${API}${mainImage}`
-          }
+          src={mainImage?.startsWith("http") ? mainImage : `${API}${mainImage}`}
           className="h-96 object-contain"
           alt={product.name}
         />
