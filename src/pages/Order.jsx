@@ -540,7 +540,7 @@ function AdminOrders() {
         <div className="flex flex-col lg:flex-row lg:justify-between lg:items-end gap-6 ">
           <div className="flex-1">
             <h2 className="text-3xl font-extrabold text-[#1A1A1A] tracking-tight">
-              Admin Dashboard
+              Order Details
             </h2>
             <p className="text-gray-500 mt-1">
               Manage fulfillment and refund requests

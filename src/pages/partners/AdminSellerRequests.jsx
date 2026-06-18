@@ -1,6 +1,6 @@
+import axios from "axios";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import {
   Store,
   CheckCircle,
@@ -31,7 +31,7 @@ const STATUS_LABEL = {
 
 export default function AdminSellerRequests() {
   const navigate = useNavigate();
-  // ✅ No token — auth via httpOnly cookie
+
 
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -49,7 +49,7 @@ export default function AdminSellerRequests() {
     try {
       const { data } = await axios.get(
         `${API}/api/seller-requests/admin/all`,
-        { withCredentials: true }, // ✅ cookie
+        { withCredentials: true }, 
       );
       setRequests(Array.isArray(data) ? data : []);
     } catch (err) {

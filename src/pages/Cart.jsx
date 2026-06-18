@@ -449,7 +449,7 @@ const config = {
         <div className="flex items-center gap-2 mb-5 sm:mb-7">
           <ShoppingBag className="text-[#6FAF8E] shrink-0" size={22} />
           <h1 className="text-xl sm:text-2xl md:text-3xl font-black text-gray-900">
-            My Cart
+            Cart
           </h1>
         </div>
 

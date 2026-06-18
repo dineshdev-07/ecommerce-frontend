@@ -13,14 +13,14 @@ const AdminProductsPage = () => {
   const navigate = useNavigate();
 
   const API = import.meta.env.VITE_API_URL;
+
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
   const fetchProducts = async () => {
     try {
-      const res = await fetch(
-        `${API}/api/products`,
-        {
-          credentials: "include",
-        },
-      );
+      const res = await fetch(`${API}/api/products`, {
+        credentials: "include",
+      });
       const data = await res.json();
       setAllProducts(data);
       bustCache();
@@ -43,13 +43,12 @@ const AdminProductsPage = () => {
   const togglePin = async (productId) => {
     setTogglingId(productId);
     try {
-      const res = await fetch(
-        `${API}/api/products/${productId}/pin`,
-        {
-          method: "PUT",
-          credentials: "include",
+      const res = await fetch(`${API}/api/products/${productId}/pin`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${userInfo?.token}`,
         },
-      );
+      });
       if (!res.ok) {
         alert("Failed to toggle pin");
         return;
