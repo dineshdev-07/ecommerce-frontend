@@ -139,10 +139,6 @@ const ProductDetails = () => {
     const { data } = await axios.get(
       `${API}/api/products/${id}`
     );
-
-    console.log("Product ID:", id);
-    console.log("Product Data:", data);
-
     setProduct(data);
     setMainImage(data.images?.[0] || "");
 

@@ -127,17 +127,21 @@ function Admin() {
 
       if (selectedFile) fd.append("image", selectedFile);
 
-      await axios.post(
-        `${API}/api/products`,
-        fd,
-        {
-          withCredentials: true,
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        },
-      );
+      const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
 
+      const authConfig = {
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+      await axios.post(`${API}/api/products`, fd, {
+        ...authConfig,
+        headers: {
+          ...authConfig.headers,
+          "Content-Type": "multipart/form-data",
+        },
+      });
       alert("✅ Product added successfully");
       setFormData(EMPTY_FORM);
       setSelectedFile(null);
