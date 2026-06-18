@@ -99,7 +99,14 @@ const ProductDetails = () => {
   const [editDiscountedPrice, setEditDiscountedPrice] = useState(0);
 
   const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
-  const config = useMemo(() => ({ withCredentials: true }), []);
+  const config = useMemo(() => {
+  return {
+    withCredentials: true,
+    headers: {
+      Authorization: `Bearer ${userInfo.token}`,
+    },
+  };
+}, []);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10);
