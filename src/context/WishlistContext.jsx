@@ -12,20 +12,18 @@ export const WishlistProvider = ({ children }) => {
 
   const fetchWishlist = async () => {
     try {
-      const { data } = await
-      axios.get(`${API}/api/wishlist`, {
-  headers: {
-    Authorization: `Bearer ${userInfo?.token}`,
-  },
-  withCredentials: true,
-});
+      const { data } = await axios.get(`${API}/api/wishlist`, {
+        headers: {
+          Authorization: `Bearer ${userInfo?.token}`,
+        },
+      });
 
- if (Array.isArray(data)) {
-  setWishlist(data.map((p) => (typeof p === "object" ? p._id : p)));
-} else {
-  console.log("Data is not an array:", data);
-  setWishlist([]);
-}
+      if (Array.isArray(data)) {
+        setWishlist(data.map((p) => (typeof p === "object" ? p._id : p)));
+      } else {
+        console.log("Data is not an array:", data);
+        setWishlist([]);
+      }
     } catch (err) {
       console.error("Wishlist fetch error:", err);
     }
@@ -37,18 +35,18 @@ export const WishlistProvider = ({ children }) => {
         ? prev.filter((id) => id !== productId)
         : [...prev, productId],
     );
-    
+
     try {
       await axios.post(
-  `${API}/api/wishlist/${productId}`,
-  {},
-  {
-    headers: {
-      Authorization: `Bearer ${userInfo?.token}`,
-    },
-    withCredentials: true,
-  }
-);
+        `${API}/api/wishlist/${productId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${userInfo?.token}`,
+          },
+          withCredentials: true,
+        },
+      );
     } catch (err) {
       fetchWishlist();
       console.error("Toggle wishlist error:", err);
