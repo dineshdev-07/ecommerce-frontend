@@ -431,13 +431,10 @@ function MobileDrawer({
                 <button
                   onClick={async () => {
                     try {
-                      await fetch(
-                      `${API}/api/users/logout`,
-                        {
-                          method: "POST",
-                          credentials: "include",
-                        },
-                      );
+                      await fetch(`${API}/api/users/logout`, {
+                        method: "POST",
+                        credentials: "include",
+                      });
                     } catch (err) {
                       console.error("Logout error:", err);
                     } finally {
@@ -550,9 +547,7 @@ function AppContent() {
       return;
     }
     try {
-      const res = await fetch(
-      `${API}/api/products/suggestions?q=${query}`,
-      );
+      const res = await fetch(`${API}/api/products/suggestions?q=${query}`);
       const data = await res.json();
       setSuggestions((Array.isArray(data) ? data : []).slice(0, 3));
       setShowSuggestions(true);
@@ -564,13 +559,10 @@ function AppContent() {
 
   const handleLogout = async () => {
     try {
-      await fetch(
-        `${API}/api/users/logout`,
-        {
-          method: "POST",
-          credentials: "include",
-        },
-      );
+      await fetch(`${API}/api/users/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
     } catch (err) {
       console.error("Logout error:", err);
     } finally {
@@ -585,15 +577,12 @@ function AppContent() {
     try {
       const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
-const { data } = await axios.get(
-  `${API}/api/orders/admin`,
-  {
-    headers: {
-      Authorization: `Bearer ${userInfo.token}`,
-    },
-  }
-);
-      const oData = await oRes.json();
+      const { data } = await axios.get(`${API}/api/orders/admin`, {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      });
+
       const orders = Array.isArray(oData.orders) ? oData.orders : oData;
       setDeliveryAlertCount(
         orders.filter((o) => !o.isDelivered && !o.isCancelled).length,
@@ -602,26 +591,21 @@ const { data } = await axios.get(
         orders.filter((o) => o.isCancelled && o.isPaid && !o.isRefunded).length,
       );
 
-  
-
-const { data: dashboardData } = await axios.get(
-  `${API}/api/orders/admin/dashboard`,
-  {
-    headers: {
-      Authorization: `Bearer ${userInfo.token}`,
-    },
-  }
-);
-      const dData = await dRes.json();
+      const { data: dashboardData } = await axios.get(
+        `${API}/api/orders/admin/dashboard`,
+        {
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        },
+      );
+      
       if (dData.lowStockProducts)
         setLowStockCount(dData.lowStockProducts.length);
 
-      const sRes = await fetch(
-        `${API}/api/seller-requests/admin/all`,
-        {
-          credentials: "include",
-        },
-      );
+      const sRes = await fetch(`${API}/api/seller-requests/admin/all`, {
+        credentials: "include",
+      });
       const sData = await sRes.json();
       setSellerRequestCount(
         (Array.isArray(sData) ? sData : []).filter(
