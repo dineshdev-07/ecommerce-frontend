@@ -436,7 +436,7 @@ function AdminOrders() {
         {},
         { withCredentials: true },
       );
-      alert("Order marked as Refunded 💰");
+      alert("Order marked as Refunded");
       fetchOrders();
     } catch {
       alert("Refund update failed");
@@ -452,10 +452,12 @@ function AdminOrders() {
       return;
     try {
       await axios.delete(`${API}/api/orders/reset`, {
-        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${userInfo?.token}`,
+        },
       });
       setOrders([]);
-      alert("Dashboard Reset 🧨");
+      alert("Dashboard Reset");
     } catch (err) {
       alert("Reset failed: " + (err.response?.data?.message || "Error"));
     }
