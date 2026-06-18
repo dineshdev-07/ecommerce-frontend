@@ -191,9 +191,10 @@ const ProductDetails = () => {
       setShowAdminEdit(false);
       const { data } = await axios.get(`${API}/api/products/${id}`, config);
       setProduct(data);
-    } catch {
-      alert("Update Failed");
-    }
+    } catch (err) {
+  console.log(err.response?.data);
+  alert(err.response?.data?.message || "Update Failed");
+}
   };
 
   const detectLocation = () => {
@@ -558,7 +559,7 @@ const ProductDetails = () => {
 
         {dbUser?.firstOrderCompleted === false && (
           <p className="mt-2 text-blue-600 text-sm font-semibold">
-            🎁 20% New User Offer applies to your cheapest item at checkout!
+            20% New User Offer applies to your cheapest item at checkout!
           </p>
         )}
 

@@ -583,7 +583,9 @@ function AppContent() {
         },
       });
 
-      const orders = Array.isArray(oData.orders) ? oData.orders : oData;
+      const orders = Array.isArray(orderData.orders)
+        ? orderData.orders
+        : orderData;
       setDeliveryAlertCount(
         orders.filter((o) => !o.isDelivered && !o.isCancelled).length,
       );
@@ -599,7 +601,7 @@ function AppContent() {
           },
         },
       );
-      
+
       if (dData.lowStockProducts)
         setLowStockCount(dData.lowStockProducts.length);
 

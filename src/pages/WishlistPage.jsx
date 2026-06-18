@@ -177,7 +177,6 @@ const WishlistPage = () => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo") || "null");
   const config = {
     headers: { Authorization: `Bearer ${userInfo?.token}` },
-    withCredentials: true,
   };
 
   useEffect(() => {
