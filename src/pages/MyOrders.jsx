@@ -96,17 +96,17 @@ const MyOrders = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#F8FBF5] to-[#EEF8ED] p-5 md:p-8">
+    <div className="min-h-screen bg-gradient-to-b from-[#F8FBF5] to-[#EEF8ED] py-6 px-4 md:px-6">
       {/* Header */}
       <div className="max-w-7xl mx-auto mb-8">
-        <div className="rounded-3xl border border-[#DDEFD8] bg-[#FFF8E7] p-8 shadow-sm">
+        <div className="rounded-2xl border border-[#DDEFD8] bg-[#FFF8E7] p-5 shadow-sm">
           <div className="flex items-center gap-4">
-            <div className="h-16 w-16 rounded-2xl bg-[#2F7D32] flex items-center justify-center shadow-lg">
-              <Package className="text-white w-8 h-8" />
+            <div className="h-12 w-12 rounded-2xl bg-[#2F7D32] flex items-center justify-center shadow-lg">
+              <Package className="text-white w-6 h-6" />
             </div>
 
             <div>
-              <h1 className="text-4xl font-extrabold text-[#2F7D32]">
+              <h1 className="text-2xl md:text-3xl font-extrabold text-[#2F7D32]">
                 My Orders
               </h1>
 
@@ -124,7 +124,7 @@ const MyOrders = () => {
             {[1, 2, 3].map((item) => (
               <div
                 key={item}
-                className="animate-pulse bg-white rounded-3xl border border-[#DDEFD8] p-6 h-40"
+                className="animate-pulse bg-white rounded-2xl border border-[#DDEFD8] p-5 h-40"
               />
             ))}
           </div>
@@ -146,15 +146,15 @@ const MyOrders = () => {
             </Link>
           </div>
         ) : (
-          <div className="space-y-6">
+          <div className="space-y-4">
             {orders.map((order) => (
               <div
                 key={order._id}
-                className="bg-white border border-[#DDEFD8] rounded-3xl p-6 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+                className="bg-white border border-[#DDEFD8] rounded-2xl p-5 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
               >
                 {/* Top */}
 
-                <div className="flex flex-col lg:flex-row justify-between gap-6">
+                <div className="flex flex-col lg:flex-row justify-between gap-4">
                   {/* Left */}
 
                   <div className="space-y-4 flex-1">
@@ -165,7 +165,7 @@ const MyOrders = () => {
 
                       <Link
                         to={`/order/${order._id}`}
-                        className="text-[#2F7D32] text-lg font-bold hover:underline"
+                        className="text-[#2F7D32] text-base font-semibold hover:underline"
                       >
                         #{order._id.slice(-8)}
                       </Link>
@@ -190,7 +190,7 @@ const MyOrders = () => {
 
                   {/* Center */}
 
-                  <div className="grid grid-cols-2 gap-6">
+                  <div className="grid grid-cols-2 gap-4">
                     <div>
                       <p className="text-xs uppercase text-gray-400">
                         Order Date
@@ -208,7 +208,7 @@ const MyOrders = () => {
                     <div>
                       <p className="text-xs uppercase text-gray-400">Total</p>
 
-                      <h2 className="text-3xl font-black text-[#2F7D32] mt-1">
+                      <h2 className="text-xl font-bold text-[#2F7D32] mt-1">
                         ₹{order.totalPrice}
                       </h2>
                     </div>
@@ -254,14 +254,14 @@ const MyOrders = () => {
                 <div className="mt-8 flex flex-wrap gap-3">
                   <Link
                     to={`/order/${order._id}`}
-                    className="px-5 py-3 rounded-xl bg-[#EAF8EC] text-[#2F7D32] font-semibold hover:bg-[#DDF3DF] transition"
+                    className="px-4 py-2 text-sm rounded-xl bg-[#EAF8EC] text-[#2F7D32] font-semibold hover:bg-[#DDF3DF] transition"
                   >
                     View Details
                   </Link>
 
                   <button
                     onClick={() => downloadInvoice(order._id)}
-                    className="px-5 py-3 rounded-xl bg-[#2F7D32] text-white hover:bg-[#27682A] transition font-semibold"
+                    className="px-4 py-2 text-sm rounded-xl bg-[#2F7D32] text-white hover:bg-[#27682A] transition font-semibold"
                   >
                     Download Invoice
                   </button>
@@ -270,7 +270,7 @@ const MyOrders = () => {
                     <button
                       disabled={loadingCancel[order._id]}
                       onClick={() => cancelOrderHandler(order._id)}
-                      className="px-5 py-3 rounded-xl border border-red-400 text-red-600 hover:bg-red-50 transition font-semibold disabled:opacity-50"
+                      className="px-4 py-2 rounded-xl border border-red-400 text-red-600 hover:bg-red-50 transition font-semibold disabled:opacity-50"
                     >
                       {loadingCancel[order._id]
                         ? "Cancelling..."

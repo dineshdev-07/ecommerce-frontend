@@ -110,18 +110,11 @@ const Home = ({ search = "" }) => {
 
     try {
       const [prodRes, adsRes, offRes] = await Promise.all([
-        fetch(
-          `${API}/api/products`,
-          {
-            credentials: "include",
-          },
-        ),
-        fetch(
-          `${API}/api/ads`,
-        ),
-        fetch(
-          `${API}/api/offers`,
-        ),
+        fetch(`${API}/api/products`, {
+          credentials: "include",
+        }),
+        fetch(`${API}/api/ads`),
+        fetch(`${API}/api/offers`),
       ]);
       const [products, ads, offers] = await Promise.all([
         prodRes.json(),
@@ -152,15 +145,12 @@ const Home = ({ search = "" }) => {
   const handleRemoveFromHome = async (id) => {
     if (!window.confirm("Remove this product from homepage?")) return;
     try {
-      const res = await fetch(
-        `${API}/api/products/${id}/pin`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify({}),
-        },
-      );
+      const res = await fetch(`${API}/api/products/${id}/pin`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({}),
+      });
       if (!res.ok) {
         alert("Failed to remove product");
         return;
@@ -176,15 +166,12 @@ const Home = ({ search = "" }) => {
 
   const updateOfferLink = async (id, newLink) => {
     try {
-      await fetch(
-        `${API}/api/offers/${id}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify({ link: newLink }),
-        },
-      );
+      await fetch(`${API}/api/offers/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ link: newLink }),
+      });
       bustCache();
       fetchData(true);
     } catch (err) {
@@ -196,14 +183,11 @@ const Home = ({ search = "" }) => {
     const fd = new FormData();
     fd.append("image", file);
     try {
-      await fetch(
-        `${API}/api/offers/${id}`,
-        {
-          method: "PUT",
-          credentials: "include",
-          body: fd,
-        },
-      );
+      await fetch(`${API}/api/offers/${id}`, {
+        method: "PUT",
+        credentials: "include",
+        body: fd,
+      });
       bustCache();
       fetchData(true);
     } catch (err) {
@@ -213,13 +197,10 @@ const Home = ({ search = "" }) => {
 
   const deleteOffer = async (id) => {
     if (!window.confirm("Delete this offer?")) return;
-    await fetch(
-      `${API}/api/offers/${id}`,
-      {
-        method: "DELETE",
-        credentials: "include",
-      },
-    );
+    await fetch(`${API}/api/offers/${id}`, {
+      method: "DELETE",
+      credentials: "include",
+    });
     bustCache();
     setOffers(offers.filter((o) => o._id !== id));
   };
@@ -374,14 +355,11 @@ const Home = ({ search = "" }) => {
                   if (!file) return;
                   const fd = new FormData();
                   fd.append("image", file);
-                  await fetch(
-                    `${API}/api/offers`,
-                    {
-                      method: "POST",
-                      credentials: "include",
-                      body: fd,
-                    },
-                  );
+                  await fetch(`${API}/api/offers`, {
+                    method: "POST",
+                    credentials: "include",
+                    body: fd,
+                  });
                   bustCache();
                   fetchData(true);
                 }}
@@ -491,7 +469,7 @@ const Home = ({ search = "" }) => {
       </section>
 
       <footer className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] bg-[#2E7D32] text-[#FFF9C4] pt-8 sm:pt-12 md:pt-16 pb-5 sm:pb-8 mt-10 sm:mt-14 md:mt-20   shadow-[0_-8px_24px_rgba(46,125,50,0.2)] overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 md:gap-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 grid grid-cols-1 sm:grid-cols-3  sm:gap-8 md:gap-10">
           <div className="space-y-2 sm:space-y-3 text-center sm:text-left">
             <h2 className="text-lg sm:text-xl md:text-2xl font-black text-[#FFF9C4]/75  tracking-tight">
               FreshCart
