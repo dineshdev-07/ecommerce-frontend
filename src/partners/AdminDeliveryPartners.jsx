@@ -25,7 +25,6 @@ const STATUS_CHIP = {
 
 export default function AdminDeliveryPartners() {
   const navigate = useNavigate();
-  // ✅ No token — auth via httpOnly cookie
 
   const [partners, setPartners] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -41,7 +40,7 @@ export default function AdminDeliveryPartners() {
     try {
       const { data } = await axios.get(
         `${API}/api/delivery-partners/admin/all`,
-        { withCredentials: true }, // ✅ cookie
+        { withCredentials: true },
       );
       setPartners(Array.isArray(data) ? data : []);
     } catch (err) {
@@ -64,7 +63,7 @@ export default function AdminDeliveryPartners() {
       const { data } = await axios.put(
         `${API}/api/delivery-partners/admin/${id}/accept`,
         { adminReply: reply },
-        { withCredentials: true }, // ✅ cookie
+        { withCredentials: true }, 
       );
       setPartners((prev) => prev.map((p) => (p._id === id ? data : p)));
     } catch {
@@ -85,7 +84,7 @@ export default function AdminDeliveryPartners() {
       const { data } = await axios.put(
         `${API}/api/delivery-partners/admin/${id}/decline`,
         { adminReply: reply },
-        { withCredentials: true }, // ✅ cookie
+        { withCredentials: true },
       );
       setPartners((prev) => prev.map((p) => (p._id === id ? data : p)));
     } catch {

@@ -380,8 +380,6 @@ function AdminOrders() {
     try {
       setLoading(true);
       const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-      console.log(userInfo);
-      console.log(userInfo?.token);
 
       const { data } = await axios.get(`${API}/api/orders/admin`, {
         headers: {

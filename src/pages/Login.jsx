@@ -16,17 +16,15 @@ function Login({ setIsLoggedIn, setIsAdmin }) {
     e.preventDefault();
     setError("");
 
-    // console.log("API URL =", API);
     try {
       const res = await fetch(`${API}/api/users/login`, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  credentials: "include",
-  body: JSON.stringify({ email, password }),
-});
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ email, password }),
+      });
 
       const data = await res.json();
-
 
       if (!res.ok) {
         setError(data.message || "Login failed");
@@ -42,20 +40,19 @@ function Login({ setIsLoggedIn, setIsAdmin }) {
     } catch {
       setError("Server error. Please try again.");
     }
-    
   };
   const logout = () => {
-  localStorage.removeItem("userInfo");
-  localStorage.removeItem("isAdmin");
+    localStorage.removeItem("userInfo");
+    localStorage.removeItem("isAdmin");
 
-  setEmail("");
-  setPassword("");
+    setEmail("");
+    setPassword("");
 
-  setIsLoggedIn(false);
-  setIsAdmin(false);
+    setIsLoggedIn(false);
+    setIsAdmin(false);
 
-  navigate("/login");
-};
+    navigate("/login");
+  };
 
   return (
     <div className="min-h-screen bg-[#e9eceb] flex items-center justify-center px-4">
@@ -86,7 +83,7 @@ function Login({ setIsLoggedIn, setIsAdmin }) {
             <input
               type="email"
               placeholder="Email"
-               autoComplete="off"
+              autoComplete="off"
               className="mt-4 w-full px-4 py-3 rounded-md bg-gray-100 text-sm outline-none focus:ring-2 focus:ring-[#6FAF8E]"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -97,7 +94,7 @@ function Login({ setIsLoggedIn, setIsAdmin }) {
               <input
                 type={showPassword ? "text" : "password"}
                 placeholder="Password"
-                 autoComplete="new-password"
+                autoComplete="new-password"
                 className="mt-3 w-full px-4 py-3 rounded-md bg-gray-100 text-sm outline-none focus:ring-2 focus:ring-[#6FAF8E]"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
