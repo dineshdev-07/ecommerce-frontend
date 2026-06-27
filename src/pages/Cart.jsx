@@ -83,13 +83,12 @@ const Cart = () => {
   const [editingAddress, setEditingAddress] = useState(null);
   const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
 
-const config = {
-  headers: {
-    Authorization: `Bearer ${userInfo?.token}`,
-  },
-  withCredentials: true,
-};
-
+  const config = {
+    headers: {
+      Authorization: `Bearer ${userInfo?.token}`,
+    },
+    withCredentials: true,
+  };
 
   const isNewUser = dbUser?.firstOrderCompleted === false;
   const loyaltyPoints = Number(dbUser?.loyaltyPoints || 0);
@@ -100,10 +99,7 @@ const config = {
       if (!userInfo?._id) return;
 
       try {
-        const { data } = await axios.get(
-          `${API}/api/users/profile`,
-          config,
-        );
+        const { data } = await axios.get(`${API}/api/users/profile`, config);
         setDbUser(data);
         if (data.addresses?.length > 0) setSelectedAddress(data.addresses[0]);
       } catch (err) {
@@ -202,10 +198,7 @@ const config = {
 
   const removeFromCart = async (productId) => {
     try {
-      await axios.delete(
-        `${API}/api/cart/${productId}`,
-        config,
-      );
+      await axios.delete(`${API}/api/cart/${productId}`, config);
       setCartItems(
         cartItems.filter((i) => (i.product?._id || i.product) !== productId),
       );
@@ -329,7 +322,7 @@ const config = {
         const mongoOrderId = orderData._id;
 
         const { data: rzpData } = await axios.post(
-         `${API}/api/payment/create-order`,
+          `${API}/api/payment/create-order`,
           { amount: grandTotal },
           config,
         );
@@ -352,10 +345,7 @@ const config = {
                 },
                 config,
               );
-              await axios.delete(
-                `${API}/api/cart`,
-                config,
-              );
+              await axios.delete(`${API}/api/cart`, config);
               setCartItems([]);
               setOrderSuccess(true);
             } catch (err) {
@@ -365,19 +355,13 @@ const config = {
 
               if (status === 401) {
                 try {
-                  await axios.post(
-                    `${API}/api/orders/verify`,
-                    {
-                      razorpay_order_id: res.razorpay_order_id,
-                      razorpay_payment_id: res.razorpay_payment_id,
-                      razorpay_signature: res.razorpay_signature,
-                      orderId: mongoOrderId,
-                    },
-                  );
-                  await axios.delete(
-                    `${API}/api/cart`,
-                    config,
-                  );
+                  await axios.post(`${API}/api/orders/verify`, {
+                    razorpay_order_id: res.razorpay_order_id,
+                    razorpay_payment_id: res.razorpay_payment_id,
+                    razorpay_signature: res.razorpay_signature,
+                    orderId: mongoOrderId,
+                  });
+                  await axios.delete(`${API}/api/cart`, config);
                   setCartItems([]);
                   setOrderSuccess(true);
                   return;
@@ -405,10 +389,7 @@ const config = {
           buildOrderPayload("COD", false),
           config,
         );
-        await axios.delete(
-          `${API}/api/cart`,
-          config,
-        );
+        await axios.delete(`${API}/api/cart`, config);
         setCartItems([]);
         setOrderSuccess(true);
       }
@@ -444,7 +425,11 @@ const config = {
     );
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] pb-12 rounded-2xl border border-gray-300 shadow-sm">
+    <div
+      className="min-h-screen bg-[#FFF8E7] pb-12 rounded-xl
+border border-[#E8F2E6]
+shadow-sm"
+    >
       <div className="max-w-6xl mx-auto px-3 sm:px-5 md:px-6 py-4 sm:py-6 md:py-8">
         <div className="flex items-center gap-2 mb-5 sm:mb-7">
           <ShoppingBag className="text-[#6FAF8E] shrink-0" size={22} />
@@ -457,7 +442,7 @@ const config = {
           <div className="flex flex-col items-center justify-center py-16 sm:py-24 bg-white rounded-2xl border-2 border-dashed px-6 text-center">
             <ShoppingBag size={40} className="text-gray-200 mb-4" />
             <p className="text-gray-400 text-sm sm:text-base font-medium mb-5">
-              Your basket is empty!
+              🛒 Your cart is empty Continue Shopping
             </p>
             <button
               onClick={() => navigate("/")}
@@ -469,108 +454,91 @@ const config = {
         ) : (
           <div className="flex flex-col lg:grid lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
             <div className="lg:col-span-2 space-y-3 sm:space-y-4">
-              <AnimatePresence mode="popLayout">
-                {cartWithPrices.map((item) => (
-                  <motion.div
-                    key={item._id}
-                    layout
-                    initial={{ opacity: 0, x: -16 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    className="relative bg-white rounded-2xl sm:rounded-3xl border border-gray-100 shadow-sm overflow-hidden"
-                  >
-                    {item.offerLabel && (
-                      <span
-                        className={`absolute top-0 left-0 px-2 py-0.5 text-[9px] sm:text-[10px] font-black rounded-br-xl ${
-                          item.offerLabel === "NEW USER OFFER"
-                            ? "bg-blue-800 text-blue-100"
-                            : item.offerLabel === "LOYALTY OFFER"
-                              ? "bg-purple-800 text-purple-100"
-                              : "bg-amber-100 text-amber-800"
-                        }`}
-                      >
-                        {item.offerLabel} (1st qty)
-                      </span>
-                    )}
+              {cartWithPrices.map((item) => (
+                <motion.div
+                  key={item._id}
+                  layout
+                  initial={{ opacity: 0, x: -16 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  className="relative bg-white rounded-2xl sm:rounded-3xl border border-gray-100 shadow-sm overflow-hidden"
+                >
+                  <div className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 md:p-5 pt-6 sm:pt-7">
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      className="w-20 h-20 object-contain rounded-lg bg-[#F9F9F9] p-2"
+                    />
 
-                    <div className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 md:p-5 pt-6 sm:pt-7">
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className="w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 object-contain shrink-0"
-                      />
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-bold">{item.name}</h3>
 
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-bold text-sm sm:text-base truncate">
-                          {item.name}
-                        </h3>
-
-                        <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
-                          <span className="text-[#6FAF8E] font-black text-sm sm:text-base">
-                            ₹{item.displayPrice}
+                      <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
+                        <span className="text-lg font-bold text-[#2F7D32]">
+                          ₹{item.displayPrice}
+                        </span>
+                        {item.mrp > item.displayPrice && (
+                          <span className="text-gray-400 line-through text-xs sm:text-sm">
+                            ₹{item.mrp}
                           </span>
-                          {item.mrp > item.displayPrice && (
-                            <span className="text-gray-400 line-through text-xs sm:text-sm">
-                              ₹{item.mrp}
-                            </span>
-                          )}
-                          {item.firstDiscount > 0 && (
-                            <span className="text-[10px] sm:text-xs text-green-600 font-semibold">
-                              {item.firstDiscount}% OFF
-                            </span>
-                          )}
-                        </div>
-
-                        {item.quantity > 1 && (
-                          <p className="text-[10px] sm:text-xs text-gray-500 mt-0.5">
-                            Next qty: ₹{item.restQtyPrice} · Subtotal:{" "}
-                            <span className="font-bold text-gray-700">
-                              ₹{item.totalItemPrice}
-                            </span>
-                          </p>
                         )}
-
-                        <div className="flex items-center gap-2 mt-2 sm:mt-3">
-                          <button
-                            onClick={() =>
-                              updateQuantity(
-                                item.product?._id || item.product,
-                                item.quantity - 1,
-                              )
-                            }
-                            className="w-6 h-6 sm:w-7 sm:h-7 bg-gray-100 hover:bg-gray-200 rounded-lg flex items-center justify-center transition"
-                          >
-                            <Minus size={12} />
-                          </button>
-                          <span className="font-bold text-sm w-5 text-center">
-                            {item.quantity}
+                        {item.firstDiscount > 0 && (
+                          <span className="text-[10px] sm:text-xs text-green-600 font-semibold">
+                            {item.firstDiscount}% OFF
                           </span>
-                          <button
-                            onClick={() =>
-                              updateQuantity(
-                                item.product?._id || item.product,
-                                item.quantity + 1,
-                              )
-                            }
-                            className="w-6 h-6 sm:w-7 sm:h-7 bg-gray-100 hover:bg-gray-200 rounded-lg flex items-center justify-center transition"
-                          >
-                            <Plus size={12} />
-                          </button>
-                        </div>
+                        )}
                       </div>
 
-                      <button
-                        onClick={() =>
-                          removeFromCart(item.product?._id || item.product)
-                        }
-                        className="text-red-400 hover:text-red-600 p-1 transition shrink-0 mt-1"
-                      >
-                        <Trash2 size={15} />
-                      </button>
+                      {item.quantity > 1 && (
+                        <p className="text-[10px] sm:text-xs text-gray-500 mt-0.5">
+                          Next qty: ₹{item.restQtyPrice} · Subtotal:{" "}
+                          <span className="font-bold text-gray-700">
+                            ₹{item.totalItemPrice}
+                          </span>
+                        </p>
+                      )}
+
+                      <div className="flex items-center gap-2 mt-2 sm:mt-3">
+                        <button
+                          onClick={() =>
+                            updateQuantity(
+                              item.product?._id || item.product,
+                              item.quantity - 1,
+                            )
+                          }
+                          className="w-6 h-6 sm:w-7 sm:h-7bg-[#EEF8EE]
+hover:bg-[#DDF3DF] rounded-lg flex items-center justify-center transition"
+                        >
+                          <Minus size={12} />
+                        </button>
+                        <span className="font-bold text-sm w-5 text-center">
+                          {item.quantity}
+                        </span>
+                        <button
+                          onClick={() =>
+                            updateQuantity(
+                              item.product?._id || item.product,
+                              item.quantity + 1,
+                            )
+                          }
+                          className="w-6 h-6 sm:w-7 sm:h-7 bg-gray-100 hover:bg-gray-200 rounded-lg flex items-center justify-center transition"
+                        >
+                          <Plus size={12} />
+                        </button>
+                      </div>
                     </div>
-                  </motion.div>
-                ))}
-              </AnimatePresence>
+
+                    <button
+                      onClick={() =>
+                        removeFromCart(item.product?._id || item.product)
+                      }
+                      className="text-red-500 text-sm font-medium"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </motion.div>
+              ))}
             </div>
             <div className="lg:col-span-1">
               <div className="bg-white rounded-2xl sm:rounded-3xl border border-gray-100 shadow-xl p-4 sm:p-6 md:p-8 lg:sticky lg:top-10">
@@ -621,23 +589,29 @@ const config = {
                 </div>
 
                 <div className="flex gap-2 mb-4">
-                  {[
-                    { id: "ONLINE", Icon: CreditCard, label: "Online" },
-                    { id: "COD", Icon: Truck, label: "COD" },
-                  ].map(({ id, Icon, label }) => (
-                    <button
-                      key={id}
-                      onClick={() => setPaymentMethod(id)}
-                      className={`flex-1 py-2 sm:py-3 rounded-xl border-2 text-xs sm:text-sm font-bold flex flex-col items-center gap-1 transition ${
-                        paymentMethod === id
-                          ? "border-[#6FAF8E] bg-[#6FAF8E]/5 text-[#6FAF8E]"
-                          : "border-gray-100 text-gray-400"
-                      }`}
-                    >
-                      <Icon size={16} />
-                      {label}
-                    </button>
-                  ))}
+                  <button
+                    onClick={() => setPaymentMethod("ONLINE")}
+                    className={`flex-1 py-2 rounded-lg border flex items-center justify-center gap-2 ${
+                      paymentMethod === "ONLINE"
+                        ? "bg-green-100 border-green-600 text-green-700"
+                        : "border-gray-300"
+                    }`}
+                  >
+                    <CreditCard size={16} />
+                    Online
+                  </button>
+
+                  <button
+                    onClick={() => setPaymentMethod("COD")}
+                    className={`flex-1 py-2 rounded-lg border flex items-center justify-center gap-2 ${
+                      paymentMethod === "COD"
+                        ? "bg-green-100 border-green-600 text-green-700"
+                        : "border-gray-300"
+                    }`}
+                  >
+                    <Truck size={16} />
+                    COD
+                  </button>
                 </div>
 
                 <button
