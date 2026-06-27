@@ -96,24 +96,20 @@ const MyOrders = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#F8FBF5] to-[#EEF8ED] py-6 px-4 md:px-6">
+    <div className="min-h-screen bg-[#FFF8E7] py-8 px-4 md:px-8">
       {/* Header */}
-      <div className="max-w-7xl mx-auto mb-8">
-        <div className="rounded-2xl border border-[#DDEFD8] bg-[#FFF8E7] p-5 shadow-sm">
-          <div className="flex items-center gap-4">
-            <div className="h-12 w-12 rounded-2xl bg-[#2F7D32] flex items-center justify-center shadow-lg">
-              <Package className="text-white w-6 h-6" />
-            </div>
+      <div className="max-w-6xl mx-auto mb-8">
+        <div className="bg-white rounded-xl shadow-sm border border-[#E8F2E6] p-6 flex items-center gap-4">
+          <div className="h-12 w-12 rounded-xl bg-[#2F7D32] flex items-center justify-center">
+            <Package className="text-white w-6 h-6" />
+          </div>
 
-            <div>
-              <h1 className="text-2xl md:text-3xl font-extrabold text-[#2F7D32]">
-                My Orders
-              </h1>
+          <div>
+            <h1 className="text-3xl font-bold text-[#2F7D32]">My Orders</h1>
 
-              <p className="text-gray-600 mt-1">
-                Track every purchase you've made with FreshCart.
-              </p>
-            </div>
+            <p className="text-gray-500 text-sm mt-1">
+              View and track all your FreshCart orders.
+            </p>
           </div>
         </div>
       </div>
@@ -150,33 +146,32 @@ const MyOrders = () => {
             {orders.map((order) => (
               <div
                 key={order._id}
-                className="bg-white border border-[#DDEFD8] rounded-2xl p-5 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+                className="bg-white rounded-xl shadow-sm border border-[#EEF5EB] p-5 hover:shadow-md transition"
               >
                 {/* Top */}
 
-                <div className="flex flex-col lg:flex-row justify-between gap-4">
+                <div className="flex flex-col lg:flex-row justify-between gap-6">
                   {/* Left */}
-
-                  <div className="space-y-4 flex-1">
+                  <div className="flex-1 space-y-3">
                     <div>
-                      <p className="text-xs uppercase tracking-wider text-gray-400">
+                      <p className="text-xs text-gray-400 uppercase">
                         Order ID
                       </p>
 
                       <Link
                         to={`/order/${order._id}`}
-                        className="text-[#2F7D32] text-base font-semibold hover:underline"
+                        className="font-semibold text-[#2F7D32] hover:underline"
                       >
                         #{order._id.slice(-8)}
                       </Link>
                     </div>
 
                     <div>
-                      <p className="text-xs uppercase text-gray-400">
+                      <p className="text-xs text-gray-400 uppercase">
                         Products
                       </p>
 
-                      <p className="font-medium text-gray-700 mt-1">
+                      <p className="text-gray-700">
                         {order.orderItems
                           ?.slice(0, 2)
                           .map((item) => item.name)
@@ -188,93 +183,51 @@ const MyOrders = () => {
                     </div>
                   </div>
 
-                  {/* Center */}
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <p className="text-xs uppercase text-gray-400">
-                        Order Date
-                      </p>
-
-                      <h3 className="font-semibold mt-1">
-                        {new Date(order.createdAt).toLocaleDateString("en-IN", {
-                          day: "2-digit",
-                          month: "short",
-                          year: "numeric",
-                        })}
-                      </h3>
-                    </div>
-
-                    <div>
-                      <p className="text-xs uppercase text-gray-400">Total</p>
-
-                      <h2 className="text-xl font-bold text-[#2F7D32] mt-1">
-                        ₹{order.totalPrice}
-                      </h2>
-                    </div>
-                  </div>
-
                   {/* Right */}
 
-                  <div className="flex flex-col items-start lg:items-end gap-3">
-                    <span
-                      className={`px-4 py-2 rounded-full text-xs font-bold
+                  <div className="space-y-3 text-left lg:text-right">
+                    <div>
+                      <p className="text-xs text-gray-400 uppercase">Date</p>
 
-                    ${
-                      order.isPaid
-                        ? "bg-green-100 text-green-700"
-                        : "bg-red-100 text-red-600"
-                    }`}
-                    >
-                      {order.isPaid ? "Paid" : "Unpaid"}
-                    </span>
+                      <p className="font-medium">
+                        {new Date(order.createdAt).toLocaleDateString("en-IN")}
+                      </p>
+                    </div>
 
-                    <span
-                      className={`px-4 py-2 rounded-full text-xs font-bold
+                    <div>
+                      <p className="text-xs text-gray-400 uppercase">Total</p>
 
-                    ${
-                      order.isCancelled
-                        ? "bg-red-100 text-red-600"
-                        : order.isDelivered
-                          ? "bg-emerald-100 text-emerald-700"
-                          : "bg-yellow-100 text-yellow-700"
-                    }`}
-                    >
-                      {order.isCancelled
-                        ? "Cancelled"
-                        : order.isDelivered
-                          ? "Delivered"
-                          : "Pending"}
-                    </span>
+                      <p className="text-2xl font-bold text-[#2F7D32]">
+                        ₹{order.totalPrice}
+                      </p>
+                    </div>
                   </div>
                 </div>
 
                 {/* Bottom */}
 
-                <div className="mt-8 flex flex-wrap gap-3">
+                <div className="mt-6 flex flex-wrap gap-3">
                   <Link
                     to={`/order/${order._id}`}
-                    className="px-4 py-2 text-sm rounded-xl bg-[#EAF8EC] text-[#2F7D32] font-semibold hover:bg-[#DDF3DF] transition"
+                    className="px-5 py-2 rounded-lg bg-[#EEF8EE] text-[#2F7D32] font-medium hover:bg-[#E3F3E3]"
                   >
                     View Details
                   </Link>
 
                   <button
                     onClick={() => downloadInvoice(order._id)}
-                    className="px-4 py-2 text-sm rounded-xl bg-[#2F7D32] text-white hover:bg-[#27682A] transition font-semibold"
+                    className="px-5 py-2 rounded-lg bg-[#2F7D32] text-white hover:bg-[#27682A]"
                   >
-                    Download Invoice
+                    Invoice
                   </button>
 
                   {!order.isDelivered && !order.isCancelled && (
                     <button
                       disabled={loadingCancel[order._id]}
                       onClick={() => cancelOrderHandler(order._id)}
-                      className="px-4 py-2 rounded-xl border border-red-400 text-red-600 hover:bg-red-50 transition font-semibold disabled:opacity-50"
+                      className="px-5 py-2 rounded-lg border border-red-300 text-red-600 hover:bg-red-50"
                     >
-                      {loadingCancel[order._id]
-                        ? "Cancelling..."
-                        : "Cancel Order"}
+                      {loadingCancel[order._id] ? "Cancelling..." : "Cancel"}
                     </button>
                   )}
                 </div>
