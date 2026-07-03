@@ -100,13 +100,13 @@ const ProductDetails = () => {
 
   const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
   const config = useMemo(() => {
-  return {
-    withCredentials: true,
-    headers: {
-      Authorization: `Bearer ${userInfo.token}`,
-    },
-  };
-}, []);
+    return {
+      withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10);
@@ -116,45 +116,41 @@ const ProductDetails = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-  try {
-    setLoading(true);
+      try {
+        setLoading(true);
 
-    // Profile request
-    try {
-      const profileRes = await axios.get(
-        `${API}/api/users/profile`,
-        config
-      );
+        // Profile request
+        try {
+          const profileRes = await axios.get(
+            `${API}/api/users/profile`,
+            config,
+          );
 
-      setDbUser(profileRes.data);
+          setDbUser(profileRes.data);
 
-      if (profileRes.data.addresses?.length > 0) {
-        setSelectedAddress(profileRes.data.addresses[0]);
+          if (profileRes.data.addresses?.length > 0) {
+            setSelectedAddress(profileRes.data.addresses[0]);
+          }
+        } catch (err) {
+          console.log("User not logged in");
+        }
+
+        // Product request
+        const { data } = await axios.get(`${API}/api/products/${id}`);
+        setProduct(data);
+        setMainImage(data.images?.[0] || "");
+
+        const simRes = await axios.get(
+          `${API}/api/products/category/${data.category}`,
+        );
+
+        setSimilarProducts(simRes.data.filter((p) => p._id !== id));
+      } catch (err) {
+        console.error("Product Fetch Error:", err);
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      console.log("User not logged in");
-    }
-
-    // Product request
-    const { data } = await axios.get(
-      `${API}/api/products/${id}`
-    );
-    setProduct(data);
-    setMainImage(data.images?.[0] || "");
-
-    const simRes = await axios.get(
-      `${API}/api/products/category/${data.category}`
-    );
-
-    setSimilarProducts(
-      simRes.data.filter((p) => p._id !== id)
-    );
-  } catch (err) {
-    console.error("Product Fetch Error:", err);
-  } finally {
-    setLoading(false);
-  }
-};
+    };
     fetchData();
     window.scrollTo(0, 0);
   }, [id]);
@@ -195,37 +191,9 @@ const ProductDetails = () => {
       const { data } = await axios.get(`${API}/api/products/${id}`, config);
       setProduct(data);
     } catch (err) {
-  console.log(err.response?.data);
-  alert(err.response?.data?.message || "Update Failed");
-}
-  };
-
-  const detectLocation = () => {
-    if (!navigator.geolocation) return alert("Geolocation not supported");
-    setLocating(true);
-    navigator.geolocation.getCurrentPosition(
-      async (pos) => {
-        try {
-          const { latitude, longitude } = pos.coords;
-          const { data } = await axios.get(
-            `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`,
-          );
-          setAddressInput((prev) => ({
-            ...prev,
-            fullAddress: `${data.locality}, ${data.city}, ${data.principalSubdivision}`,
-            pinCode: data.postcode || "",
-          }));
-        } catch {
-          alert("Could not fetch location details");
-        } finally {
-          setLocating(false);
-        }
-      },
-      () => {
-        alert("Location access denied");
-        setLocating(false);
-      },
-    );
+      console.log(err.response?.data);
+      alert(err.response?.data?.message || "Update Failed");
+    }
   };
 
   const saveNewAddress = async () => {
@@ -742,6 +710,78 @@ const ProductDetails = () => {
                   </div>
                 ))}
               </div>
+              {editingAddress && (
+                <div className="mt-6 border rounded-xl p-4 bg-yellow-50">
+                  <h3 className="font-semibold mb-3">Edit Address</h3>
+
+                  <textarea
+                    rows={3}
+                    className="w-full border rounded-lg p-3 mb-3"
+                    value={editingAddress.fullAddress}
+                    onChange={(e) =>
+                      setEditingAddress({
+                        ...editingAddress,
+                        fullAddress: e.target.value,
+                      })
+                    }
+                  />
+
+                  <select
+                    className="w-full border rounded-lg p-3 mb-3"
+                    value={editingAddress.district}
+                    onChange={(e) =>
+                      setEditingAddress({
+                        ...editingAddress,
+                        district: e.target.value,
+                      })
+                    }
+                  >
+                    {TN_DISTRICTS.map((d) => (
+                      <option key={d}>{d}</option>
+                    ))}
+                  </select>
+
+                  <div className="grid grid-cols-2 gap-3 mb-3">
+                    <input
+                      className="border rounded-lg p-3"
+                      value={editingAddress.pinCode}
+                      onChange={(e) =>
+                        setEditingAddress({
+                          ...editingAddress,
+                          pinCode: e.target.value,
+                        })
+                      }
+                    />
+
+                    <input
+                      className="border rounded-lg p-3"
+                      value={editingAddress.phone}
+                      onChange={(e) =>
+                        setEditingAddress({
+                          ...editingAddress,
+                          phone: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+
+                  <div className="flex gap-3">
+                    <button
+                      onClick={saveEditedAddress}
+                      className="flex-1 bg-green-600 text-white rounded-lg py-3"
+                    >
+                      Save Changes
+                    </button>
+
+                    <button
+                      onClick={() => setEditingAddress(null)}
+                      className="flex-1 border rounded-lg py-3"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              )}
 
               {/* Add New Address form */}
               <div className="border-2 border-dashed rounded-xl p-3 space-y-2 mt-2">
@@ -749,13 +789,6 @@ const ProductDetails = () => {
                   <span className="text-[10px] sm:text-xs font-bold text-gray-500">
                     Add New
                   </span>
-                  <button
-                    onClick={detectLocation}
-                    className="text-[10px] font-bold bg-[#6FAF8E] text-white px-2 py-1 rounded flex items-center gap-1 hover:bg-green-600 transition"
-                  >
-                    <Navigation size={10} />{" "}
-                    {locating ? "Locating..." : "Auto-detect"}
-                  </button>
                 </div>
                 <input
                   className="w-full text-xs sm:text-sm p-2 border rounded-lg outline-none focus:ring-2 focus:ring-[#6FAF8E]"

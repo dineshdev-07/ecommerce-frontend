@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { Heart } from "lucide-react";
-import specialOfferBadge from "../assets/Offer badge.png";
 import { calculateDiscountedPrice } from "../utils/offerUtils";
 import { useWishlist } from "../context/WishlistContext";
 
@@ -97,21 +96,6 @@ const ProductCard = ({ product, isLowestPriceItem = false }) => {
         />
       </button>
 
-      {/* Offer badge top-left */}
-      {(showNewUserBadge || showLoyalBadge || showPlusBadge) && (
-        <div
-          className={`absolute top-0 left-0 text-white text-[8px] sm:text-[9px] md:text-[10px] px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-br-md font-bold z-10 shadow-sm ${
-            showNewUserBadge
-              ? "bg-blue-600"
-              : showLoyalBadge
-                ? "bg-purple-600"
-                : "bg-amber-500"
-          }`}
-        >
-          {showNewUserBadge ? "NEW USER" : showLoyalBadge ? "LOYALTY" : "PLUS"}
-        </div>
-      )}
-
       {/* ── Image — fixed height, never stretches ── */}
       <div className="relative w-full h-28 xs:h-32 sm:h-36 md:h-40 lg:h-44 bg-gray-50 flex items-center justify-center overflow-hidden flex-shrink-0">
         <img
@@ -119,13 +103,6 @@ const ProductCard = ({ product, isLowestPriceItem = false }) => {
           className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105 p-1"
           alt={product.name}
         />
-        {totalDiscount >= 25 && (
-          <img
-            src={specialOfferBadge}
-            alt="Special Offer"
-            className="absolute top-0 right-1 w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 object-contain drop-shadow-xl pointer-events-none"
-          />
-        )}
       </div>
 
       {/* ── Info — fixed structure, no flex-1 on middle rows ── */}
@@ -136,10 +113,9 @@ const ProductCard = ({ product, isLowestPriceItem = false }) => {
         </p>
 
         {/* Name — fixed 2 lines with clamp */}
-        <h3 className="text-[11px] xs:text-xs sm:text-[13px] md:text-sm text-gray-800 font-medium line-clamp-2 group-hover:text-[#6FAF8E] mt-0.5 leading-snug min-h-[2.4em]">
-          {product.name}
-        </h3>
-
+       <h3 className="min-h-[40px] text-sm sm:text-base font-semibold text-gray-800 line-clamp-2 transition-colors duration-300 group-hover:text-[#2E7D32]">
+  {product.name}
+</h3>
         {/* Price row — fixed 1 line */}
         <div className="mt-1 sm:mt-1.5 flex items-center gap-1 sm:gap-1.5 flex-wrap">
           <span className="text-sm xs:text-base sm:text-lg font-bold text-gray-900">
@@ -184,7 +160,7 @@ const ProductCard = ({ product, isLowestPriceItem = false }) => {
           className={`mt-2 sm:mt-2.5 w-full text-[9px] xs:text-[10px] sm:text-[11px] md:text-xs py-1 xs:py-1.5 sm:py-2 rounded-md font-semibold transition ${
             isOutOfStock
               ? "bg-white border border-gray-200 text-gray-300 cursor-not-allowed"
-              : "bg-[#6FAF8E] text-white hover:bg-green-700"
+              : "bg-[#2E7D32]  text-white hover:bg-[#1B5E20]"
           }`}
         >
           {isOutOfStock ? "Out of Stock" : "Add"}

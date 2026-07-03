@@ -96,22 +96,19 @@ const MyOrders = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#FFF8E7] py-8 px-4 md:px-8">
+    <div className="min-h-screen bg-[#FFFBEA] p-5 rounded-2xl">
       {/* Header */}
-      <div className="max-w-6xl mx-auto mb-8">
-        <div className="bg-white rounded-xl shadow-sm border border-[#E8F2E6] p-6 flex items-center gap-4">
-          <div className="h-12 w-12 rounded-xl bg-[#2F7D32] flex items-center justify-center">
-            <Package className="text-white w-6 h-6" />
-          </div>
-
-          <div>
-            <h1 className="text-3xl font-bold text-[#2F7D32]">My Orders</h1>
-
-            <p className="text-gray-500 text-sm mt-1">
-              View and track all your FreshCart orders.
-            </p>
-          </div>
+      <div className="bg-white rounded-xl border border-gray-200 p-6 mb-8 flex gap-5">
+        <div className="h-12 w-12 rounded-xl bg-[#2F7D32] flex items-center justify-center">
+          <Package className="text-white w-6 h-6" />
         </div>
+        <div>
+          <h1 className="text-3xl font-bold text-[#2E7D32]">MyOrders</h1>
+          <p className="text-gray-500 mt-2">
+            View and track all your FreshCart orders.
+          </p>
+        </div>
+        <div></div>
       </div>
 
       <div className="max-w-7xl mx-auto">

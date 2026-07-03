@@ -2,6 +2,14 @@ import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 import { Leaf, ShieldCheck, Sprout, Truck } from "lucide-react";
+import fruitsImg from "../assets/cat/Fruits.png";
+import vegeImg from "../assets/cat/Vege.png";
+import dairyImg from "../assets/cat/dairy.png";
+import snacksImg from "../assets/cat/snacks.png";
+import beveragesImg from "../assets/cat/beverages.png";
+import bakeryImg from "../assets/cat/bakery.png";
+import careImg from "../assets/cat/care.png";
+import frozenImg from "../assets/cat/frozen.png";
 
 const CACHE_KEY = "FreshCart_home";
 const CACHE_TTL = 5 * 60 * 1000;
@@ -83,14 +91,14 @@ const Home = ({ search = "" }) => {
   const [currentProduceAd, setCurrentProduceAd] = useState(0);
 
   const categories = [
-    { name: "Fruits", image: "/cat/Fruits.png" },
-    { name: "Vegetables", image: "/cat/Vege.png" },
-    { name: "Dairy", image: "/cat/dairy.png" },
-    { name: "Snacks", image: "/cat/snacks.png" },
-    { name: "Beverages", image: "/cat/beverages.png" },
-    { name: "Bakery", image: "/cat/bakery.png" },
-    { name: "Personal Care", image: "/cat/care.png" },
-    { name: "Frozen Foods", image: "/cat/frozen.png" },
+    { name: "Fruits", image: fruitsImg },
+    { name: "Vegetables", image: vegeImg },
+    { name: "Dairy", image: dairyImg },
+    { name: "Snacks", image: snacksImg },
+    { name: "Beverages", image: beveragesImg },
+    { name: "Bakery", image: bakeryImg },
+    { name: "Personal Care", image: careImg },
+    { name: "Frozen Foods", image: frozenImg },
   ];
 
   useEffect(() => {
@@ -344,8 +352,8 @@ const Home = ({ search = "" }) => {
         <div className="flex justify-between items-start gap-3 mb-3 sm:mb-5 md:mb-6 ">
           <SectionTitle eyebrow="Save naturally" title="Special Offers" />
           {isAdmin && (
-            <label className="shrink-0 bg-[#2E7D32] text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg cursor-pointer text-xs sm:text-sm font-bold hover:bg-[#1B5E20] transition">
-              + New Offer
+            <label  className=" font-semibold px-4 py-2 bg-[#2E7D32] text-white rounded-lg hover:bg-[#1B5E20] transition">
+              New Offer
               <input
                 type="file"
                 hidden
@@ -419,51 +427,56 @@ const Home = ({ search = "" }) => {
         </div>
       </section>
 
-      <section className="my-6 rounded-2xl border border-[#81C784]/30 bg-white p-4 shadow-sm sm:my-10 sm:p-6 md:my-14">
-        <div className="flex justify-between items-center mb-4 sm:mb-6 md:mb-8">
+      <section className="my-8 rounded-xl bg-white border border-gray-200 p-5">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-6">
           <div>
-            <p className="text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] text-[#795548]">
-              Customer favorites
+            <p className="text-xs font-black uppercase tracking-[0.25em] text-[#795548]">
+              Featured
             </p>
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-[#2E7D32]">
+
+            <h2 className="mt-1 text-3xl font-extrabold text-[#2E7D32]">
               Featured Products
             </h2>
+
             {isAdmin && (
-              <p className="text-[10px] sm:text-xs text-[#795548]/60 mt-0.5">
-                {products.filter((p) => p.isPinned).length}/30 products
+              <p className="text-sm text-gray-500 mt-1">
+                {products.filter((p) => p.isPinned).length}/30 Products
               </p>
             )}
           </div>
+
           {isAdmin && (
             <button
               onClick={() => navigate("/admin/products")}
-              className="bg-[#2E7D32] hover:bg-[#1B5E20] text-white px-3 sm:px-5 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-xs sm:text-sm font-bold shadow transition"
+              className=" font-semibold px-4 py-2 bg-[#2E7D32] text-white rounded-lg hover:bg-[#1B5E20] transition"
             >
-              + Add/Manage
+              Manage
             </button>
           )}
         </div>
 
-        <div className="grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2.5 xs:gap-3 sm:gap-4 md:gap-5 lg:gap-6">
+        {/* Products */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
           {pinnedProducts.length > 0 ? (
             pinnedProducts.map((product) => (
               <div key={product._id} className="relative group">
                 <ProductCard product={product} />
+
                 {isAdmin && (
                   <button
                     onClick={() => handleRemoveFromHome(product._id)}
-                    className="absolute -top-2 -right-2 bg-red-600 text-white w-6 h-6 sm:w-7 sm:h-7 rounded-full text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity shadow-lg z-10 hover:bg-red-700"
-                    aria-label="Remove product from homepage"
+                    className="absolute top-2 right-2 w-7 h-7 rounded-full bg-red-600 text-white opacity-0 group-hover:opacity-100 transition"
                   >
-                    x
+                    ×
                   </button>
                 )}
               </div>
             ))
           ) : (
-            <p className="col-span-full text-center text-[#795548]/60 text-sm py-8">
-              No products available
-            </p>
+            <div className="col-span-full py-12 text-center text-gray-500">
+              No featured products available.
+            </div>
           )}
         </div>
       </section>

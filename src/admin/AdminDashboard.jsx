@@ -235,14 +235,18 @@ const AdminDashboard = () => {
     }
   };
 
-  if (loading)
-    return (
-      <div className="flex h-screen items-center justify-center bg-gradient-to-br from-slate-50 to-gray-100">
-        <h2 className="text-2xl font-bold animate-pulse text-emerald-600">
-          Crunching Stats...
-        </h2>
+ if (loading) {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-[#FFFBEA]">
+      <div className="text-center">
+        <div className="w-10 h-10 border-4 border-green-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
+        <p className="mt-4 text-gray-600 text-lg font-medium">
+          Loading...
+        </p>
       </div>
-    );
+    </div>
+  );
+}
 
   if (error)
     return (
@@ -252,141 +256,167 @@ const AdminDashboard = () => {
     );
 
   return (
-    <div className="min-h-screen  rounded-2xl border border-gray-300 shadow-sm p-4 sm:p-6 lg:p-10 ">
-      {/* Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-10 ">
-        <div>
-          <h1 className="text-3xl lg:text-4xl font-bold text-gray-800 tracking-tight">
-            <i class="fa-solid fa-users-gear"></i> Admin Overview
-          </h1>
-          <p className="text-gray-500 mt-2 text-sm sm:text-base">
-            Monitor revenue, orders and inventory in real-time.
+    <div className="min-h-screen bg-[#FFFBEA] p-5 rounded-2xl">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="bg-white rounded-xl border border-gray-200 p-6 mb-8">
+          <h1 className="text-3xl font-bold text-[#2E7D32]">Admin Dashboard</h1>
+
+          <p className="text-gray-500 mt-2">
+            Welcome back! Here's today's business summary.
           </p>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-          <button
-            onClick={handleExportPDF}
-            className="bg-[#6FAF8E] text-white px-6 py-2.5 rounded-2xl shadow-md hover:shadow-xl transition-all text-sm font-semibold"
-          >
-            <FontAwesomeIcon icon={faFilePdf} /> Export PDF & Reset
-          </button>
+        {/* Main Statistics */}
 
-          <button
-            onClick={handleResetMonthly}
-            className="bg-white text-red-500 outline-red px-6 py-2.5 rounded-2xl shadow-md hover:bg-red-600 hover:text-white hover:shadow-xl transition-all text-sm font-semibold"
-          >
-            <FontAwesomeIcon icon={faArrowsRotate} /> Reset Monthly
-          </button>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+          <StatCard
+            title="Revenue"
+            value={`₹${normalizedData.totalRevenue}`}
+            icon={<FontAwesomeIcon icon={faIndianRupeeSign} />}
+          />
+
+          <StatCard
+            title="Orders"
+            value={normalizedData.totalOrders}
+            icon={<FontAwesomeIcon icon={faBoxOpen} />}
+          />
+
+          <StatCard
+            title="Customers"
+            value={normalizedData.usersCount}
+            icon={<FontAwesomeIcon icon={faUsers} />}
+          />
+
+          <StatCard
+            title="Products"
+            value={normalizedData.productsCount}
+            icon={<FontAwesomeIcon icon={faBoxOpen} />}
+          />
         </div>
-      </div>
 
-      {/* Main Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-12">
-        <StatCard
-          title="Net Revenue"
-          value={`₹${normalizedData.totalRevenue}`}
-          icon={<FontAwesomeIcon icon={faIndianRupeeSign} />}
-          gradient="from-emerald-400 to-teal-500"
-        />
-        <StatCard
-          title="Refunded"
-          value={`₹${normalizedData.totalRefunded}`}
-          icon={<FontAwesomeIcon icon={faRotateLeft} />}
-          gradient="from-rose-400 to-red-500"
-        />
-        <StatCard
-          title="Paid Orders"
-          value={normalizedData.paidOrders}
-          icon={<FontAwesomeIcon icon={faBoxOpen} />}
-          gradient="from-blue-400 to-indigo-500"
-        />
-        <StatCard
-          title="Total Users"
-          value={normalizedData.usersCount}
-          icon={<FontAwesomeIcon icon={faUsers} />}
-          gradient="from-purple-400 to-fuchsia-500"
-        />
-      </div>
+        {/* Business Summary */}
 
-      {/* Secondary Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 border-black border-b-2 pb-10">
-        <MiniCard title="Cancelled" value={normalizedData.cancelledOrders} />
-        <MiniCard title="Total Orders" value={normalizedData.totalOrders} />
-        <MiniCard title="COD Orders" value={normalizedData.codOrders} />
-        <MiniCard title="Products" value={normalizedData.productsCount} />
-      </div>
-
-      {/* Low Stock Section */}
-      <div className="bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden">
-        <div className="flex items-center justify-between p-6 border-b bg-gray-50">
-          <h2 className="text-lg font-bold text-gray-700">
-            ⚠️ Low Stock Alerts
+        <div className="bg-white rounded-xl border border-gray-200 p-5 mb-8">
+          <h2 className="text-lg font-semibold text-gray-700 mb-4">
+            Business Summary
           </h2>
-          <span className="bg-red-100 text-red-600 text-xs font-bold px-3 py-1 rounded-full">
-            {normalizedData.lowStockProducts.length} Items
-          </span>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <MiniCard title="Paid Orders" value={normalizedData.paidOrders} />
+
+            <MiniCard
+              title="Refunded"
+              value={`₹${normalizedData.totalRefunded}`}
+            />
+
+            <MiniCard
+              title="Cancelled"
+              value={normalizedData.cancelledOrders}
+            />
+
+            <MiniCard title="COD Orders" value={normalizedData.codOrders} />
+          </div>
         </div>
 
-        {normalizedData.lowStockProducts.length === 0 ? (
-          <div className="p-12 text-center text-gray-400 text-sm">
-            Inventory levels are healthy. ✅
+        {/* Low Stock */}
+
+        <div className="bg-white rounded-xl border border-gray-200">
+          <div className="flex justify-between items-center p-5 border-b">
+            <div>
+              <h2 className="text-lg font-semibold text-gray-700">
+                Low Stock Products
+              </h2>
+
+              <p className="text-sm text-gray-500">
+                Products that need restocking
+              </p>
+            </div>
+
+            <span className="bg-red-100 text-red-600 px-3 py-1 rounded-full text-sm font-medium">
+              {normalizedData.lowStockProducts.length} Items
+            </span>
           </div>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead className="bg-gray-50 text-gray-500 uppercase text-xs">
-                <tr>
-                  <th className="px-6 py-4 text-left">Product</th>
-                  <th className="px-6 py-4 text-right">Stock</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y">
-                {normalizedData.lowStockProducts.map((item) => (
-                  <tr key={item._id} className="hover:bg-gray-50 transition">
-                    <td className="px-6 py-4 font-medium text-gray-700">
-                      {item.name}
-                    </td>
-                    <td className="px-6 py-4 text-right">
-                      <span className="bg-red-50 text-red-600 px-3 py-1 rounded-full font-semibold">
-                        {item.quantity} left
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+
+          {normalizedData.lowStockProducts.length === 0 ? (
+            <div className="text-center py-10 text-gray-500">
+              Inventory looks good 🎉
+            </div>
+          ) : (
+            <div className="divide-y">
+              {normalizedData.lowStockProducts.map((item) => (
+                <div
+                  key={item._id}
+                  className="flex justify-between items-center p-5 hover:bg-green-50 transition"
+                >
+                  <div>
+                    <h3 className="font-semibold text-gray-700">{item.name}</h3>
+
+                    <p className="text-sm text-gray-500">
+                      Product needs restocking
+                    </p>
+                  </div>
+
+                  <span className="bg-red-100 text-red-600 px-3 py-1 rounded-full font-semibold">
+                    {item.quantity} Left
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+          {/* Dashboard Actions */}
+
+          <div className="bg-white border border-gray-200 rounded-xl p-6 mt-8">
+            <h2 className="text-lg font-semibold text-gray-700 mb-4">
+              Dashboard Actions
+            </h2>
+
+            <div className="flex flex-col sm:flex-row gap-4">
+              <button
+                onClick={handleExportPDF}
+                className="flex-1 bg-[#2E7D32] hover:bg-[#256428] text-white py-3 rounded-lg font-medium transition"
+              >
+                <FontAwesomeIcon icon={faFilePdf} className="mr-2" />
+                Export PDF Report
+              </button>
+
+              <button
+                onClick={handleResetMonthly}
+                className="flex-1 border border-red-300 text-red-600 hover:bg-red-600 hover:text-white py-3 rounded-lg font-medium transition"
+              >
+                <FontAwesomeIcon icon={faArrowsRotate} className="mr-2" />
+                Reset Monthly Data
+              </button>
+            </div>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );
 };
 
-const StatCard = ({ title, value, icon, gradient }) => (
-  <div className="bg-white rounded-3xl shadow-md p-6 relative overflow-hidden group hover:shadow-xl transition-all">
-    <div
-      className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-5 group-hover:opacity-10 transition`}
-    />
-    <div className="flex justify-between items-center mb-4 relative z-10">
-      <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
-        {title}
-      </span>
-      <span className="text-2xl">{icon}</span>
-    </div>
-    <div className="text-3xl font-extrabold text-gray-800 relative z-10">
-      {value}
-    </div>
-  </div>
-);
+const StatCard = ({ title, value, icon }) => {
+  return (
+    <div className="bg-white border border-gray-200 rounded-xl p-5 hover:border-[#2E7D32] transition">
+      <div className="flex justify-between items-center mb-4">
+        <p className="text-sm text-gray-500">{title}</p>
 
-const MiniCard = ({ title, value }) => (
-  <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 text-center hover:shadow-md transition">
-    <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-1">
-      {title}
-    </p>
-    <p className="text-xl font-bold text-gray-700">{value}</p>
-  </div>
-);
+        <div className="text-[#2E7D32] text-xl">{icon}</div>
+      </div>
+
+      <h2 className="text-3xl font-bold text-gray-800">{value}</h2>
+    </div>
+  );
+};
+
+const MiniCard = ({ title, value }) => {
+  return (
+    <div className="bg-[#F8F8F8] border border-gray-200 rounded-xl p-4 text-center">
+      <p className="text-sm text-gray-500">{title}</p>
+
+      <h3 className="text-2xl font-bold text-[#2E7D32] mt-2">{value}</h3>
+    </div>
+  );
+};
 
 export default AdminDashboard;

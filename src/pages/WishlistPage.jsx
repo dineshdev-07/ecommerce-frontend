@@ -5,7 +5,6 @@ import { Heart, ChevronLeft, Frown, ShoppingCart } from "lucide-react";
 import { useWishlist } from "../context/WishlistContext";
 import { useCart } from "../context/CartContext";
 import { calculateDiscountedPrice } from "../utils/offerUtils";
-import specialOfferBadge from "../assets/Offer badge.png";
 
 const API = import.meta.env.VITE_API_URL;
 
@@ -90,13 +89,6 @@ const WishlistProductCard = ({
           className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105 p-1"
           alt={product.name}
         />
-        {totalDiscount >= 25 && (
-          <img
-            src={specialOfferBadge}
-            className="absolute top-0 right-1 w-10 h-10 sm:w-12 md:w-14 object-contain pointer-events-none"
-            alt="Special Offer"
-          />
-        )}
       </div>
 
       <div className="p-2 xs:p-2.5 sm:p-3 flex flex-col flex-1">
@@ -175,6 +167,7 @@ const WishlistPage = () => {
   const [loading, setLoading] = useState(true);
 
   const userInfo = JSON.parse(localStorage.getItem("userInfo") || "null");
+
   const config = {
     headers: { Authorization: `Bearer ${userInfo?.token}` },
   };
@@ -182,10 +175,7 @@ const WishlistPage = () => {
   useEffect(() => {
     const fetchWishlist = async () => {
       try {
-        const { data } = await axios.get(
-          `${API}/api/wishlist`,
-          config,
-        );
+        const { data } = await axios.get(`${API}/api/wishlist`, config);
         setProducts(data);
       } catch (err) {
         console.error(err);
@@ -201,35 +191,26 @@ const WishlistPage = () => {
     setProducts((prev) => prev.filter((p) => p._id !== productId));
   };
 
-  if (loading)
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="w-10 h-10 border-4 border-[#6FAF8E] border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
-
   return (
-    <div className="min-h-screen bg-gray-50 pb-16 rounded-2xl border border-gray-300 shadow-sm">
-      <div className="bg-white border-b sticky top-0 z-30 px-3 sm:px-6 py-3 sm:py-4 flex items-center gap-3">
-        <button
-          onClick={() => navigate(-1)}
-          className="p-2 hover:bg-gray-100 rounded-xl text-gray-500 transition"
-        >
-          <ChevronLeft size={20} />
-        </button>
+    <div className="min-h-screen bg-[#FFFBEA] p-5 rounded-2xl">
+      <div className="bg-white rounded-xl border border-gray-200 p-6 mb-8 flex gap-2">
         <div>
-          <h1 className="text-base sm:text-lg lg:text-xl font-black text-gray-900">
-            My Wishlist
-          </h1>
-          <p className="text-[10px] sm:text-xs text-gray-400 font-medium">
-            {products.length} saved items
-          </p>
+          <button
+            onClick={() => navigate(-1)}
+            className="p-4 hover:bg-gray-100 rounded-xl text-gray-500 transition"
+          >
+            <ChevronLeft size={30} />
+          </button>
+        </div>
+        <div>
+          <h1 className="text-3xl font-bold text-[#2E7D32]">My Wishlist</h1>
+          <p className="text-gray-500 mt-2">{products.length} saved items</p>
         </div>
       </div>
 
       <div className="px-3 sm:px-6 lg:px-8 py-4 sm:py-6">
         {products.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-32 gap-4 text-center">
+          <div className="flex flex-col items-center justify-center  gap-4 text-center">
             <div className="w-20 h-20 bg-red-50 rounded-full flex items-center justify-center">
               <Frown size={30} className="text-red-300" />
             </div>

@@ -27,31 +27,31 @@ import LoyaltyPage from "./pages/PlusPage";
 import OrderDetails from "./pages/OrderDetails";
 import SearchResultsPage from "./pages/SearchResultsPage";
 import WishlistPage from "./pages/WishlistPage";
-import SellerRequestPage from "./partners/SellerRequestPage";
-import AdminSellerRequests from "./partners/AdminSellerRequests";
-import BecomePartnerPage from "./partners/BecomePartnerPage";
-import AdminDeliveryPartners from "./partners/AdminDeliveryPartners";
 import SplashScreen from "./components/SplashScreen";
+import { UserRound } from "lucide-react";
 
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Heart,
   Store,
-  Bike,
   ChevronDown,
   Users,
   Menu,
   X,
   Home as HomeIcon,
   ShoppingCart,
+  ShoppingBag,
   Package,
   LayoutDashboard,
-  ShoppingBag,
-  BarChart2,
   Settings,
   LogOut,
   Crown,
   ChevronRight,
+  Search,
+  CircleUserRound,
+  House,
+  Package2,
+  PanelLeft,
 } from "lucide-react";
 
 import { CartProvider, useCart } from "./context/CartContext";
@@ -74,7 +74,7 @@ function ScrollToTop() {
 
 function BrandWordmark({ className = "" }) {
   return (
-    <h1 class="text-2xl font-black bg-gradient-to-r from-[#2E7D32] via-[#81C784] to-[#795548] bg-clip-text text-transparent">
+    <h1 className="text-2xl font-black bg-gradient-to-r from-[#2E7D32] via-[#81C784] to-[#795548] bg-clip-text text-transparent">
       FreshCart
     </h1>
   );
@@ -104,61 +104,13 @@ function JoinDropdown() {
           className={`transition-transform ${open ? "rotate-180" : ""}`}
         />
       </button>
-
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0, y: -8, scale: 0.96 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -8, scale: 0.96 }}
-            transition={{ duration: 0.12 }}
-            className="absolute top-full mt-2 left-0 w-52 bg-white border border-gray-100 rounded-2xl shadow-xl z-50 overflow-hidden"
-          >
-            <Link
-              to="/become-seller"
-              onClick={() => setOpen(false)}
-              className="flex items-start gap-3 px-4 py-3.5 hover:bg-gray-50 transition group border-b border-gray-50"
-            >
-              <div className="w-7 h-7 bg-gray-900 group-hover:bg-[#6FAF8E] rounded-xl flex items-center justify-center shrink-0 transition">
-                <Store size={13} className="text-white" />
-              </div>
-              <div>
-                <p className="text-xs font-black text-gray-800">
-                  Become a Seller
-                </p>
-                <p className="text-[9px] text-gray-400 mt-0.5 leading-tight">
-                  List & sell your products
-                </p>
-              </div>
-            </Link>
-            <Link
-              to="/become-partner"
-              onClick={() => setOpen(false)}
-              className="flex items-start gap-3 px-4 py-3.5 hover:bg-gray-50 transition group"
-            >
-              <div className="w-7 h-7 bg-gray-900 group-hover:bg-[#6FAF8E] rounded-xl flex items-center justify-center shrink-0 transition">
-                <Bike size={13} className="text-white" />
-              </div>
-              <div>
-                <p className="text-xs font-black text-gray-800">
-                  Delivery Partner
-                </p>
-                <p className="text-[9px] text-gray-400 mt-0.5 leading-tight">
-                  Earn by delivering orders
-                </p>
-              </div>
-            </Link>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 }
 
-function AdminManageDropdown({ sellerCount, partnerCount }) {
+function AdminManageDropdown({ sellerCount }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
-  const totalBadge = sellerCount + partnerCount;
 
   useEffect(() => {
     const handler = (e) => {
@@ -167,85 +119,6 @@ function AdminManageDropdown({ sellerCount, partnerCount }) {
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
-
-  return (
-    <div ref={ref} className="relative">
-      <button
-        onClick={() => setOpen((o) => !o)}
-        className="nav-link-anim flex items-center gap-1 text-gray-600 hover:text-[#6FAF8E] font-medium text-sm transition"
-      >
-        Manage
-        {totalBadge > 0 && (
-          <span className="ml-1 bg-[#6FAF8E] text-white text-[9px] font-bold h-4 w-4 flex items-center justify-center rounded-full animate-pulse">
-            {totalBadge > 9 ? "9+" : totalBadge}
-          </span>
-        )}
-        <ChevronDown
-          size={12}
-          className={`ml-0.5 transition-transform ${open ? "rotate-180" : ""}`}
-        />
-      </button>
-
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0, y: -8, scale: 0.96 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -8, scale: 0.96 }}
-            transition={{ duration: 0.12 }}
-            className="absolute top-full mt-2 left-0 w-52 bg-white border border-gray-100 rounded-2xl shadow-xl z-50 overflow-hidden"
-          >
-            <Link
-              to="/admin/sellers"
-              onClick={() => setOpen(false)}
-              className="flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition border-b border-gray-50"
-            >
-              <div className="flex items-center gap-2.5">
-                <div className="w-7 h-7 bg-gray-100 rounded-xl flex items-center justify-center shrink-0">
-                  <Store size={13} className="text-gray-600" />
-                </div>
-                <div>
-                  <p className="text-xs font-black text-gray-800">
-                    Seller Requests
-                  </p>
-                  <p className="text-[9px] text-gray-400">
-                    Review applications
-                  </p>
-                </div>
-              </div>
-              {sellerCount > 0 && (
-                <span className="bg-[#6FAF8E] text-white text-[9px] font-black h-5 w-5 flex items-center justify-center rounded-full">
-                  {sellerCount}
-                </span>
-              )}
-            </Link>
-            <Link
-              to="/admin/partners"
-              onClick={() => setOpen(false)}
-              className="flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition"
-            >
-              <div className="flex items-center gap-2.5">
-                <div className="w-7 h-7 bg-gray-100 rounded-xl flex items-center justify-center shrink-0">
-                  <Bike size={13} className="text-gray-600" />
-                </div>
-                <div>
-                  <p className="text-xs font-black text-gray-800">
-                    Delivery Partners
-                  </p>
-                  <p className="text-[9px] text-gray-400">Manage partners</p>
-                </div>
-              </div>
-              {partnerCount > 0 && (
-                <span className="bg-amber-400 text-white text-[9px] font-black h-5 w-5 flex items-center justify-center rounded-full">
-                  {partnerCount}
-                </span>
-              )}
-            </Link>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
 }
 
 function MobileDrawer({
@@ -256,7 +129,6 @@ function MobileDrawer({
   deliveryAlertCount,
   refundAlertCount,
   sellerRequestCount,
-  partnerRequestCount,
   lowStockCount,
 }) {
   const navigate = useNavigate();
@@ -334,18 +206,6 @@ function MobileDrawer({
                   <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest px-3 pb-1">
                     Join Us
                   </p>
-                  <DrawerItem
-                    icon={<Store size={16} />}
-                    label="Become a Seller"
-                    sub="List & sell your products"
-                    onClick={() => go("/become-seller")}
-                  />
-                  <DrawerItem
-                    icon={<Bike size={16} />}
-                    label="Delivery Partner"
-                    sub="Earn by delivering orders"
-                    onClick={() => go("/become-partner")}
-                  />
                 </div>
               )}
 
@@ -411,16 +271,6 @@ function MobileDrawer({
                         : null
                     }
                     onClick={() => go("/admin/sellers")}
-                  />
-                  <DrawerItem
-                    icon={<Bike size={16} />}
-                    label="Delivery Partners"
-                    badge={
-                      partnerRequestCount > 0
-                        ? { count: partnerRequestCount, color: "bg-amber-400" }
-                        : null
-                    }
-                    onClick={() => go("/admin/partners")}
                   />
                 </div>
               )}
@@ -516,10 +366,12 @@ function AppContent() {
   const [deliveryAlertCount, setDeliveryAlertCount] = useState(0);
   const [refundAlertCount, setRefundAlertCount] = useState(0);
   const [sellerRequestCount, setSellerRequestCount] = useState(0);
-  const [partnerRequestCount, setPartnerRequestCount] = useState(0);
   const [lowStockCount, setLowStockCount] = useState(0);
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+
+  const [profileOpen, setProfileOpen] = useState(false);
+  const profileRef = useRef(null);
 
   const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
   const wishlistCount = wishlist.length;
@@ -539,6 +391,18 @@ function AppContent() {
   useEffect(() => {
     setSearch(searchParams.get("q") || "");
   }, [searchParams]);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (profileRef.current && !profileRef.current.contains(e.target)) {
+        setProfileOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const fetchSuggestions = async (query) => {
     if (!query?.trim()) {
@@ -583,12 +447,12 @@ function AppContent() {
         },
       });
 
-      const orders = Array.isArray(orderData.orders)
-        ? orderData.orders
-        : orderData;
+      const orders = Array.isArray(data.orders) ? data.orders : data;
+
       setDeliveryAlertCount(
         orders.filter((o) => !o.isDelivered && !o.isCancelled).length,
       );
+
       setRefundAlertCount(
         orders.filter((o) => o.isCancelled && o.isPaid && !o.isRefunded).length,
       );
@@ -602,27 +466,10 @@ function AppContent() {
         },
       );
 
-      if (dData.lowStockProducts)
-        setLowStockCount(dData.lowStockProducts.length);
-
-      const sRes = await fetch(`${API}/api/seller-requests/admin/all`, {
-        credentials: "include",
-      });
-      const sData = await sRes.json();
-      setSellerRequestCount(
-        (Array.isArray(sData) ? sData : []).filter(
-          (r) => r.status === "pending",
-        ).length,
-      );
-
-      const pRes = await fetch(
-        `${API}/api/delivery-partners/admin/pending-count`,
-        {
-          credentials: "include",
-        },
-      );
-      const pData = await pRes.json();
-      setPartnerRequestCount(pData.count || 0);
+      if (dashboardData.lowStockProducts) {
+        setLowStockCount(dashboardData.lowStockProducts.length);
+      }
+      setSellerRequestCount(0);
     } catch (err) {
       console.error("Badge fetch error:", err);
     }
@@ -642,11 +489,7 @@ function AppContent() {
   const isActive = (path) => location.pathname === path;
 
   const totalAdminBadge =
-    deliveryAlertCount +
-    refundAlertCount +
-    sellerRequestCount +
-    partnerRequestCount +
-    lowStockCount;
+    deliveryAlertCount + refundAlertCount + sellerRequestCount + lowStockCount;
 
   return (
     <div
@@ -673,218 +516,190 @@ border-b border-brand-light/30"
         deliveryAlertCount={deliveryAlertCount}
         refundAlertCount={refundAlertCount}
         sellerRequestCount={sellerRequestCount}
-        partnerRequestCount={partnerRequestCount}
         lowStockCount={lowStockCount}
       />
 
       {!isAuthPage && (
-        <nav className="bg-brand-cream border-b border-[#81C784]/35 shadow-sm sticky top-0 z-40 px-2 md:px-8 h-14 md:h-16 flex items-center">
-          <div className="max-w-7xl mx-auto w-full flex justify-between items-center gap-1.5 md:gap-3">
-            <div className="flex items-center gap-2 md:gap-3 shrink-0">
-              <button
-                onClick={() => setDrawerOpen(true)}
-                className="lg:hidden relative w-9 h-9 flex items-center justify-center rounded-xl hover:bg-gray-100 transition text-gray-700 "
-              >
-                <Menu size={20} />
-                {totalAdminBadge > 0 && isAdmin && (
-                  <span className="absolute top-1 right-1 bg-red-500 w-2 h-2 rounded-full" />
-                )}
-              </button>
+        <nav className="sticky top-0 z-50 bg-[#FFF8E7] border-b  shadow-sm">
+          <div className="max-w-7xl mx-auto">
+            {/* Top */}
 
-              <Link to="/">
-                <BrandWordmark className="text-lg sm:text-xl md:text-2xl " />
+            <div className="h-16 flex items-center justify-between">
+              {/* Logo */}
+
+              <Link to="/" className="flex items-center gap-2 pl-5">
+                <div className="w-10 h-10 rounded-xl bg-[#6FAF8E]/20 flex items-center justify-center">
+                  <ShoppingBag size={20} className="text-[#2E7D32]" />
+                </div>
+
+                <div>
+                  <h1 className="text-2xl font-black text-[#2E7D32]">
+                    FreshCart !!
+                  </h1>
+                </div>
               </Link>
 
-              <div className="hidden lg:flex items-center space-x-4 ml-2">
+              {/* Right Icons */}
+
+              <div className="flex items-center gap-5">
+                <Link to="/wishlist" className="relative hover:text-[#2E7D32]">
+                  <Heart size={21} />
+                </Link>
+
+                <Link to="/cart" className="relative hover:text-[#2E7D32]">
+                  <ShoppingBag size={21} />
+
+                  {cartCount > 0 && (
+                    <span
+                      className="absolute
+-top-2
+-right-2
+bg-[#2E7D32]
+text-white
+text-[10px]
+w-5
+h-5
+rounded-full
+flex
+items-center
+justify-center"
+                    >
+                      {cartCount}
+                    </span>
+                  )}
+                </Link>
+
+                <div className="relative" ref={profileRef}>
+                  <button
+                    onClick={() => setProfileOpen(!profileOpen)}
+                    className="p-2 rounded-full hover:bg-green-50 transition"
+                  >
+                    <UserRound size={22} className="text-[#795548]" />
+                  </button>
+
+                  {profileOpen && (
+                    <div className="absolute right-0 mt-3 w-56 bg-white rounded-xl shadow-xl border border-gray-100 z-50 overflow-hidden">
+                      {!isLoggedIn ? (
+                        <>
+                          <button
+                            onClick={() => {
+                              navigate("/login");
+                              setProfileOpen(false);
+                            }}
+                            className="w-full text-left px-4 py-3 hover:bg-green-50"
+                          >
+                            Login
+                          </button>
+
+                          <button
+                            onClick={() => {
+                              navigate("/register");
+                              setProfileOpen(false);
+                            }}
+                            className="w-full text-left px-4 py-3 hover:bg-green-50"
+                          >
+                            Register
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          {isAdmin && (
+                            <>
+                              <button
+                                onClick={() => {
+                                  navigate("/admin");
+                                  setProfileOpen(false);
+                                }}
+                                className="w-full text-left px-4 py-3 hover:bg-green-50"
+                              >
+                                Admin
+                              </button>
+                              <button
+                                onClick={() => {
+                                  navigate("/admin/dashboard");
+                                  setProfileOpen(false);
+                                }}
+                                className="w-full text-left px-4 py-3 hover:bg-green-50"
+                              >
+                                Dashboard
+                              </button>
+                              <button
+                                onClick={() => {
+                                  navigate("/myorders");
+                                  setProfileOpen(false);
+                                }}
+                                className="w-full text-left px-4 py-3 hover:bg-green-50"
+                              >
+                                My Orders
+                              </button>
+                            </>
+                          )}
+
+                          <button
+                            onClick={handleLogout}
+                            className="w-full text-left px-4 py-3 text-red-500 hover:bg-red-50"
+                          >
+                            Logout
+                          </button>
+                        </>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom */}
+
+            <div className="pb-3 pl-5 flex items-center justify-between">
+              <div className="flex gap-10">
                 <Link
                   to="/"
-                  className="nav-link-anim text-[#795548] hover:text-brand-primary font-medium text-sm"
+                  className="font-semibold text-[#795548] hover:text-[#2E7D32]"
                 >
                   Home
                 </Link>
 
-                {isLoggedIn && (
-                  <Link
-                    to="/myorders"
-                    className="nav-link-anim text-[#795548] hover:text-brand-primary font-medium text-sm"
-                  >
-                    My Orders
-                  </Link>
-                )}
-
-                {isLoggedIn && (
-                  <Link
-                    to="/plus"
-                    className="flex items-center gap-1 px-3 py-1 bg-yellow-50 text-yellow-700 rounded-full border border-yellow-200 hover:bg-yellow-100 font-bold text-xs"
-                  >
-                    <Crown size={10} /> Plus
-                  </Link>
-                )}
-
-                {isLoggedIn && !isAdmin && <JoinDropdown />}
-
-                {isAdmin && (
-                  <>
-                    <div className="h-4 w-px bg-gray-200" />
-                    <Link
-                      to="/admin"
-                      className="nav-link-anim text-[#795548] hover:text-brand-primary font-bold text-sm"
-                    >
-                      Admin
-                    </Link>
-                    <Link
-                      to="/admin/dashboard"
-                      className="nav-link-anim text-[#795548] hover:text-brand-primary font-medium text-sm relative flex items-center"
-                    >
-                      Dashboard
-                      {lowStockCount > 0 && (
-                        <span className="ml-1 bg-amber-500 text-white text-[9px] font-bold h-4 w-4 flex items-center justify-center rounded-full animate-pulse">
-                          {lowStockCount}
-                        </span>
-                      )}
-                    </Link>
-                    <Link
-                      to="/admin/orders"
-                      className="nav-link-anim text-[#795548] hover:text-brand-primary font-medium text-sm relative flex items-center"
-                    >
-                      Orders
-                      {(deliveryAlertCount > 0 || refundAlertCount > 0) && (
-                        <div className="flex items-center ml-1">
-                          {deliveryAlertCount > 0 && (
-                            <span className="bg-red-500 text-white text-[9px] font-bold h-4 w-4 flex items-center justify-center rounded-full">
-                              {deliveryAlertCount}
-                            </span>
-                          )}
-                          {refundAlertCount > 0 && (
-                            <span className="bg-purple-600 text-white text-[9px] font-bold h-4 w-4 flex items-center justify-center rounded-full -ml-1">
-                              {refundAlertCount}
-                            </span>
-                          )}
-                        </div>
-                      )}
-                    </Link>
-                    <AdminManageDropdown
-                      sellerCount={sellerRequestCount}
-                      partnerCount={partnerRequestCount}
-                    />
-                  </>
-                )}
-              </div>
-            </div>
-
-            {!isAuthPage && (
-              <div className="flex flex-1 max-w-[46px] sm:max-w-sm md:max-w-md mx-0.5 sm:mx-2 md:mx-6 relative">
-                <i className="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs md:text-sm" />
-                <input
-                  type="text"
-                  placeholder="Search products..."
-                  className="w-full pl-8 md:pl-9 pr-2 sm:pr-3 md:pr-4 py-1.5 md:py-2 bg-white/80 rounded-full focus:ring-2 focus:ring-[#81C784] outline-none text-xs md:text-sm border border-[#81C784]/25 transition-all placeholder:text-transparent sm:placeholder:text-[#795548]/45"
-                  value={search}
-                  onChange={(e) => {
-                    const val = e.target.value;
-                    setSearch(val);
-                    if (!val.trim()) {
-                      setSuggestions([]);
-                      setShowSuggestions(false);
-                    } else fetchSuggestions(val);
-                  }}
-                  onFocus={() => search.trim() && setShowSuggestions(true)}
-                  onBlur={() =>
-                    setTimeout(() => setShowSuggestions(false), 200)
-                  }
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" && search.trim()) {
-                      navigate(`/search?q=${encodeURIComponent(search)}`);
-                      setShowSuggestions(false);
-                    }
-                  }}
-                />
-                <AnimatePresence>
-                  {showSuggestions && suggestions.length > 0 && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -8, scale: 0.97 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: -8, scale: 0.97 }}
-                      transition={{ duration: 0.15 }}
-                      className="absolute top-full mt-2 w-full bg-white border border-gray-100 rounded-xl shadow-xl z-50 overflow-hidden"
-                    >
-                      {suggestions.map((product, index) => (
-                        <motion.div
-                          key={product._id}
-                          initial={{ opacity: 0, x: -8 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: index * 0.03 }}
-                          className="px-4 py-3 hover:bg-gray-50 cursor-pointer flex items-center gap-3 border-b border-gray-50 last:border-none"
-                          onMouseDown={(e) => {
-                            e.preventDefault();
-                            setSearch(product.name);
-                            setShowSuggestions(false);
-                            navigate(
-                              `/search?q=${encodeURIComponent(product.name)}`,
-                            );
-                          }}
-                        >
-                          <i className="fa-solid fa-magnifying-glass text-gray-300 text-xs" />
-                          <span className="text-gray-700 text-sm font-medium">
-                            {product.name}
-                          </span>
-                        </motion.div>
-                      ))}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            )}
-
-            <div className="flex items-center gap-0.5 md:gap-3 shrink-0">
-              <Link
-                to="/wishlist"
-                className="relative flex p-1.5 md:px-2.5 md:py-2 text-[#795548] hover:text-red-500 transition items-center gap-1.5 rounded-full hover:bg-white/70"
-                aria-label="Wishlist"
-              >
-                <Heart
-                  size={19}
-                  className={
-                    wishlistCount > 0 ? "fill-red-500 text-red-500" : ""
-                  }
-                />
-                {/* <span className="hidden md:inline text-sm font-bold"></span> */}
-                {wishlistCount > 0 && (
-                  <span className="absolute -top-1 -left-1 bg-red-500 text-white text-[9px] font-bold h-4 w-4 flex items-center justify-center rounded-full border border-white">
-                    {wishlistCount > 9 ? "9+" : wishlistCount}
-                  </span>
-                )}
-              </Link>
-
-              <Link
-                to="/cart"
-                className="relative flex p-1.5 md:px-2.5 md:py-2 text-brand-primary hover:text-[#1B5E20] items-center gap-1.5 rounded-full hover:bg-white/70"
-                aria-label="Cart"
-              >
-                <ShoppingCart size={19} />
-                {/* <span className="hidden md:inline text-sm font-bold"></span> */}
-                {cartCount > 0 && (
-                  <span className="absolute -top-1 -left-1 bg-[#2E7D32] text-white text-[9px] font-bold h-4 min-w-4 px-1 flex items-center justify-center rounded-full border border-white">
-                    {cartCount > 9 ? "9+" : cartCount}
-                  </span>
-                )}
-              </Link>
-
-              {!isLoggedIn ? (
                 <Link
-                  to="/login"
-                  className="bg-[#2E7D32] text-white px-2.5 md:px-4 py-1.5 md:py-2 rounded-lg text-xs md:text-sm font-semibold hover:bg-[#1B5E20] transition"
+                  to="/myorders"
+                  className="font-semibold text-[#795548] hover:text-[#2E7D32]"
                 >
-                  Login
+                  Orders
                 </Link>
-              ) : (
-                <button
-                  className="hidden lg:block text-gray-400 hover:text-red-500 text-sm font-medium transition"
-                  onClick={handleLogout}
+
+                <Link
+                  to="/plus"
+                  className="px-4 py-1 rounded-full bg-yellow-100 text-yellow-700 text-sm font-bold"
                 >
-                  Logout
-                </button>
-              )}
+                  Plus
+                </Link>
+              </div>
+
+              {/* Search */}
+
+              <div className="relative w-72">
+                <Search
+                  size={18}
+                  className="absolute left-3 top-3 text-gray-400"
+                />
+
+                <input
+                  placeholder="Search products..."
+                  className="
+w-full
+h-11
+rounded-full
+border
+border-green-200
+bg-white
+pl-10
+pr-4
+outline-none
+focus:ring-2
+focus:ring-[#6FAF8E]
+"
+                />
+              </div>
             </div>
           </div>
         </nav>
@@ -901,8 +716,7 @@ border-b border-brand-light/30"
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/orders" element={<AdminOrders />} />
           <Route path="/admin/orders/:id" element={<AdminOrderDetails />} />
-          <Route path="/admin/sellers" element={<AdminSellerRequests />} />
-          <Route path="/admin/partners" element={<AdminDeliveryPartners />} />
+
           <Route
             path="/login"
             element={
@@ -918,8 +732,6 @@ border-b border-brand-light/30"
           <Route path="/order/:id" element={<OrderDetails />} />
           <Route path="/wishlist" element={<WishlistPage />} />
           <Route path="/search" element={<SearchResultsPage />} />
-          <Route path="/become-seller" element={<SellerRequestPage />} />
-          <Route path="/become-partner" element={<BecomePartnerPage />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </main>
@@ -1045,7 +857,6 @@ function BottomNavItem({ to, icon, label, active }) {
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 export default function App() {
   const [showSplash, setShowSplash] = useState(
     () => !sessionStorage.getItem("splashShown"),

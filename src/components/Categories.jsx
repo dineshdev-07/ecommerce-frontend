@@ -6,7 +6,7 @@ import { useCart } from "../context/CartContext";
 import { useWishlist } from "../context/WishlistContext";
 import { calculateDiscountedPrice } from "../utils/offerUtils";
 import { Heart } from "lucide-react";
-import specialOfferBadge from "../assets/Offer badge.png";
+
 
 const API = import.meta.env.VITE_API_URL;
 
@@ -91,13 +91,6 @@ const CategoryProductCard = ({ product, isLowestPriceItem = false }) => {
           className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105 p-1"
           alt={product.name}
         />
-        {totalDiscount >= 25 && (
-          <img
-            src={specialOfferBadge}
-            alt="Special Offer"
-            className="absolute top-0 right-1 w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 object-contain drop-shadow-xl pointer-events-none"
-          />
-        )}
       </div>
 
       {/* Info */}
