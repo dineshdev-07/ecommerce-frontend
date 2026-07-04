@@ -210,22 +210,28 @@ const WishlistPage = () => {
 
       <div className="px-3 sm:px-6 lg:px-8 py-4 sm:py-6">
         {products.length === 0 ? (
-          <div className="flex flex-col items-center justify-center  gap-4 text-center">
-            <div className="w-20 h-20 bg-red-50 rounded-full flex items-center justify-center">
-              <Frown size={30} className="text-red-300" />
+          <div className="flex min-h-[60vh] items-center justify-center px-6">
+            <div className="max-w-sm text-center">
+              <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-gray-100">
+                <Frown size={36} className="text-gray-500" />
+              </div>
+
+              <h2 className="mt-6 text-2xl font-bold text-gray-900">
+                Wishlist is Empty
+              </h2>
+
+              <p className="mt-3 text-sm leading-6 text-gray-500">
+                Save your favorite products and they'll appear here whenever
+                you're ready.
+              </p>
+
+              <button
+                onClick={() => navigate("/")}
+                className="mt-8 w-full rounded-xl bg-[#6FAF8E] py-3 font-semibold text-white transition hover:bg-[#5d9c7b]"
+              >
+                Explore Products
+              </button>
             </div>
-            <h2 className="text-xl font-black text-gray-800">
-              Your wishlist is empty
-            </h2>
-            <p className="text-gray-400 text-sm max-w-xs">
-              Tap the heart on any product to save it here.
-            </p>
-            <button
-              onClick={() => navigate("/")}
-              className="bg-[#6FAF8E] text-white px-8 py-3 rounded-xl font-bold text-sm hover:bg-green-700 transition"
-            >
-              Browse Products
-            </button>
           </div>
         ) : (
           <div className="grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2.5 sm:gap-4">

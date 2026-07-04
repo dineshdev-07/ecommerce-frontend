@@ -403,23 +403,40 @@ const Cart = () => {
   if (orderSuccess)
     return (
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="fixed inset-0 bg-white flex  flex-col items-center justify-center z-[200] p-6 text-center"
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.35 }}
+        className="fixed inset-0 z-[200] flex items-center justify-center bg-white px-6"
       >
-        <CheckCircle size={56} className="text-[#6FAF8E] mb-4" />
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-2">
-          Order Placed!
-        </h2>
-        <p className="text-gray-400 text-sm sm:text-base mb-6">
-          Your goodies are on the way.
-        </p>
-        <button
-          onClick={() => navigate("/myorders")}
-          className="bg-[#6FAF8E] text-white px-8 py-3 rounded-2xl font-black text-sm sm:text-base shadow-lg hover:bg-green-600 transition"
-        >
-          VIEW ORDERS
-        </button>
+        <div className="w-full max-w-md text-center">
+          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-green-100">
+            <CheckCircle size={42} className="text-green-600" />
+          </div>
+
+          <h1 className="mt-6 text-3xl font-bold text-gray-900">
+            Order Confirmed
+          </h1>
+
+          <p className="mt-3 text-gray-500 leading-7">
+            Your order has been placed successfully. You can track delivery
+            anytime from
+            <span className="font-semibold text-gray-700"> My Orders</span>.
+          </p>
+
+          <button
+            onClick={() => navigate("/myorders")}
+            className="mt-8 w-full rounded-xl bg-[#6FAF8E] py-3 font-semibold text-white transition hover:bg-[#5d9c7b]"
+          >
+            View My Orders
+          </button>
+
+          <button
+            onClick={() => navigate("/")}
+            className="mt-3 w-full rounded-xl border border-gray-300 py-3 font-semibold text-gray-700 transition hover:bg-gray-100"
+          >
+            Continue Shopping
+          </button>
+        </div>
       </motion.div>
     );
   if (loading) {

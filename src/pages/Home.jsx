@@ -13,7 +13,9 @@ import frozenImg from "../assets/cat/frozen.png";
 
 const CACHE_KEY = "FreshCart_home";
 const CACHE_TTL = 5 * 60 * 1000;
+
 const API = import.meta.env.VITE_API_URL;
+const userInfo = JSON.parse(localStorage.getItem("userInfo") || "null");
 
 const readCache = () => {
   try {
@@ -152,12 +154,11 @@ const Home = ({ search = "" }) => {
 
   const handleRemoveFromHome = async (id) => {
     if (!window.confirm("Remove this product from homepage?")) return;
+    console.log("Token:", userInfo?.token);
     try {
       const res = await fetch(`${API}/api/products/${id}/pin`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({}),
       });
       if (!res.ok) {
         alert("Failed to remove product");
@@ -352,7 +353,7 @@ const Home = ({ search = "" }) => {
         <div className="flex justify-between items-start gap-3 mb-3 sm:mb-5 md:mb-6 ">
           <SectionTitle eyebrow="Save naturally" title="Special Offers" />
           {isAdmin && (
-            <label  className=" font-semibold px-4 py-2 bg-[#2E7D32] text-white rounded-lg hover:bg-[#1B5E20] transition">
+            <label className=" font-semibold px-4 py-2 bg-[#2E7D32] text-white rounded-lg hover:bg-[#1B5E20] transition">
               New Offer
               <input
                 type="file"

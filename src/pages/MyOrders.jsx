@@ -73,28 +73,6 @@ const MyOrders = () => {
     }
   };
 
-  const downloadInvoice = async (orderId) => {
-    try {
-      const response = await fetch(`${API}/api/orders/${orderId}/invoice`, {
-        credentials: "include",
-      });
-
-      if (!response.ok) throw new Error("Download failed");
-
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", `invoice_${orderId}.pdf`);
-      document.body.appendChild(link);
-      link.click();
-      link.parentNode.removeChild(link);
-      window.URL.revokeObjectURL(url);
-    } catch (err) {
-      alert("Invoice download failed ❌");
-    }
-  };
-
   return (
     <div className="min-h-screen bg-[#FFFBEA] p-5 rounded-2xl">
       {/* Header */}
@@ -210,13 +188,6 @@ const MyOrders = () => {
                   >
                     View Details
                   </Link>
-
-                  <button
-                    onClick={() => downloadInvoice(order._id)}
-                    className="px-5 py-2 rounded-lg bg-[#2F7D32] text-white hover:bg-[#27682A]"
-                  >
-                    Invoice
-                  </button>
 
                   {!order.isDelivered && !order.isCancelled && (
                     <button

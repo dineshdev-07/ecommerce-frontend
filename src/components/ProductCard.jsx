@@ -75,95 +75,72 @@ const ProductCard = ({ product, isLowestPriceItem = false }) => {
   return (
     <div
       onClick={() => navigate(`/product/${product._id}`)}
-      className="group relative bg-white rounded-xl border border-gray-200 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 cursor-pointer overflow-hidden flex flex-col w-full"
+      className="group cursor-pointer overflow-hidden rounded-2xl border border-gray-200 bg-white transition hover:-translate-y-1 hover:shadow-lg"
     >
-      {/* Wishlist button */}
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          toggleWishlist(product._id);
-        }}
-        className="absolute top-2 right-2 z-20 transition-transform active:scale-90"
-      >
-        <Heart
-          size={18}
-          strokeWidth={2}
-          className={`transition-all duration-300 ${
-            liked
-              ? "text-red-500 fill-red-500 drop-shadow-[0_0_6px_rgba(239,68,68,0.4)]"
-              : "text-gray-400 group-hover:text-red-400 drop-shadow-[0_1px_2px_rgba(0,0,0,0.15)]"
-          }`}
-        />
-      </button>
-
-      {/* ── Image — fixed height, never stretches ── */}
-      <div className="relative w-full h-28 xs:h-32 sm:h-36 md:h-40 lg:h-44 bg-gray-50 flex items-center justify-center overflow-hidden flex-shrink-0">
+      {/* Product Image */}
+      <div className="relative bg-gray-50">
         <img
-          src={product.images?.[0] || "https://via.placeholder.com/200"}
-          className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105 p-1"
+          src={product.images?.[0] || "https://via.placeholder.com/250"}
           alt={product.name}
+          className="h-44 w-full object-contain p-4 transition duration-300 group-hover:scale-105"
         />
+
+        {/* Wishlist Bottom Right */}
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            toggleWishlist(product._id);
+          }}
+          className="absolute bottom-3 right-3 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-md transition hover:scale-110"
+        >
+          <Heart
+            size={20}
+            className={
+              liked
+                ? "fill-red-500 text-red-500"
+                : "text-gray-500 hover:text-red-500"
+            }
+          />
+        </button>
       </div>
 
-      {/* ── Info — fixed structure, no flex-1 on middle rows ── */}
-      <div className="p-2 xs:p-2.5 sm:p-3 flex flex-col">
-        {/* Brand — fixed 1 line */}
-        <p className="text-[8px] xs:text-[9px] sm:text-[10px] uppercase text-gray-400 font-semibold truncate">
-          {product.brand || "Brand"}
+      {/* Product Info */}
+      <div className="p-4">
+        <p className="h-4 text-xs font-medium uppercase tracking-wide text-gray-400 truncate">
+          {product.brand}
         </p>
 
-        {/* Name — fixed 2 lines with clamp */}
-       <h3 className="min-h-[40px] text-sm sm:text-base font-semibold text-gray-800 line-clamp-2 transition-colors duration-300 group-hover:text-[#2E7D32]">
-  {product.name}
-</h3>
-        {/* Price row — fixed 1 line */}
-        <div className="mt-1 sm:mt-1.5 flex items-center gap-1 sm:gap-1.5 flex-wrap">
-          <span className="text-sm xs:text-base sm:text-lg font-bold text-gray-900">
-            ₹{finalPrice}
-          </span>
-          {totalDiscount > 0 && mrp > finalPrice && (
-            <span className="text-[9px] xs:text-[10px] sm:text-xs text-gray-400 line-through">
-              ₹{mrp}
-            </span>
-          )}
-          {totalDiscount > 0 && (
-            <span className="text-[8px] xs:text-[9px] sm:text-[10px] font-semibold text-green-600">
-              {totalDiscount}% OFF
-            </span>
+       <h3 className="mt-1 h-10 line-clamp-2 text-sm font-semibold text-gray-800">
+          {product.name}
+        </h3>
+
+        <div className="mt-3 h-7 flex items-center gap-2">
+          <span className="text-lg font-bold text-gray-900">₹{finalPrice}</span>
+
+          {mrp > finalPrice && (
+            <>
+              <span className="text-sm text-gray-400 line-through">₹{mrp}</span>
+
+              <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs font-semibold text-green-700">
+                {totalDiscount}% OFF
+              </span>
+            </>
           )}
         </div>
 
-        {/* Savings — always reserve 1 line height */}
-        <div className="min-h-[1.1em] mt-0.5">
-          {totalSavings > 0 && (
-            <p className="text-[8px] xs:text-[9px] sm:text-[10px] text-green-600 font-semibold">
-              Save ₹{totalSavings}
-            </p>
-          )}
-        </div>
-
-        {/* Status — always reserve 1 line height */}
-        <div className="min-h-[1.1em] mt-1 sm:mt-1.5">{statusLine}</div>
-
-        {/* Delivery — fixed 1 line */}
-        <p className="text-[7px] xs:text-[8px] sm:text-[9px] md:text-[10px] text-green-600 font-semibold mt-1">
-          {isPlusMember ? "✨ Free Delivery (Plus)" : "Free Delivery"}
-        </p>
-
-        {/* ── Add to cart button ── */}
         <button
           onClick={(e) => {
             e.stopPropagation();
             if (!isOutOfStock) addToCart({ ...product, finalPrice });
           }}
           disabled={isOutOfStock}
-          className={`mt-2 sm:mt-2.5 w-full text-[9px] xs:text-[10px] sm:text-[11px] md:text-xs py-1 xs:py-1.5 sm:py-2 rounded-md font-semibold transition ${
+          className={`mt-4 w-full rounded-xl py-2.5 text-sm font-semibold transition ${
             isOutOfStock
-              ? "bg-white border border-gray-200 text-gray-300 cursor-not-allowed"
-              : "bg-[#2E7D32]  text-white hover:bg-[#1B5E20]"
+              ? "bg-gray-100 text-gray-400"
+              : "bg-[#2E7D32] text-white hover:bg-[#1B5E20]"
           }`}
         >
-          {isOutOfStock ? "Out of Stock" : "Add"}
+          {isOutOfStock ? "Out of Stock" : "Add to Cart"}
         </button>
       </div>
     </div>

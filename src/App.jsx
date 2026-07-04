@@ -128,7 +128,6 @@ function MobileDrawer({
   isAdmin,
   deliveryAlertCount,
   refundAlertCount,
-  sellerRequestCount,
   lowStockCount,
 }) {
   const navigate = useNavigate();
@@ -262,16 +261,7 @@ function MobileDrawer({
                     Manage
                   </p>
 
-                  <DrawerItem
-                    icon={<Store size={16} />}
-                    label="Seller Requests"
-                    badge={
-                      sellerRequestCount > 0
-                        ? { count: sellerRequestCount, color: "bg-[#6FAF8E]" }
-                        : null
-                    }
-                    onClick={() => go("/admin/sellers")}
-                  />
+                
                 </div>
               )}
             </div>
@@ -365,7 +355,6 @@ function AppContent() {
 
   const [deliveryAlertCount, setDeliveryAlertCount] = useState(0);
   const [refundAlertCount, setRefundAlertCount] = useState(0);
-  const [sellerRequestCount, setSellerRequestCount] = useState(0);
   const [lowStockCount, setLowStockCount] = useState(0);
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -469,7 +458,6 @@ function AppContent() {
       if (dashboardData.lowStockProducts) {
         setLowStockCount(dashboardData.lowStockProducts.length);
       }
-      setSellerRequestCount(0);
     } catch (err) {
       console.error("Badge fetch error:", err);
     }
@@ -489,7 +477,7 @@ function AppContent() {
   const isActive = (path) => location.pathname === path;
 
   const totalAdminBadge =
-    deliveryAlertCount + refundAlertCount + sellerRequestCount + lowStockCount;
+    deliveryAlertCount + refundAlertCount + lowStockCount;
 
   return (
     <div
@@ -515,7 +503,6 @@ border-b border-brand-light/30"
         isAdmin={isAdmin}
         deliveryAlertCount={deliveryAlertCount}
         refundAlertCount={refundAlertCount}
-        sellerRequestCount={sellerRequestCount}
         lowStockCount={lowStockCount}
       />
 

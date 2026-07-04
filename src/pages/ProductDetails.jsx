@@ -438,574 +438,552 @@ const ProductDetails = () => {
   const isLowStock = product.quantity > 0 && product.quantity <= 10;
 
   return (
-    <div className="bg-gray-100 min-h-screen pb-24 w-full rounded-2xl border border-gray-300 shadow-sm">
-      <nav
-        className={`bg-[#6FAF8E] p-4 text-white fixed left-0 right-0 z-50 shadow-md flex items-center justify-between transition-all ${
-          isScrolled ? "top-0" : "top-0 md:top-[65px]"
-        }`}
-      >
-        <div className="flex items-center">
-          <button onClick={() => navigate(-1)} className="mr-4 text-2xl">
-            <i className="fa-solid fa-arrow-left"></i>
-          </button>
-          <span className="font-bold truncate">{product.name}</span>
+    <>
+      
+      {/* Product Image */}
+      <div className=" rounded-2xl border border-gray-200 bg-white shadow-sm">
+        <div className="flex items-center justify-center h-[390px] p-8">
+          <img
+            src={
+              mainImage?.startsWith("http") ? mainImage : `${API}${mainImage}`
+            }
+            alt={product.name}
+             className="h-full w-full object-contain"
+          />
         </div>
-        {userInfo?.isAdmin && (
-          <button
-            onClick={() => setShowAdminEdit(true)}
-            className="bg-white text-[#6FAF8E] px-3 py-1 rounded-lg text-sm font-bold"
-          >
-            Edit Stock
-          </button>
-        )}
-      </nav>
 
-      <div className="h-16 md:h-[25px]"></div>
+        {/* Product Details */}
+        <div className="px-5 pb-6">
+          <p className="text-xs uppercase tracking-wide text-gray-400">
+            {product.brand || "FreshCart"}
+          </p>
 
-      <div className="bg-white p-6 flex justify-center border-b">
-        <img
-          src={mainImage?.startsWith("http") ? mainImage : `${API}${mainImage}`}
-          className="h-96 object-contain"
-          alt={product.name}
-        />
-      </div>
+          <h1 className="mt-1 text-2xl font-bold text-gray-800">
+            {product.name}
+          </h1>
 
-      <div className="bg-white p-5 shadow-sm">
-        <h1 className="text-xl font-medium">{product.name}</h1>
-        {appliedLabel && (
-          <span
-            className={`inline-block mt-1 text-xs px-2 py-1 rounded font-bold ${
-              appliedLabel === "NEW USER OFFER"
-                ? "bg-blue-100 text-blue-700"
-                : appliedLabel === "LOYALTY OFFER"
-                  ? "bg-purple-100 text-purple-700"
-                  : "bg-amber-100 text-amber-700"
-            }`}
-          >
-            {appliedLabel}
-          </span>
-        )}
-
-        <div className="flex items-center gap-3 mt-2 flex-wrap">
-          <span className="text-2xl font-bold text-green-600">
-            ₹{finalPrice}
-          </span>
-
-          {mrp > finalPrice && (
-            <span className="line-through text-gray-400 text-lg">₹{mrp}</span>
-          )}
-
-          {totalDiscount > 0 && (
-            <span className="text-sm text-red-500 font-semibold">
-              {totalDiscount}% OFF
+          {appliedLabel && (
+            <span className="inline-block mt-2 rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700">
+              {appliedLabel}
             </span>
           )}
-        </div>
 
-        {mrp > finalPrice && (
-          <p className="text-green-600 text-sm font-semibold mt-1">
-            You save ₹{mrp - finalPrice}
-          </p>
-        )}
+          {/* Price */}
+          <div className="mt-4 flex items-center gap-3 flex-wrap">
+            <span className="text-3xl font-bold text-[#2E7D32]">
+              ₹{finalPrice}
+            </span>
 
-        <p className="text-sm text-green-600 font-semibold mt-1">
-          {deliveryCharge === 0
-            ? dbUser?.isPlusMember
-              ? "✨ Free Delivery (Plus Member)"
-              : "✅ Free Delivery"
-            : `Delivery: ₹${deliveryCharge} (Free above ₹299)`}
-        </p>
+            {mrp > finalPrice && (
+              <span className="text-lg text-gray-400 line-through">₹{mrp}</span>
+            )}
 
-        <div className="mt-2">
-          {isOutOfStock ? (
-            <p className="text-red-600 font-semibold text-sm">
-              ❌ No stocks available
+            {totalDiscount > 0 && (
+              <span className="rounded-full bg-red-100 px-2 py-1 text-xs font-semibold text-red-600">
+                {totalDiscount}% OFF
+              </span>
+            )}
+          </div>
+
+          {mrp > finalPrice && (
+            <p className="mt-2 text-sm text-green-600 font-medium">
+              You save ₹{mrp - finalPrice}
             </p>
-          ) : isLowStock ? (
-            <p className="text-orange-500 font-semibold text-sm animate-pulse">
-              ⚠ Only {product.quantity} stocks left
+          )}
+
+          {/* Delivery */}
+          <div className="mt-5 space-y-2 text-sm">
+            <p className="text-green-600">✓ Free Delivery</p>
+
+            <p className="text-gray-600">Delivered within 10-20 mins</p>
+
+            {isOutOfStock ? (
+              <p className="font-semibold text-red-600">Out of Stock</p>
+            ) : isLowStock ? (
+              <p className="font-semibold text-orange-500">
+                Only {product.quantity} left
+              </p>
+            ) : (
+              <p className="font-semibold text-green-600">In Stock</p>
+            )}
+          </div>
+
+          {/* Description */}
+
+          <div className="mt-6">
+            <h2 className="mb-2 text-lg font-semibold">Description</h2>
+
+            <p
+              className={`text-gray-600 leading-7 ${
+                showFullDesc ? "" : "line-clamp-3"
+              }`}
+            >
+              {product.description}
             </p>
-          ) : null}
-        </div>
 
-        {dbUser?.firstOrderCompleted === false && (
-          <p className="mt-2 text-blue-600 text-sm font-semibold">
-            20% New User Offer applies to your cheapest item at checkout!
-          </p>
-        )}
-
-        <div className="mt-4">
-          <p
-            className={`text-gray-600 text-sm ${
-              showFullDesc ? "" : "line-clamp-2"
-            }`}
-          >
-            {product.description}
-          </p>
-          <button
-            onClick={() => setShowFullDesc(!showFullDesc)}
-            className="mt-2 text-[#6FAF8E] text-sm font-semibold"
-          >
-            {showFullDesc ? "Read Less ▲" : "Read More ▼"}
-          </button>
+            <button
+              onClick={() => setShowFullDesc(!showFullDesc)}
+              className="mt-2 text-sm font-semibold text-[#6FAF8E]"
+            >
+              {showFullDesc ? "Show Less" : "Read More"}
+            </button>
+          </div>
         </div>
       </div>
 
-      <div className="mt-2 p-5 bg-white">
-        <h2 className="font-bold mb-4">Similar Products</h2>
-        <div className="flex overflow-x-auto gap-4 pb-6 scrollbar-hide">
-          {similarProducts.map((item) => (
-            <div key={item._id} className="min-w-[200px]">
-              <ProductCard product={item} />
-            </div>
+      {/* Similar Products */}
+
+      <div className="mt-4 bg-white rounded-2xl p-5 pb-28">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-bold">Similar Products</h2>
+
+          <button
+            onClick={() => navigate("/")}
+            className="text-sm font-medium text-[#6FAF8E]"
+          >
+            View All
+          </button>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          {similarProducts.slice(0, 5).map((item) => (
+            <ProductCard key={item._id} product={item} />
           ))}
         </div>
       </div>
 
+      {/* Bottom Buttons */}
+
       {product.quantity > 0 && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white flex h-16 border-t z-50">
-          <button
-            onClick={() => addToCart({ ...product, finalPrice })}
-            className="flex-1 font-bold border-r"
-          >
-            ADD TO CART
-          </button>
-          <button
-            onClick={() => setShowPaymentModal(true)}
-            className="flex-1 bg-[#6FAF8E] text-white font-bold"
-          >
-            BUY NOW
-          </button>
+        <div className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t p-3">
+          <div className="flex gap-3">
+            <button
+              onClick={() => addToCart({ ...product, finalPrice })}
+              className="flex-1 rounded-xl border border-gray-300 py-3 font-semibold hover:bg-gray-100"
+            >
+              Add to Cart
+            </button>
+
+            <button
+              onClick={() => setShowPaymentModal(true)}
+              className="flex-1 rounded-xl border border-[#2E7D32] bg-[#2E7D32] py-3 font-semibold text-white hover:bg-[#1B5E20] transition"
+            >
+              Buy Now
+            </button>
+          </div>
         </div>
       )}
-
       {showPaymentModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-end sm:items-center justify-center z-[100] p-0 sm:p-4">
-          <div className="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl font-bold text-gray-800">Checkout</h3>
-              <button onClick={() => setShowPaymentModal(false)}>
-                <X size={24} />
+        <div className="fixed inset-0 z-50 bg-black/40 flex items-end sm:items-center justify-center">
+          <div className="w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl p-5 max-h-[90vh] overflow-y-auto">
+            {/* Header */}
+
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-bold">Checkout</h2>
+
+              <button
+                onClick={() => setShowPaymentModal(false)}
+                className="p-1"
+              >
+                <X size={22} />
               </button>
             </div>
 
-            <div className="mb-5">
-              <p className="text-xs font-bold text-gray-400 mb-2 uppercase tracking-wide">
-                Delivery Address
-              </p>
-              <div className="space-y-2">
-                {dbUser?.addresses?.map((addr) => (
-                  <div
-                    key={addr._id}
-                    className={`border-2 rounded-xl overflow-hidden transition ${selectedAddress?._id === addr._id ? "border-[#6FAF8E]" : "border-gray-100"}`}
-                  >
-                    {editingAddress?._id === addr._id ? (
-                      <div className="p-3 space-y-2 bg-green-50">
-                        <p className="text-[10px] font-black text-[#6FAF8E] uppercase tracking-wider">
-                          Editing Address
-                        </p>
-                        <input
-                          className="w-full text-xs p-2 border rounded-lg outline-none focus:ring-2 focus:ring-[#6FAF8E]"
-                          placeholder="Full Address"
-                          value={editingAddress.fullAddress}
-                          onChange={(e) =>
-                            setEditingAddress({
-                              ...editingAddress,
-                              fullAddress: e.target.value,
-                            })
-                          }
-                        />
-                        <select
-                          className="w-full text-xs p-2 border rounded-lg outline-none focus:ring-2 focus:ring-[#6FAF8E] bg-white"
-                          value={editingAddress.district || ""}
-                          onChange={(e) =>
-                            setEditingAddress({
-                              ...editingAddress,
-                              district: e.target.value,
-                            })
-                          }
-                        >
-                          <option value="">Select District *</option>
-                          {TN_DISTRICTS.map((d) => (
-                            <option key={d} value={d}>
-                              {d}
-                            </option>
-                          ))}
-                        </select>
-                        <div className="flex gap-2">
-                          <input
-                            className="w-1/2 text-xs p-2 border rounded-lg outline-none focus:ring-2 focus:ring-[#6FAF8E]"
-                            placeholder="Pincode"
-                            value={editingAddress.pinCode}
-                            onChange={(e) =>
-                              setEditingAddress({
-                                ...editingAddress,
-                                pinCode: e.target.value,
-                              })
-                            }
-                          />
-                          <input
-                            className="w-1/2 text-xs p-2 border rounded-lg outline-none focus:ring-2 focus:ring-[#6FAF8E]"
-                            placeholder="Phone"
-                            value={editingAddress.phone}
-                            onChange={(e) =>
-                              setEditingAddress({
-                                ...editingAddress,
-                                phone: e.target.value,
-                              })
-                            }
-                          />
-                        </div>
-                        <div className="flex gap-2">
-                          <button
-                            onClick={saveEditedAddress}
-                            className="flex-1 text-xs py-2 bg-[#6FAF8E] text-white rounded-lg font-bold hover:bg-green-600 transition"
-                          >
-                            Save
-                          </button>
-                          <button
-                            onClick={() => setEditingAddress(null)}
-                            className="flex-1 text-xs py-2 bg-gray-100 text-gray-600 rounded-lg font-bold hover:bg-gray-200 transition"
-                          >
-                            Cancel
-                          </button>
-                        </div>
-                      </div>
-                    ) : (
-                      <div
-                        className={`p-3 flex items-start gap-2 cursor-pointer transition ${selectedAddress?._id === addr._id ? "bg-green-50" : "hover:bg-gray-50"}`}
-                        onClick={() => setSelectedAddress(addr)}
-                      >
-                        <MapPin
-                          size={13}
-                          className="mt-0.5 text-gray-400 shrink-0"
-                        />
-                        <div className="min-w-0 flex-1">
-                          <p className="text-xs sm:text-sm font-bold truncate">
-                            {addr.fullAddress}
-                          </p>
-                          <p className="text-[10px] sm:text-xs text-gray-500 mt-0.5">
-                            {addr.district && (
-                              <span className="font-semibold text-gray-600">
-                                {addr.district} ·{" "}
-                              </span>
-                            )}
-                            {addr.pinCode} · {addr.phone}
-                          </p>
-                        </div>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setEditingAddress({
-                              ...addr,
-                              district: addr.district || "",
-                            });
-                          }}
-                          className="shrink-0 text-[9px] font-black text-[#6FAF8E] border border-[#6FAF8E]/30 px-2 py-1 rounded-lg hover:bg-[#6FAF8E]/10 transition"
-                        >
-                          Edit
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-              {editingAddress && (
-                <div className="mt-6 border rounded-xl p-4 bg-yellow-50">
-                  <h3 className="font-semibold mb-3">Edit Address</h3>
+            {/* Saved Address */}
 
-                  <textarea
-                    rows={3}
-                    className="w-full border rounded-lg p-3 mb-3"
-                    value={editingAddress.fullAddress}
-                    onChange={(e) =>
-                      setEditingAddress({
-                        ...editingAddress,
-                        fullAddress: e.target.value,
-                      })
-                    }
-                  />
+            <h3 className="text-xs font-semibold uppercase text-gray-400 mb-3">
+              Delivery Address
+            </h3>
 
-                  <select
-                    className="w-full border rounded-lg p-3 mb-3"
-                    value={editingAddress.district}
-                    onChange={(e) =>
-                      setEditingAddress({
-                        ...editingAddress,
-                        district: e.target.value,
-                      })
-                    }
-                  >
-                    {TN_DISTRICTS.map((d) => (
-                      <option key={d}>{d}</option>
-                    ))}
-                  </select>
+            <div className="space-y-3">
+              {dbUser?.addresses?.map((addr) => (
+                <div
+                  key={addr._id}
+                  onClick={() => setSelectedAddress(addr)}
+                  className={`cursor-pointer rounded-xl border p-4 transition ${
+                    selectedAddress?._id === addr._id
+                      ? "border-[#6FAF8E] bg-green-50"
+                      : "border-gray-200 hover:border-[#6FAF8E]"
+                  }`}
+                >
+                  <div className="flex justify-between">
+                    <div className="flex-1">
+                      <p className="font-semibold text-sm">
+                        {addr.fullAddress}
+                      </p>
 
-                  <div className="grid grid-cols-2 gap-3 mb-3">
-                    <input
-                      className="border rounded-lg p-3"
-                      value={editingAddress.pinCode}
-                      onChange={(e) =>
-                        setEditingAddress({
-                          ...editingAddress,
-                          pinCode: e.target.value,
-                        })
-                      }
-                    />
+                      <p className="text-xs text-gray-500 mt-1">
+                        {addr.district}
+                      </p>
 
-                    <input
-                      className="border rounded-lg p-3"
-                      value={editingAddress.phone}
-                      onChange={(e) =>
-                        setEditingAddress({
-                          ...editingAddress,
-                          phone: e.target.value,
-                        })
-                      }
-                    />
-                  </div>
-
-                  <div className="flex gap-3">
-                    <button
-                      onClick={saveEditedAddress}
-                      className="flex-1 bg-green-600 text-white rounded-lg py-3"
-                    >
-                      Save Changes
-                    </button>
+                      <p className="text-xs text-gray-500">
+                        {addr.pinCode} • {addr.phone}
+                      </p>
+                    </div>
 
                     <button
-                      onClick={() => setEditingAddress(null)}
-                      className="flex-1 border rounded-lg py-3"
+                      onClick={(e) => {
+                        e.stopPropagation();
+
+                        setEditingAddress({
+                          ...addr,
+                          district: addr.district || "",
+                        });
+                      }}
+                      className="text-xs font-semibold text-[#6FAF8E]"
                     >
-                      Cancel
+                      Edit
                     </button>
                   </div>
                 </div>
-              )}
+              ))}
+            </div>
 
-              {/* Add New Address form */}
-              <div className="border-2 border-dashed rounded-xl p-3 space-y-2 mt-2">
-                <div className="flex justify-between items-center">
-                  <span className="text-[10px] sm:text-xs font-bold text-gray-500">
-                    Add New
-                  </span>
-                </div>
-                <input
-                  className="w-full text-xs sm:text-sm p-2 border rounded-lg outline-none focus:ring-2 focus:ring-[#6FAF8E]"
-                  placeholder="Full Address"
-                  value={addressInput.fullAddress}
+            {/* Edit Address */}
+
+            {editingAddress && (
+              <div className="mt-6 rounded-xl border p-4 bg-gray-50">
+                <h3 className="font-semibold mb-4">Edit Address</h3>
+
+                <textarea
+                  rows={3}
+                  className="w-full rounded-lg border p-3 mb-3 outline-none"
+                  value={editingAddress.fullAddress}
                   onChange={(e) =>
-                    setAddressInput({
-                      ...addressInput,
+                    setEditingAddress({
+                      ...editingAddress,
                       fullAddress: e.target.value,
                     })
                   }
                 />
+
                 <select
-                  className="w-full text-xs sm:text-sm p-2 border rounded-lg outline-none focus:ring-2 focus:ring-[#6FAF8E] bg-white text-gray-700"
-                  value={addressInput.district || ""}
+                  className="w-full rounded-lg border p-3 mb-3"
+                  value={editingAddress.district}
                   onChange={(e) =>
-                    setAddressInput({
-                      ...addressInput,
+                    setEditingAddress({
+                      ...editingAddress,
                       district: e.target.value,
                     })
                   }
                 >
-                  <option value="">Select District *</option>
+                  <option value="">Select District</option>
+
                   {TN_DISTRICTS.map((d) => (
-                    <option key={d} value={d}>
-                      {d}
-                    </option>
+                    <option key={d}>{d}</option>
                   ))}
                 </select>
-                <div className="flex gap-2">
+
+                <div className="grid grid-cols-2 gap-3 mb-3">
                   <input
-                    className="w-1/2 text-xs sm:text-sm p-2 border rounded-lg outline-none focus:ring-2 focus:ring-[#6FAF8E]"
+                    className="rounded-lg border p-3"
                     placeholder="Pincode"
-                    value={addressInput.pinCode}
+                    value={editingAddress.pinCode}
                     onChange={(e) =>
-                      setAddressInput({
-                        ...addressInput,
+                      setEditingAddress({
+                        ...editingAddress,
                         pinCode: e.target.value,
                       })
                     }
                   />
+
                   <input
-                    className="w-1/2 text-xs sm:text-sm p-2 border rounded-lg outline-none focus:ring-2 focus:ring-[#6FAF8E]"
+                    className="rounded-lg border p-3"
                     placeholder="Phone"
-                    value={addressInput.phone}
+                    value={editingAddress.phone}
                     onChange={(e) =>
-                      setAddressInput({
-                        ...addressInput,
+                      setEditingAddress({
+                        ...editingAddress,
                         phone: e.target.value,
                       })
                     }
                   />
                 </div>
+
+                <div className="flex gap-3">
+                  <button
+                    onClick={saveEditedAddress}
+                    className="flex-1 rounded-xl bg-[#6FAF8E] py-3 text-white font-semibold"
+                  >
+                    Save
+                  </button>
+
+                  <button
+                    onClick={() => setEditingAddress(null)}
+                    className="flex-1 rounded-xl border py-3 font-semibold"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Add Address */}
+
+            <div className="mt-6 rounded-xl border border-dashed p-4">
+              <h3 className="font-semibold mb-4">Add New Address</h3>
+
+              <textarea
+                rows={3}
+                className="w-full rounded-lg border p-3 mb-3"
+                placeholder="Full Address"
+                value={addressInput.fullAddress}
+                onChange={(e) =>
+                  setAddressInput({
+                    ...addressInput,
+                    fullAddress: e.target.value,
+                  })
+                }
+              />
+
+              <select
+                className="w-full rounded-lg border p-3 mb-3"
+                value={addressInput.district}
+                onChange={(e) =>
+                  setAddressInput({
+                    ...addressInput,
+                    district: e.target.value,
+                  })
+                }
+              >
+                <option value="">Select District</option>
+
+                {TN_DISTRICTS.map((d) => (
+                  <option key={d}>{d}</option>
+                ))}
+              </select>
+
+              <div className="grid grid-cols-2 gap-3 mb-3">
+                <input
+                  className="rounded-lg border p-3"
+                  placeholder="Pincode"
+                  value={addressInput.pinCode}
+                  onChange={(e) =>
+                    setAddressInput({
+                      ...addressInput,
+                      pinCode: e.target.value,
+                    })
+                  }
+                />
+
+                <input
+                  className="rounded-lg border p-3"
+                  placeholder="Phone"
+                  value={addressInput.phone}
+                  onChange={(e) =>
+                    setAddressInput({
+                      ...addressInput,
+                      phone: e.target.value,
+                    })
+                  }
+                />
+              </div>
+
+              <button
+                onClick={saveNewAddress}
+                className="w-full rounded-xl bg-[#6FAF8E] py-3 text-white font-semibold"
+              >
+                Save Address
+              </button>
+            </div>
+
+            {/* ---------- PART 2B STARTS HERE ---------- */}
+            {/* ---------- PART 2B ---------- */}
+
+            {/* Order Summary */}
+
+            <div className="mt-6 rounded-2xl bg-gray-50 p-4">
+              <h3 className="text-lg font-semibold mb-4">Order Summary</h3>
+
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span>Items</span>
+                  <span>{buyNow ? 1 : cartItems.length}</span>
+                </div>
+
+                <div className="flex justify-between">
+                  <span>Subtotal</span>
+                  <span>₹{subtotal}</span>
+                </div>
+
+                <div className="flex justify-between">
+                  <span>Discount</span>
+                  <span className="text-green-600">-₹{discount}</span>
+                </div>
+
+                <div className="flex justify-between">
+                  <span>Delivery</span>
+
+                  <span
+                    className={
+                      deliveryCharge === 0 ? "text-green-600 font-semibold" : ""
+                    }
+                  >
+                    {deliveryCharge === 0 ? "FREE" : `₹${deliveryCharge}`}
+                  </span>
+                </div>
+              </div>
+
+              <hr className="my-4" />
+
+              <div className="flex justify-between text-lg font-bold">
+                <span>Total</span>
+
+                <span className="text-[#6FAF8E]">₹{grandTotal}</span>
+              </div>
+            </div>
+
+            {/* Payment */}
+
+            <div className="mt-6">
+              <h3 className="text-lg font-semibold mb-4">Payment Method</h3>
+
+              <div className="space-y-3">
+                {/* Online */}
+
                 <button
-                  onClick={saveNewAddress}
-                  className="w-full text-xs sm:text-sm py-2 bg-[#6FAF8E] text-white rounded-lg font-bold hover:bg-green-600 transition"
+                  onClick={() => {
+                    setPaymentMethod("ONLINE");
+                    processPayment();
+                  }}
+                  disabled={loading || !selectedAddress}
+                  className={`w-full rounded-xl py-3 font-semibold transition ${
+                    loading
+                      ? "bg-gray-300 text-white"
+                      : "bg-[#6FAF8E] text-white hover:bg-green-700"
+                  }`}
                 >
-                  Save Address
+                  {loading ? (
+                    "Processing..."
+                  ) : (
+                    <>
+                      💳 Pay Online
+                      <div className="text-xs font-normal mt-1 opacity-90">
+                        Razorpay
+                      </div>
+                    </>
+                  )}
+                </button>
+
+                {/* COD */}
+
+                <button
+                  onClick={() => {
+                    setPaymentMethod("COD");
+                    placeOrder();
+                  }}
+                  disabled={loading || !selectedAddress}
+                  className={`w-full rounded-xl border py-3 font-semibold transition ${
+                    loading ? "bg-gray-100 text-gray-400" : "hover:bg-gray-100"
+                  }`}
+                >
+                  {loading ? (
+                    "Placing Order..."
+                  ) : (
+                    <>
+                      🚚 Cash on Delivery
+                      <div className="text-xs text-gray-500 mt-1">
+                        Pay after delivery
+                      </div>
+                    </>
+                  )}
                 </button>
               </div>
             </div>
 
-            {/* Order Summary */}
-            <div className="bg-gray-50 rounded-xl p-3 mb-4 text-sm">
-              <div className="flex justify-between">
-                <span className="text-gray-600">Product Price</span>
-                <span className="font-bold">₹{finalPrice}</span>
-              </div>
-              <div className="flex justify-between mt-1">
-                <span className="text-gray-600">Delivery</span>
-                <span
-                  className={
-                    deliveryCharge === 0
-                      ? "text-green-600 font-bold"
-                      : "font-bold"
-                  }
-                >
-                  {deliveryCharge === 0 ? "FREE" : `₹${deliveryCharge}`}
-                </span>
-              </div>
-              <div className="flex justify-between mt-2 font-black text-base border-t pt-2">
-                <span>Total</span>
-                <span className="text-[#6FAF8E]">
-                  ₹{finalPrice + deliveryCharge}
-                </span>
-              </div>
-            </div>
+            {/* Selected Address */}
 
-            <p className="text-xs font-bold text-gray-400 mb-2 uppercase tracking-wide">
-              Payment Method
-            </p>
-            <div className="space-y-3">
-              <button
-                onClick={() => handleBuyNowOrder("ONLINE")}
-                disabled={processingOrder}
-                className="w-full flex items-center justify-between p-4 border-2 rounded-2xl hover:border-[#6FAF8E] transition-all disabled:opacity-50"
-              >
-                <div className="flex items-center gap-4">
-                  <CreditCard className="text-blue-600" />
-                  <p className="font-bold text-gray-700">Online Payment</p>
-                </div>
-              </button>
-              <button
-                onClick={() => handleBuyNowOrder("COD")}
-                disabled={processingOrder}
-                className="w-full flex items-center justify-between p-4 border-2 rounded-2xl hover:border-[#6FAF8E] transition-all disabled:opacity-50"
-              >
-                <div className="flex items-center gap-4">
-                  <Truck className="text-orange-600" />
-                  <p className="font-bold text-gray-700">Cash on Delivery</p>
-                </div>
-              </button>
+            {selectedAddress && (
+              <div className="mt-6 rounded-xl border border-green-200 bg-green-50 p-4">
+                <p className="text-sm font-semibold text-green-700">
+                  Deliver To
+                </p>
+
+                <p className="mt-2 text-sm text-gray-700">
+                  {selectedAddress.fullAddress}
+                </p>
+
+                <p className="text-xs text-gray-500 mt-1">
+                  {selectedAddress.district} • {selectedAddress.pinCode}
+                </p>
+
+                <p className="text-xs text-gray-500">{selectedAddress.phone}</p>
+              </div>
+            )}
+
+            {/* Footer */}
+
+            <div className="mt-6 text-center text-xs text-gray-400">
+              Orders are processed securely using Razorpay.
+              <br />
+              Your payment information is never stored.
             </div>
           </div>
         </div>
       )}
+      {/* ---------------- ORDER SUCCESS ---------------- */}
 
-      {/* Order Success */}
       {orderSuccess && (
-        <div className="fixed inset-0 bg-white flex flex-col items-center justify-center z-[110]">
-          <CheckCircle
-            size={80}
-            className="text-green-600 mb-4 animate-bounce"
-          />
-          <h2 className="text-3xl font-bold mb-2">Order Successful!</h2>
-          <button
-            onClick={() => navigate("/myorders")}
-            className="bg-[#6FAF8E] text-white px-10 py-4 rounded-2xl font-bold"
-          >
-            VIEW MY ORDERS
-          </button>
-        </div>
-      )}
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40">
+          <div className="w-[90%] max-w-sm rounded-3xl bg-white p-8 text-center shadow-xl">
+            {/* Success Icon */}
 
-      {/* Admin Modal */}
-      {showAdminEdit && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[120] p-4">
-          <div className="bg-white w-full max-w-md rounded-3xl p-6 shadow-2xl overflow-y-auto max-h-[80vh]">
-            <h3 className="text-xl font-bold mb-4">Admin Stock Update</h3>
-            <div className="space-y-4">
-              <div>
-                <label className="text-sm font-semibold">MRP Price (₹)</label>
-                <input
-                  type="number"
-                  value={editPrice}
-                  onChange={(e) => setEditPrice(e.target.value)}
-                  className="w-full border p-2 rounded-lg mt-1"
-                />
+            <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-green-100">
+              <CheckCircle size={42} className="text-[#6FAF8E]" />
+            </div>
+
+            {/* Title */}
+
+            <h2 className="mt-5 text-2xl font-bold text-gray-800">
+              Order Confirmed 🎉
+            </h2>
+
+            {/* Message */}
+
+            <p className="mt-3 text-sm text-gray-500 leading-6">
+              Thank you for shopping with
+              <span className="font-semibold text-[#6FAF8E]"> FreshCart</span>
+              <br />
+              Your order has been placed successfully.
+            </p>
+
+            {/* Order Details */}
+
+            <div className="mt-6 rounded-xl bg-gray-50 p-4">
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-500">Amount</span>
+
+                <span className="font-semibold">₹{grandTotal}</span>
               </div>
-              <div>
-                <label className="text-sm font-semibold">
-                  Discounted Price (₹)
-                </label>
-                <input
-                  type="number"
-                  value={editDiscountedPrice}
-                  onChange={(e) => setEditDiscountedPrice(e.target.value)}
-                  className="w-full border p-2 rounded-lg mt-1"
-                />
-              </div>
-              <div>
-                <label className="text-sm font-semibold">Brand Name</label>
-                <input
-                  type="text"
-                  value={editBrand}
-                  onChange={(e) => setEditBrand(e.target.value)}
-                  className="w-full border p-2 rounded-lg mt-1"
-                />
-              </div>
-              <div>
-                <label className="text-sm font-semibold">Stock Quantity</label>
-                <input
-                  type="number"
-                  value={editQuantity}
-                  onChange={(e) => setEditQuantity(e.target.value)}
-                  className="w-full border p-2 rounded-lg mt-1"
-                />
-              </div>
-              <div>
-                <label className="text-sm font-semibold">
-                  Manufacturing Date
-                </label>
-                <input
-                  type="date"
-                  value={editMfgDate}
-                  onChange={(e) => setEditMfgDate(e.target.value)}
-                  className="w-full border p-2 rounded-lg mt-1"
-                />
-              </div>
-              <div>
-                <label className="text-sm font-semibold">Expiry Date</label>
-                <input
-                  type="date"
-                  value={editExpDate}
-                  onChange={(e) => setEditExpDate(e.target.value)}
-                  className="w-full border p-2 rounded-lg mt-1"
-                />
+
+              <div className="mt-3 flex justify-between text-sm">
+                <span className="text-gray-500">Payment</span>
+
+                <span className="font-semibold">{paymentMethod}</span>
               </div>
             </div>
-            <div className="flex justify-end gap-3 mt-6">
+
+            {/* Buttons */}
+
+            <div className="mt-7 space-y-3">
               <button
-                onClick={() => setShowAdminEdit(false)}
-                className="px-4 py-2 border rounded-lg"
+                onClick={() => navigate("/myorders")}
+                className="w-full rounded-xl bg-[#6FAF8E] py-3 font-semibold text-white hover:bg-green-700"
               >
-                Cancel
+                View My Orders
               </button>
+
               <button
-                onClick={handleAdminUpdate}
-                className="px-4 py-2 bg-[#6FAF8E] text-white rounded-lg font-bold"
+                onClick={() => navigate("/")}
+                className="w-full rounded-xl border border-gray-300 py-3 font-semibold hover:bg-gray-100"
               >
-                Update
+                Continue Shopping
               </button>
             </div>
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

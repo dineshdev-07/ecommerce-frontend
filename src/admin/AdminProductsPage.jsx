@@ -41,6 +41,8 @@ const AdminProductsPage = () => {
   );
 
   const togglePin = async (productId) => {
+    console.log("User Info:", userInfo);
+    console.log("Token:", userInfo?.token);
     setTogglingId(productId);
     try {
       const res = await fetch(`${API}/api/products/${productId}/pin`, {

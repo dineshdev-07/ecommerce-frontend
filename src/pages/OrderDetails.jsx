@@ -136,27 +136,6 @@ const OrderDetails = () => {
     fetchOrder();
   }, [fetchOrder]);
 
-  const downloadInvoice = async () => {
-    try {
-      const response = await fetch(
-        `${API}/api/orders/${order._id}/invoice`,
-        {
-          credentials: "include",
-        },
-      );
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `invoice_${order._id}.pdf`;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-    } catch (err) {
-      alert("Failed to download invoice");
-    }
-  };
-
   if (loading)
     return (
       <div className="h-screen flex flex-col items-center justify-center gap-4 bg-[#F8FAFC]">
@@ -246,13 +225,6 @@ const OrderDetails = () => {
               </p>
             </div>
           </div>
-          <button
-            onClick={downloadInvoice}
-            className="bg-gray-900 text-white px-3 sm:px-4 py-2 rounded-xl font-black text-[10px] sm:text-xs flex items-center gap-1.5 hover:opacity-90 transition shrink-0"
-          >
-            <FileText size={13} className="text-[#6FAF8E]" />
-            <span className="hidden sm:inline">Invoice</span>
-          </button>
         </div>
       </header>
 
