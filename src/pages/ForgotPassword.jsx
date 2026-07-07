@@ -98,7 +98,7 @@ const ForgotPassword = () => {
           <div className="inline-flex items-center justify-center w-14 h-14 bg-gray-900 rounded-2xl mb-4 shadow-xl">
             <KeyRound size={26} className="text-[#6FAF8E]" />
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
+          <h1 className="text-2xl sm:text-2xl font-black text-gray-900 tracking-tight">
             Reset Password
           </h1>
           <p className="text-gray-400 text-sm mt-1">

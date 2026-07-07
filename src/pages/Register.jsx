@@ -82,170 +82,131 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#e9eceb] flex items-center justify-center px-4">
-      <div className="w-full max-w-5xl h-[600px] flex rounded-2xl overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.1)]">
-        {/* RIGHT SIDE */}
-        <div className="w-1/2 h-full bg-gradient-to-br from-[#4e8f4f] to-[#6FAF8E] flex items-center justify-center text-white">
-          <div className="text-center px-6">
-            <div className="mb-6">
-              <span className="bg-white/20 px-4 py-2 rounded-full text-sm font-semibold">
-                FreshCart
-              </span>
-            </div>
+    <div className="min-h-screen bg-[#f4f7f6] flex items-center justify-center px-4 py-8">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
+        <div className="text-center mb-6">
+          <h1 className="text-3xl font-bold text-green-700">FreshCart</h1>
 
-            <h2 className="text-3xl font-black mb-3">Hello, Friend!</h2>
-
-            <p className="text-sm opacity-90 mb-6">
-              Enter your personal details and start your fresh shopping journey
-              with us
-            </p>
-
-            <Link to="/login">
-              <button className="border border-white px-6 py-2 rounded-full hover:bg-white hover:text-green-600 transition">
-                SIGN IN
-              </button>
-            </Link>
-          </div>
+          <p className="text-gray-500 mt-2">Create your account</p>
         </div>
 
-        {/* LEFT SIDE */}
-        <div className="w-1/2 bg-[#f8f9f8] flex items-center justify-center px-10">
-          <div className="w-full max-w-sm">
-            <h1 className="text-3xl font-black text-gray-900">
-              Create Account
-            </h1>
-            <p className="text-gray-400 text-sm mt-1 mb-6">
-              Join us — fresh groceries await.
-            </p>
+        {/* Progress */}
+        <div className="flex gap-2 mb-6">
+          <div
+            className={`h-2 flex-1 rounded-full ${
+              step >= 1 ? "bg-green-600" : "bg-gray-200"
+            }`}
+          />
 
-            {/* STEP BAR */}
-            <div className="flex gap-2 mb-6">
-              <div
-                className={`flex-1 h-1 rounded ${step >= 1 ? "bg-gray-900" : "bg-gray-200"}`}
+          <div
+            className={`h-2 flex-1 rounded-full ${
+              step >= 2 ? "bg-green-600" : "bg-gray-200"
+            }`}
+          />
+        </div>
+
+        {error && (
+          <p className="text-red-500 text-sm text-center mb-4">{error}</p>
+        )}
+
+        {step === 1 ? (
+          <div className="space-y-4">
+            <input
+              type="email"
+              placeholder="Email Address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+            />
+
+            <button
+              onClick={handleSendOTP}
+              className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold"
+            >
+              {loading ? "Sending OTP..." : "Send OTP"}
+            </button>
+          </div>
+        ) : (
+          <form onSubmit={submitHandler} className="space-y-4">
+            <input
+              type="text"
+              placeholder="OTP"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+              className="w-full border rounded-lg px-4 py-3"
+            />
+
+            <input
+              type="text"
+              placeholder="Full Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full border rounded-lg px-4 py-3"
+            />
+
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full border rounded-lg px-4 py-3"
+            />
+
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Create Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full border rounded-lg px-4 py-3 pr-12"
               />
-              <div
-                className={`flex-1 h-1 rounded ${step >= 2 ? "bg-green-500" : "bg-gray-200"}`}
-              />
+
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-4 text-gray-500"
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
             </div>
 
-            {error && <div className="mb-4 text-red-500 text-sm">{error}</div>}
-
-            {/* STEP 1 */}
-            {step === 1 && (
-              <div className="space-y-4">
-                <input
-                  type="email"
-                  placeholder="Email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg border bg-white outline-none focus:ring-2 focus:ring-green-400"
+            {/* Password Strength */}
+            <div className="flex gap-1">
+              {[1, 2, 3, 4].map((i) => (
+                <div
+                  key={i}
+                  className={`flex-1 h-2 rounded-full ${
+                    i <= strength ? strengthColors[strength] : "bg-gray-200"
+                  }`}
                 />
+              ))}
+            </div>
 
-                <button
-                  onClick={handleSendOTP}
-                  className="w-full bg-gray-900 text-white py-3 rounded-lg font-semibold hover:bg-gray-800"
-                >
-                  {loading ? "Sending..." : "Get OTP"}
-                </button>
+            <button
+              type="submit"
+              className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold"
+            >
+              Create Account
+            </button>
 
-                <p className="text-sm text-gray-400">
-                  Already have an account?{" "}
-                  <Link to="/login" className="text-green-600 font-semibold">
-                    Sign in
-                  </Link>
-                </p>
-              </div>
-            )}
+            <button
+              type="button"
+              onClick={handleSendOTP}
+              className="w-full text-sm text-green-600 hover:underline"
+            >
+              Resend OTP
+            </button>
+          </form>
+        )}
 
-         
-            {step === 2 && (
-  <form
-    onSubmit={submitHandler}
-    autoComplete="off"
-    className="space-y-4"
-  >
-    <input
-      type="text"
-      name="otp"
-      placeholder="OTP"
-      autoComplete="off"
-      value={otp}
-      onChange={(e) => setOtp(e.target.value)}
-      className="w-full px-4 py-3 rounded-lg border bg-white"
-      required
-    />
-
-    <input
-      type="text"
-      name="fullName"
-      placeholder="Full Name"
-      autoComplete="name"
-      value={name}
-      onChange={(e) => setName(e.target.value)}
-      className="w-full px-4 py-3 rounded-lg border bg-white"
-      required
-    />
-
-    <input
-      type="email"
-      name="registerEmail"
-      placeholder="Email"
-      autoComplete="email"
-      value={email}
-      onChange={(e) => setEmail(e.target.value)}
-      className="w-full px-4 py-3 rounded-lg border bg-white"
-      required
-    />
-
-    <div className="relative">
-      <input
-        type={showPassword ? "text" : "password"}
-        name="registerPassword"
-        placeholder="Create Password"
-        autoComplete="new-password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        className="w-full px-4 py-3 rounded-lg border bg-white"
-        required
-      />
-
-      <button
-        type="button"
-        onClick={() => setShowPassword(!showPassword)}
-        className="absolute right-3 top-3 text-gray-500"
-      >
-        {showPassword ? <Eye size={16} /> : <EyeOff size={16} />}
-      </button>
-    </div>
-
-    <div className="flex gap-1">
-      {[1, 2, 3, 4].map((i) => (
-        <div
-          key={i}
-          className={`h-1 flex-1 rounded ${
-            i <= strength ? strengthColors[strength] : "bg-gray-200"
-          }`}
-        />
-      ))}
-    </div>
-
-    <button
-      type="submit"
-      className="w-full bg-green-500 text-white py-3 rounded-lg font-semibold hover:bg-green-600"
-    >
-      Create Account
-    </button>
-
-    <button
-      type="button"
-      onClick={handleSendOTP}
-      className="text-sm text-gray-400"
-    >
-      Resend OTP
-    </button>
-  </form>
-)}
-          </div>
+        <div className="mt-6 text-center text-sm text-gray-600">
+          Already have an account?{" "}
+          <Link
+            to="/login"
+            className="text-green-600 font-semibold hover:underline"
+          >
+            Login
+          </Link>
         </div>
       </div>
     </div>

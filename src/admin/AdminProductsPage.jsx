@@ -14,7 +14,7 @@ const AdminProductsPage = () => {
 
   const API = import.meta.env.VITE_API_URL;
 
-  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
 
   const fetchProducts = async () => {
     try {
@@ -41,14 +41,12 @@ const AdminProductsPage = () => {
   );
 
   const togglePin = async (productId) => {
-    console.log("User Info:", userInfo);
-    console.log("Token:", userInfo?.token);
     setTogglingId(productId);
     try {
       const res = await fetch(`${API}/api/products/${productId}/pin`, {
         method: "PUT",
         headers: {
-          Authorization: `Bearer ${userInfo?.token}`,
+          Authorization: `Bearer ${userInfo.token}`,
         },
       });
       if (!res.ok) {

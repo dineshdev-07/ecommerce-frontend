@@ -25,7 +25,7 @@ const CategoryPage = () => {
           const categoryFiltered = data.filter(
             (p) =>
               p.category?.toLowerCase().trim() ===
-              categoryName.toLowerCase().trim()
+              categoryName.toLowerCase().trim(),
           );
           setAllProducts(categoryFiltered);
         }
@@ -43,7 +43,7 @@ const CategoryPage = () => {
     return allProducts.filter(
       (product) =>
         product.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.brand?.toLowerCase().includes(searchTerm.toLowerCase())
+        product.brand?.toLowerCase().includes(searchTerm.toLowerCase()),
     );
   }, [searchTerm, allProducts]);
 
@@ -56,30 +56,41 @@ const CategoryPage = () => {
   }
 
   return (
-    <div className="pb-20 px-4 max-w-7xl mx-auto">
-      <div className="flex justify-between items-center mb-8">
-        <div className="flex items-center">
-          <button onClick={() => navigate(-1)} className="mr-4 text-2xl">
-            ←
-          </button>
-          <h1 className="text-3xl font-bold capitalize">
-            {categoryName} Products
-          </h1>
-        </div>
+    <div className="max-w-7xl mx-auto px-3 sm:px-5 py-4 pb-20">
+      {/* Header */}
+      <div className="flex items-center gap-3 mb-5">
+        <button
+          onClick={() => navigate(-1)}
+          className="w-9 h-9 flex items-center justify-center rounded-full border hover:bg-gray-100 transition"
+        >
+          ←
+        </button>
 
-        <input
-          type="text"
-          placeholder="Search..."
-          className="border p-2 rounded"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+        <div>
+          <h1 className="text-xl sm:text-2xl font-bold capitalize text-gray-800">
+            {categoryName}
+          </h1>
+          <p className="text-sm text-gray-500">
+            {filteredProducts.length} Products
+          </p>
+        </div>
       </div>
 
+      {/* Products */}
       {filteredProducts.length === 0 ? (
-        <p>No products found</p>
+        <div className="flex flex-col items-center justify-center py-16">
+          <p className="text-gray-500 text-lg font-medium">
+            No products available
+          </p>
+          <button
+            onClick={() => navigate("/")}
+            className="mt-4 bg-[#6FAF8E] text-white px-5 py-2 rounded-lg hover:bg-green-600"
+          >
+            Back to Home
+          </button>
+        </div>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
           {filteredProducts.map((product) => (
             <ProductCard key={product._id} product={product} />
           ))}

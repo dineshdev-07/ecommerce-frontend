@@ -158,7 +158,7 @@ const Home = ({ search = "" }) => {
     try {
       const res = await fetch(`${API}/api/products/${id}/pin`, {
         method: "PUT",
-        credentials: "include",
+        headers: { Authorization: `Bearer ${userInfo.token}` },
       });
       if (!res.ok) {
         alert("Failed to remove product");

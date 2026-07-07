@@ -5,10 +5,6 @@ import {
   Crown,
   Flame,
   Lock,
-  Truck,
-  Percent,
-  ChevronLeft,
-  Check,
 } from "lucide-react";
 const API = import.meta.env.VITE_API_URL;
 
@@ -31,10 +27,7 @@ const LoyaltyPage = () => {
 
   const fetchUserData = async () => {
     try {
-      const { data } = await axios.get(
-        `${API}/api/users/profile`,
-        config,
-      );
+      const { data } = await axios.get(`${API}/api/users/profile`, config);
       setPoints(data.loyaltyPoints || 0);
       setIsPlus(data.isPlusMember || false);
       setStreak(data.streakCount || 0);
@@ -59,11 +52,7 @@ const LoyaltyPage = () => {
   const handleActivatePlus = async () => {
     try {
       setProcessing(true);
-      await axios.post(
-        `${API}/api/users/upgrade-plus`,
-        {},
-        config,
-      );
+      await axios.post(`${API}/api/users/upgrade-plus`, {}, config);
       fetchUserData();
     } catch (err) {
       console.error(err);
@@ -76,475 +65,198 @@ const LoyaltyPage = () => {
   const progress = Math.min(streak, maxCycles) / maxCycles;
 
   return (
-    <>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;600;700&display=swap');
-        .loyalty-root {
-          font-family: 'DM Sans', sans-serif;
-          background: #0E0E10;
-          color: #fff;
-          min-height: 100vh;
-          width: 100%;
-          position: absolute;
-          top: 0; left: 0;
-          overflow-y: auto;
-          z-index: 0;
-        }
-       .inner {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 32px 16px 80px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-@media (min-width: 768px) {
-  .inner {
-    padding: 48px 32px 80px;
-  }
-}
-        .points-num {
-          font-family: 'Bebas Neue', sans-serif;
-          font-size: clamp(72px, 18vw, 120px);
-          line-height: 1;
-          letter-spacing: 0.02em;
-        }
-        .bar-fill { transition: width 1s cubic-bezier(.22,1,.36,1); }
-        .card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 20px; }
-        @media (min-width: 640px) { .card { padding: 28px; border-radius: 28px; } }
-        .plus-card { background: linear-gradient(135deg,#1a1000,#2a1a00); border-color: rgba(234,179,8,0.2); }
-        .green-card { background: linear-gradient(135deg,#0d1f16,#0a1710); border-color: rgba(111,175,142,0.2); }
-        .chip { display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.15em; padding:4px 12px; border-radius:99px; }
-        .benefits-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 16px;
-}
-
-@media (min-width: 768px) {
-  .benefits-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 1200px) {
-  .benefits-grid {
-    grid-template-columns: repeat(2, minmax(320px, 420px));
-    justify-content: center;
-  }
-}
-      `}</style>
-
-      <div className="loyalty-root">
-        <div className="inner">
+    <div className="min-h-screen bg-gray-50 pb-20">
+      <div className="max-w-3xl mx-auto px-4 py-5">
+        {/* Header */}
+        <div className="flex items-center gap-3 mb-6">
           <button
             onClick={() => navigate(-1)}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 6,
-              color: "rgba(255,255,255,0.4)",
-              fontSize: 13,
-              fontWeight: 700,
-              textTransform: "uppercase",
-              letterSpacing: ".15em",
-              marginBottom: 32,
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-            }}
+            className="w-10 h-10 rounded-full border border-gray-300 bg-white hover:bg-gray-100 transition"
           >
-            <ChevronLeft size={15} /> Back
+            ←
           </button>
 
-          <div
-            className={`card ${isPlus ? "plus-card" : ""}`}
-            style={{
-              width: "100%",
-              display: "flex",
-              flexDirection: "column",
-              gap: 20,
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginBottom: 24,
-              }}
-            >
-              <div
-                className="chip"
-                style={{
-                  background: isPlus
-                    ? "rgba(234,179,8,0.15)"
-                    : "rgba(111,175,142,0.15)",
-                  color: isPlus ? "#f5c842" : "#6FAF8E",
-                }}
-              >
-                <Crown size={12} />
-                {isPlus ? "Plus Member" : "Standard"}
-              </div>
-              {isPlus && expiryDate && (
-                <span
-                  style={{
-                    fontSize: 11,
-                    color: "rgba(245,200,66,0.6)",
-                    fontWeight: 600,
-                  }}
-                >
-                  Expires{" "}
-                  {new Date(expiryDate).toLocaleDateString("en-IN", {
-                    day: "numeric",
-                    month: "short",
-                    year: "numeric",
-                  })}
-                </span>
-              )}
-            </div>
-
-            <div
-              className="points-num"
-              style={{ color: isPlus ? "#f5c842" : "#fff" }}
-            >
-              {points}
-            </div>
-            <p
-              style={{
-                fontSize: 11,
-                color: "rgba(255,255,255,0.35)",
-                textTransform: "uppercase",
-                letterSpacing: ".2em",
-                fontWeight: 700,
-                marginTop: 4,
-                marginBottom: 24,
-              }}
-            >
-              Loyalty Points
+          <div>
+            <h1 className="text-2xl font-bold text-gray-800">
+              Loyalty Rewards
+            </h1>
+            <p className="text-sm text-gray-500">
+              Earn points and unlock FreshCart Plus
             </p>
-
-            <div
-              style={{
-                background: "rgba(255,255,255,0.05)",
-                border: "1px solid rgba(255,255,255,0.08)",
-                borderRadius: 16,
-                padding: "14px 18px",
-                display: "flex",
-                alignItems: "center",
-                gap: 14,
-                marginBottom: 20,
-              }}
-            >
-              <Flame size={18} color="#fb923c" fill="#fb923c" />
-              <div style={{ minWidth: 0 }}>
-                <p style={{ fontWeight: 700, fontSize: 14, margin: 0 }}>
-                  {Math.min(streak, maxCycles)} / {maxCycles} Cycles
-                </p>
-                <p
-                  style={{
-                    fontSize: 12,
-                    color: "rgba(255,255,255,0.4)",
-                    margin: 0,
-                  }}
-                >
-                  {getStreakStatus()}
-                </p>
-              </div>
-              <div
-                style={{
-                  marginLeft: "auto",
-                  fontSize: 11,
-                  color: "rgba(255,255,255,0.25)",
-                  fontWeight: 700,
-                  whiteSpace: "nowrap",
-                }}
-              >
-                ₹500+ / 14d
-              </div>
-            </div>
-
-            {!isPlus && (
-              <div>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    fontSize: 10,
-                    color: "rgba(255,255,255,0.3)",
-                    fontWeight: 700,
-                    textTransform: "uppercase",
-                    letterSpacing: ".15em",
-                    marginBottom: 8,
-                  }}
-                >
-                  <span>Progress to Plus</span>
-                  <span>{Math.round(progress * 100)}%</span>
-                </div>
-                <div
-                  style={{
-                    background: "rgba(255,255,255,0.08)",
-                    borderRadius: 99,
-                    height: 6,
-                    overflow: "hidden",
-                  }}
-                >
-                  <div
-                    className="bar-fill"
-                    style={{
-                      width: `${progress * 100}%`,
-                      height: "100%",
-                      background: "linear-gradient(90deg,#6FAF8E,#4e9e7a)",
-                      borderRadius: 99,
-                    }}
-                  />
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    marginTop: 10,
-                    gap: 10,
-                    flexWrap: "wrap",
-                  }}
-                >
-                  {Array.from({ length: maxCycles }).map((_, i) => (
-                    <div
-                      key={i}
-                      style={{
-                        width: 14,
-                        height: 14,
-                        borderRadius: "50%",
-                        border: `2px solid ${i < streak ? "#6FAF8E" : "rgba(255,255,255,0.15)"}`,
-                        background: i < streak ? "#6FAF8E" : "transparent",
-                        boxShadow:
-                          i < streak ? "0 0 8px rgba(111,175,142,0.5)" : "none",
-                        transition: "all .4s",
-                      }}
-                    />
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {!isPlus && (
-              <div style={{ marginTop: 20 }}>
-                {eligibleForPlus ? (
-                  <button
-                    onClick={handleActivatePlus}
-                    disabled={processing}
-                    style={{
-                      width: "100%",
-                      background: "linear-gradient(135deg,#f5c842,#e6a800)",
-                      color: "#000",
-                      fontWeight: 800,
-                      fontSize: 15,
-                      border: "none",
-                      borderRadius: 16,
-                      padding: "14px 0",
-                      cursor: "pointer",
-                      opacity: processing ? 0.6 : 1,
-                    }}
-                  >
-                    {processing ? "Activating…" : "✦ Activate Plus Now"}
-                  </button>
-                ) : (
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 8,
-                      color: "rgba(255,255,255,0.25)",
-                      fontSize: 13,
-                    }}
-                  >
-                    <Lock size={13} />
-                    {maxCycles - Math.min(streak, maxCycles)} more cycle
-                    {maxCycles - Math.min(streak, maxCycles) !== 1
-                      ? "s"
-                      : ""}{" "}
-                    to unlock Plus
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-
-          {!isPlus && (
-            <div className="card" style={{ marginBottom: 16 }}>
-              <p style={{ fontWeight: 800, fontSize: 16, marginBottom: 16 }}>
-                How to earn Plus
-              </p>
-              {[
-                "Spend ₹500+ in a single order",
-                "Repeat every 14 days",
-                "Complete 4 cycles (≈ 2 months)",
-                "Plus unlocks automatically 🎉",
-              ].map((text, i) => (
-                <div
-                  key={i}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 12,
-                    marginBottom: i < 3 ? 12 : 0,
-                  }}
-                >
-                  <div
-                    style={{
-                      width: 28,
-                      height: 28,
-                      borderRadius: "50%",
-                      background: "rgba(111,175,142,0.12)",
-                      border: "1px solid rgba(111,175,142,0.25)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexShrink: 0,
-                      fontSize: 12,
-                      fontWeight: 800,
-                      color: "#6FAF8E",
-                    }}
-                  >
-                    {i + 1}
-                  </div>
-                  <p
-                    style={{
-                      fontSize: 13,
-                      color: "rgba(255,255,255,0.55)",
-                      margin: 0,
-                    }}
-                  >
-                    {text}
-                  </p>
-                </div>
-              ))}
-            </div>
-          )}
-
-          <p style={{ fontWeight: 800, fontSize: 16, marginBottom: 12 }}>
-            {isPlus ? "Your Active Benefits" : "What Plus unlocks"}
-          </p>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr",
-              gap: 16,
-            }}
-            className="benefits-grid"
-          >
-            <div className={`card ${isPlus ? "green-card" : ""}`}>
-              <div
-                style={{
-                  width: 44,
-                  height: 44,
-                  borderRadius: 14,
-                  background: isPlus
-                    ? "rgba(111,175,142,0.15)"
-                    : "rgba(255,255,255,0.06)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  marginBottom: 16,
-                }}
-              >
-                <Truck
-                  size={20}
-                  color={isPlus ? "#6FAF8E" : "rgba(255,255,255,0.3)"}
-                />
-              </div>
-              <p style={{ fontWeight: 800, fontSize: 15, marginBottom: 6 }}>
-                Free Delivery
-              </p>
-              <p
-                style={{
-                  fontSize: 12,
-                  color: "rgba(255,255,255,0.4)",
-                  lineHeight: 1.6,
-                  margin: 0,
-                }}
-              >
-                Zero delivery charge on every order — no minimum required.
-              </p>
-              {isPlus && (
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 6,
-                    marginTop: 12,
-                    color: "#6FAF8E",
-                    fontSize: 11,
-                    fontWeight: 700,
-                    textTransform: "uppercase",
-                    letterSpacing: ".12em",
-                  }}
-                >
-                  <Check size={11} />
-                  Active
-                </div>
-              )}
-            </div>
-
-            <div className={`card ${isPlus ? "plus-card" : ""}`}>
-              <div
-                style={{
-                  width: 44,
-                  height: 44,
-                  borderRadius: 14,
-                  background: isPlus
-                    ? "rgba(245,200,66,0.12)"
-                    : "rgba(255,255,255,0.06)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  marginBottom: 16,
-                }}
-              >
-                <Percent
-                  size={20}
-                  color={isPlus ? "#f5c842" : "rgba(255,255,255,0.3)"}
-                />
-              </div>
-              <p style={{ fontWeight: 800, fontSize: 15, marginBottom: 6 }}>
-                5% Extra Discount
-              </p>
-              <p
-                style={{
-                  fontSize: 12,
-                  color: "rgba(255,255,255,0.4)",
-                  lineHeight: 1.6,
-                  margin: 0,
-                }}
-              >
-                Extra 5% stacked on every product's existing discount, always.
-              </p>
-              {isPlus && (
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 6,
-                    marginTop: 12,
-                    color: "#f5c842",
-                    fontSize: 11,
-                    fontWeight: 700,
-                    textTransform: "uppercase",
-                    letterSpacing: ".12em",
-                  }}
-                >
-                  <Check size={11} />
-                  Active on all products
-                </div>
-              )}
-            </div>
           </div>
         </div>
+
+        {/* Points Card */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-5">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-gray-500 text-sm">Available Points</p>
+
+              <h2 className="text-4xl font-bold text-[#6FAF8E] mt-1">
+                {points}
+              </h2>
+            </div>
+
+            <div className="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center">
+              <Crown className="text-[#6FAF8E]" size={28} />
+            </div>
+          </div>
+
+          <div className="mt-5 flex items-center justify-between text-sm">
+            <span className="text-gray-600">Membership</span>
+
+            <span
+              className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                isPlus
+                  ? "bg-yellow-100 text-yellow-700"
+                  : "bg-gray-100 text-gray-700"
+              }`}
+            >
+              {isPlus ? "Plus Member" : "Standard"}
+            </span>
+          </div>
+
+          {isPlus && expiryDate && (
+            <p className="mt-3 text-sm text-gray-500">
+              Valid until{" "}
+              <span className="font-semibold">
+                {new Date(expiryDate).toLocaleDateString("en-IN")}
+              </span>
+            </p>
+          )}
+        </div>
+
+        {/* Streak Card */}
+
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-5">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center">
+              <Flame className="text-orange-500" size={22} />
+            </div>
+
+            <div>
+              <h3 className="font-semibold text-gray-800">Shopping Streak</h3>
+
+              <p className="text-sm text-gray-500">
+                {Math.min(streak, maxCycles)} / {maxCycles} Cycles
+              </p>
+            </div>
+          </div>
+
+          <div className="w-full h-3 bg-gray-200 rounded-full mt-5 overflow-hidden">
+            <div
+              className="h-full bg-[#6FAF8E] rounded-full"
+              style={{
+                width: `${progress * 100}%`,
+              }}
+            />
+          </div>
+
+          <div className="flex justify-between mt-2 text-xs text-gray-500">
+            <span>{Math.round(progress * 100)}% Completed</span>
+            <span>{getStreakStatus()}</span>
+          </div>
+        </div>
+        {/* Activate Plus */}
+
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+          {isPlus ? (
+            <div className="text-center">
+              <div className="w-16 h-16 mx-auto rounded-full bg-yellow-100 flex items-center justify-center">
+                <Crown className="text-yellow-600" size={30} />
+              </div>
+
+              <h3 className="mt-4 text-xl font-bold text-gray-800">
+                FreshCart Plus Active
+              </h3>
+
+              <p className="text-sm text-gray-500 mt-2">
+                You are enjoying all Plus member benefits.
+              </p>
+            </div>
+          ) : eligibleForPlus ? (
+            <div>
+              <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                FreshCart Plus Unlocked 🎉
+              </h3>
+
+              <p className="text-sm text-gray-500 mb-5">
+                Congratulations! Activate your Plus membership now.
+              </p>
+
+              <button
+                onClick={handleActivatePlus}
+                disabled={processing}
+                className="w-full bg-[#6FAF8E] text-white py-3 rounded-lg font-semibold hover:bg-green-600 disabled:opacity-60"
+              >
+                {processing ? "Activating..." : "Activate Plus"}
+              </button>
+            </div>
+          ) : (
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <Lock size={18} className="text-gray-500" />
+                <h3 className="font-semibold text-gray-800">Plus Locked</h3>
+              </div>
+
+              <p className="text-sm text-gray-500">
+                Complete{" "}
+                <span className="font-semibold">
+                  {maxCycles - Math.min(streak, maxCycles)}
+                </span>{" "}
+                more cycle
+                {maxCycles - Math.min(streak, maxCycles) !== 1 && "s"} to unlock
+                FreshCart Plus.
+              </p>
+            </div>
+          )}
+        </div>
+
+        {/* How to Earn Plus */}
+
+        {!isPlus && (
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+            <h2 className="text-lg font-semibold text-gray-800 mb-5">
+              How to Earn Plus
+            </h2>
+
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-green-100 text-[#6FAF8E] font-bold flex items-center justify-center">
+                  1
+                </div>
+                <p className="text-gray-600">
+                  Spend ₹500 or more in one order.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-green-100 text-[#6FAF8E] font-bold flex items-center justify-center">
+                  2
+                </div>
+                <p className="text-gray-600">Shop once every 14 days.</p>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-green-100 text-[#6FAF8E] font-bold flex items-center justify-center">
+                  3
+                </div>
+                <p className="text-gray-600">Complete 4 shopping cycles.</p>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-green-100 text-[#6FAF8E] font-bold flex items-center justify-center">
+                  4
+                </div>
+                <p className="text-gray-600">
+                  Activate FreshCart Plus for free.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
-    </>
+    </div>
   );
 };
 

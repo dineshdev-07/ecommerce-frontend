@@ -55,101 +55,84 @@ function Login({ setIsLoggedIn, setIsAdmin }) {
   };
 
   return (
-    <div className="min-h-screen bg-[#e9eceb] flex items-center justify-center px-4">
-      <div className="w-full max-w-5xl h-[600px] flex rounded-2xl overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.1)]">
-        <div className="w-1/2 bg-[#f8f9f8] flex items-center justify-center px-10">
-          <form
-            onSubmit={submitHandler}
-            className="w-full max-w-sm text-center"
-          >
-            <h1 className="text-3xl font-black text-gray-900">Sign in</h1>
+    <div className="min-h-screen bg-[#f4f7f6] flex items-center justify-center px-4 py-8">
+  <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
 
-            <div className="mt-5 flex justify-center gap-3">
-              {["f", "G+", "in"].map((item) => (
-                <div
-                  key={item}
-                  className="h-9 w-9 flex items-center justify-center rounded-full border border-gray-300 text-xs font-bold text-gray-600"
-                >
-                  {item}
-                </div>
-              ))}
-            </div>
+    <div className="text-center mb-8">
+      <h1 className="text-3xl font-bold text-green-700">
+        FreshCart
+      </h1>
 
-            <p className="mt-4 text-xs text-gray-400">or use your account</p>
-
-            {error && <p className="mt-3 text-red-500 text-sm">{error}</p>}
-
-            {/* INPUTS */}
-            <input
-              type="email"
-              placeholder="Email"
-              autoComplete="off"
-              className="mt-4 w-full px-4 py-3 rounded-md bg-gray-100 text-sm outline-none focus:ring-2 focus:ring-[#6FAF8E]"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-
-            <div className="relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                placeholder="Password"
-                autoComplete="new-password"
-                className="mt-3 w-full px-4 py-3 rounded-md bg-gray-100 text-sm outline-none focus:ring-2 focus:ring-[#6FAF8E]"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-6 text-gray-500"
-              >
-                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-              </button>
-            </div>
-
-            <Link
-              to="/forgot-password"
-              className="mt-4 block text-xs text-gray-400 hover:text-green-600"
-            >
-              Forgot your password?
-            </Link>
-
-            <button
-              type="submit"
-              className="mt-5 bg-[#6FAF8E] text-white px-10 py-3 rounded-full text-sm font-bold hover:bg-green-600 transition shadow-md"
-            >
-              SIGN IN
-            </button>
-          </form>
-        </div>
-
-        {/* RIGHT SIDE */}
-        <div className="w-1/2 h-full bg-gradient-to-br from-[#4e8f4f] to-[#6FAF8E] flex items-center justify-center text-white">
-          <div className="text-center px-6">
-            <div className="mb-6">
-              <span className="bg-white/20 px-4 py-2 rounded-full text-sm font-semibold">
-                FreshCart
-              </span>
-            </div>
-
-            <h2 className="text-3xl font-black mb-3">Hello, Friend!</h2>
-
-            <p className="text-sm opacity-90 mb-6">
-              Enter your personal details and start your fresh shopping journey
-              with us
-            </p>
-
-            <Link to="/register">
-              <button className="border border-white px-8 py-2 rounded-full hover:bg-white hover:text-green-600 transition">
-                REGISTER
-              </button>
-            </Link>
-          </div>
-        </div>
-      </div>
+      <p className="text-gray-500 mt-2">
+        Sign in to continue shopping
+      </p>
     </div>
+
+    {error && (
+      <p className="mb-4 text-center text-red-500 text-sm">
+        {error}
+      </p>
+    )}
+
+    <form onSubmit={submitHandler} className="space-y-4">
+
+      <input
+        type="email"
+        placeholder="Email Address"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        className="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+        required
+      />
+
+      <div className="relative">
+        <input
+          type={showPassword ? "text" : "password"}
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="w-full border rounded-lg px-4 py-3 pr-12 focus:outline-none focus:ring-2 focus:ring-green-500"
+          required
+        />
+
+        <button
+          type="button"
+          onClick={() => setShowPassword(!showPassword)}
+          className="absolute right-4 top-4 text-gray-500"
+        >
+          {showPassword ? <EyeOff size={18}/> : <Eye size={18}/>}
+        </button>
+      </div>
+
+      <div className="text-right">
+        <Link
+          to="/forgot-password"
+          className="text-sm text-green-600 hover:underline"
+        >
+          Forgot Password?
+        </Link>
+      </div>
+
+      <button
+        type="submit"
+        className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold transition"
+      >
+        Login
+      </button>
+    </form>
+
+    <div className="mt-6 text-center text-sm text-gray-600">
+      Don't have an account?{" "}
+      <Link
+        to="/register"
+        className="text-green-600 font-semibold hover:underline"
+      >
+        Register
+      </Link>
+    </div>
+
+  </div>
+</div>
   );
 }
 

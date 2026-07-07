@@ -439,7 +439,6 @@ const ProductDetails = () => {
 
   return (
     <>
-      
       {/* Product Image */}
       <div className=" rounded-2xl border border-gray-200 bg-white shadow-sm">
         <div className="flex items-center justify-center h-[390px] p-8">
@@ -448,7 +447,7 @@ const ProductDetails = () => {
               mainImage?.startsWith("http") ? mainImage : `${API}${mainImage}`
             }
             alt={product.name}
-             className="h-full w-full object-contain"
+            className="h-full w-full object-contain"
           />
         </div>
 
@@ -470,7 +469,7 @@ const ProductDetails = () => {
 
           {/* Price */}
           <div className="mt-4 flex items-center gap-3 flex-wrap">
-            <span className="text-3xl font-bold text-[#2E7D32]">
+            <span className="text-2xl font-bold text-[#2E7D32]">
               ₹{finalPrice}
             </span>
 

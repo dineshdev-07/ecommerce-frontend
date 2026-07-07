@@ -131,37 +131,57 @@ function AdminOrders() {
     return d === selectedDistrict;
   });
 
+   if (loading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin h-10 w-10 border-t-2 border-b-2 border-[#6FAF8E] rounded-full"></div>
+      </div>
+    );
+  }
+
+
   return (
     <div className="min-h-screen bg-[#FFFBEA] p-5 rounded-2xl">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="bg-white rounded-xl border border-gray-200 p-6 mb-8 flex justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-[#2E7D32]">
-              Order Details
-            </h1>
+        <div className="bg-white rounded-xl border border-gray-200 p-4 sm:p-6 mb-6 sm:mb-8">
 
-            <p className="text-gray-500 mt-2">
-              Manage all customer orders
-            </p>
-          </div>
-          <div className="flex flex-col sm:flex-row gap-3">
-            <input
-              type="text"
-              placeholder="Search Order / Customer"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="border rounded-lg px-4 py-2 outline-none focus:border-green-600 h-12"
-            />
+  <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
 
-            <button
-              onClick={resetDatabaseHandler}
-              className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 h-12"
-            >
-              Reset Orders
-            </button>
-          </div>
-        </div>
+    {/* Title */}
+    <div>
+      <h1 className="text-xl sm:text-2xl font-bold text-[#2E7D32]">
+        Order Details
+      </h1>
+
+      <p className="text-sm text-gray-500 mt-1">
+        Manage all customer orders
+      </p>
+    </div>
+
+    {/* Search + Button */}
+    <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+
+      <input
+        type="text"
+        placeholder="Search Order / Customer"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="w-full sm:w-72 h-11 px-4 border border-gray-300 rounded-lg outline-none focus:border-[#6FAF8E]"
+      />
+
+      <button
+        onClick={resetDatabaseHandler}
+        className="w-full sm:w-auto h-11 px-5 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
+      >
+        Reset Orders
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
 
         {/* Count */}
         <div className="mb-5 text-gray-600 font-medium">

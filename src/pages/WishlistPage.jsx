@@ -193,41 +193,24 @@ const WishlistPage = () => {
 
   return (
     <div className="min-h-screen bg-[#FFFBEA] p-5 rounded-2xl">
-      <div className="bg-white rounded-xl border border-gray-200 p-6 mb-8 flex gap-2">
-        <div>
-          <button
-            onClick={() => navigate(-1)}
-            className="p-4 hover:bg-gray-100 rounded-xl text-gray-500 transition"
-          >
-            <ChevronLeft size={30} />
-          </button>
-        </div>
-        <div>
-          <h1 className="text-3xl font-bold text-[#2E7D32]">My Wishlist</h1>
-          <p className="text-gray-500 mt-2">{products.length} saved items</p>
-        </div>
+      <div className="bg-white rounded-xl border border-gray-200 p-6 mb-8 flex justify-between">
+        <h1 className="text-2xl font-bold text-[#2E7D32]">Wishlist</h1>
+        <span className="bg-green-100 text-green-700 px-4 py-2 rounded-full font-medium">
+          {products.length} Item(s)
+        </span>
       </div>
 
       <div className="px-3 sm:px-6 lg:px-8 py-4 sm:py-6">
         {products.length === 0 ? (
-          <div className="flex min-h-[60vh] items-center justify-center px-6">
+          <div className="flex min-h-[45vh] items-center justify-center px-6">
             <div className="max-w-sm text-center">
-              <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-gray-100">
-                <Frown size={36} className="text-gray-500" />
-              </div>
-
-              <h2 className="mt-6 text-2xl font-bold text-gray-900">
+              <h2 className="mt-6 text-2xl font-bold text-gray-900 mb-5">
                 Wishlist is Empty
               </h2>
 
-              <p className="mt-3 text-sm leading-6 text-gray-500">
-                Save your favorite products and they'll appear here whenever
-                you're ready.
-              </p>
-
               <button
                 onClick={() => navigate("/")}
-                className="mt-8 w-full rounded-xl bg-[#6FAF8E] py-3 font-semibold text-white transition hover:bg-[#5d9c7b]"
+                    className="flex-1 rounded-xl border border-[#2E7D32] bg-[#2E7D32] py-3 px-3 font-semibold text-white hover:bg-[#1B5E20] transition"
               >
                 Explore Products
               </button>

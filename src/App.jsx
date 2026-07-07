@@ -157,7 +157,7 @@ function MobileDrawer({
             animate={{ x: 0 }}
             exit={{ x: "-100%" }}
             transition={{ type: "spring", damping: 28, stiffness: 300 }}
-            className="fixed top-0 left-0 h-full w-[300px] bg-white z-50 flex flex-col shadow-2xl lg:hidden overflow-y-auto"
+            className="fixed top-0 left-0 h-full w-[260px] bg-white z-50 flex flex-col shadow-2xl lg:hidden overflow-y-auto"
           >
             <div className="flex items-center justify-between px-5 py-4 bg-gray-900 shrink-0">
               <BrandWordmark className="text-xl" light />
@@ -201,10 +201,6 @@ function MobileDrawer({
                   )}
 
                   <div className="my-3 border-t border-gray-100" />
-
-                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest px-3 pb-1">
-                    Join Us
-                  </p>
                 </div>
               )}
 
@@ -215,9 +211,7 @@ function MobileDrawer({
                     label="Home"
                     onClick={() => go("/")}
                   />
-
-                  <div className="my-2 border-t border-gray-100" />
-                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest px-3 pb-1">
+                  <p className="px-4 py-2 text-[12px] font-semibold text-gray-500 uppercase">
                     Admin Panel
                   </p>
 
@@ -257,11 +251,6 @@ function MobileDrawer({
                   />
 
                   <div className="my-2 border-t border-gray-100" />
-                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest px-3 pb-1">
-                    Manage
-                  </p>
-
-                
                 </div>
               )}
             </div>
@@ -283,7 +272,7 @@ function MobileDrawer({
                       window.location.href = "/login";
                     }
                   }}
-                  className="flex items-center gap-3 w-full px-3 py-3 rounded-xl text-red-500 hover:bg-red-50 transition font-semibold text-sm"
+                  className="flex items-center gap-2 px-4 py-3 text-red-500 border-t"
                 >
                   <LogOut size={16} />
                   Logout
@@ -410,6 +399,12 @@ function AppContent() {
     }
   };
 
+  const handleSearch = () => {
+    if (!search.trim()) return;
+
+    navigate(`/search?q=${encodeURIComponent(search)}`);
+    setShowSuggestions(false);
+  };
   const handleLogout = async () => {
     try {
       await fetch(`${API}/api/users/logout`, {
@@ -476,13 +471,11 @@ function AppContent() {
 
   const isActive = (path) => location.pathname === path;
 
-  const totalAdminBadge =
-    deliveryAlertCount + refundAlertCount + lowStockCount;
+  const totalAdminBadge = deliveryAlertCount + refundAlertCount + lowStockCount;
 
   return (
     <div
-      className="bg-white
-border-b border-brand-light/30"
+      className="bg-white border border-brand-light/30"
     >
       <style>{`
         .nav-link-anim { position: relative; }
@@ -664,27 +657,25 @@ justify-center"
 
               {/* Search */}
 
-              <div className="relative w-72">
+              <div className="relative w-full max-w-xs sm:max-w-sm md:max-w-md">
                 <Search
                   size={18}
-                  className="absolute left-3 top-3 text-gray-400"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
                 />
-
                 <input
+                  value={search}
+                  onChange={(e) => {
+                    setSearch(e.target.value);
+                    fetchSuggestions(e.target.value);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handleSearch();
+                    }
+                  }}
+                  onFocus={() => search && setShowSuggestions(true)}
                   placeholder="Search products..."
-                  className="
-w-full
-h-11
-rounded-full
-border
-border-green-200
-bg-white
-pl-10
-pr-4
-outline-none
-focus:ring-2
-focus:ring-[#6FAF8E]
-"
+                  className="w-full h-10 sm:h-11 rounded-full border border-green-200 bg-white pl-10 pr-4 text-sm outline-none focus:ring-2 focus:ring-[#6FAF8E]"
                 />
               </div>
             </div>
@@ -789,7 +780,7 @@ focus:ring-[#6FAF8E]
                 className="bottom-nav-item flex flex-col items-center justify-center gap-0.5 flex-1 py-1.5 text-gray-400 relative"
               >
                 <div className="relative">
-                  <Settings size={22} />
+                  <Settings size={18} />
                   {totalAdminBadge > 0 && (
                     <span className="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[8px] font-bold h-4 w-4 flex items-center justify-center rounded-full border-2 border-white">
                       {totalAdminBadge > 9 ? "9+" : totalAdminBadge}

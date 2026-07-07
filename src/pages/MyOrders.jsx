@@ -73,6 +73,15 @@ const MyOrders = () => {
     }
   };
 
+   if (loading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin h-10 w-10 border-t-2 border-b-2 border-[#6FAF8E] rounded-full"></div>
+      </div>
+    );
+  }
+
+
   return (
     <div className="min-h-screen bg-[#FFFBEA] p-5 rounded-2xl">
       {/* Header */}
@@ -81,7 +90,7 @@ const MyOrders = () => {
           <Package className="text-white w-6 h-6" />
         </div>
         <div>
-          <h1 className="text-3xl font-bold text-[#2E7D32]">MyOrders</h1>
+          <h1 className="text-2xl font-bold text-[#2E7D32]">MyOrders</h1>
           <p className="text-gray-500 mt-2">
             View and track all your FreshCart orders.
           </p>
