@@ -1,11 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  Crown,
-  Flame,
-  Lock,
-} from "lucide-react";
+import { Crown, Flame, Lock } from "lucide-react";
 const API = import.meta.env.VITE_API_URL;
 
 const config = { withCredentials: true };
@@ -14,12 +10,8 @@ const LoyaltyPage = () => {
   const navigate = useNavigate();
   const [points, setPoints] = useState(0);
   const [isPlus, setIsPlus] = useState(false);
-  const [streak, setStreak] = useState(0);
-  const [lastRewardDate, setLastReward] = useState(null);
   const [expiryDate, setExpiry] = useState(null);
   const [processing, setProcessing] = useState(false);
-
-  const maxCycles = 4;
 
   useEffect(() => {
     fetchUserData();
@@ -28,31 +20,19 @@ const LoyaltyPage = () => {
   const fetchUserData = async () => {
     try {
       const { data } = await axios.get(`${API}/api/users/profile`, config);
+
       setPoints(data.loyaltyPoints || 0);
       setIsPlus(data.isPlusMember || false);
-      setStreak(data.streakCount || 0);
-      setLastReward(data.lastStreakRewardDate);
       setExpiry(data.plusExpiryDate);
     } catch (err) {
       console.error(err);
     }
   };
 
-  const getStreakStatus = () => {
-    if (streak === 0) return "No active streak";
-    if (streak >= maxCycles) return "Streak complete 🎉";
-    if (!lastRewardDate) return "Cycle started";
-    const diff = Math.ceil(
-      (new Date(lastRewardDate).getTime() + 14 * 86400000 - Date.now()) /
-        86400000,
-    );
-    return diff > 0 ? `${diff} days left to next cycle` : "Streak expired!";
-  };
-
   const handleActivatePlus = async () => {
     try {
       setProcessing(true);
-      await axios.post(`${API}/api/users/upgrade-plus`, {}, config);
+      await axios.put(`${API}/api/users/upgrade-plus`, {}, config);
       fetchUserData();
     } catch (err) {
       console.error(err);
@@ -61,11 +41,13 @@ const LoyaltyPage = () => {
     }
   };
 
-  const eligibleForPlus = streak >= maxCycles && !isPlus;
-  const progress = Math.min(streak, maxCycles) / maxCycles;
+  const requiredPoints = 20;
 
+  const eligibleForPlus = points >= requiredPoints && !isPlus;
+
+  const progress = Math.min(points, requiredPoints) / requiredPoints;
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-h-screen bg-[#FFFBEA] p-5 rounded-2xl">
       <div className="max-w-3xl mx-auto px-4 py-5">
         {/* Header */}
         <div className="flex items-center gap-3 mb-6">
@@ -126,37 +108,6 @@ const LoyaltyPage = () => {
           )}
         </div>
 
-        {/* Streak Card */}
-
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-5">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center">
-              <Flame className="text-orange-500" size={22} />
-            </div>
-
-            <div>
-              <h3 className="font-semibold text-gray-800">Shopping Streak</h3>
-
-              <p className="text-sm text-gray-500">
-                {Math.min(streak, maxCycles)} / {maxCycles} Cycles
-              </p>
-            </div>
-          </div>
-
-          <div className="w-full h-3 bg-gray-200 rounded-full mt-5 overflow-hidden">
-            <div
-              className="h-full bg-[#6FAF8E] rounded-full"
-              style={{
-                width: `${progress * 100}%`,
-              }}
-            />
-          </div>
-
-          <div className="flex justify-between mt-2 text-xs text-gray-500">
-            <span>{Math.round(progress * 100)}% Completed</span>
-            <span>{getStreakStatus()}</span>
-          </div>
-        </div>
         {/* Activate Plus */}
 
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
@@ -181,7 +132,8 @@ const LoyaltyPage = () => {
               </h3>
 
               <p className="text-sm text-gray-500 mb-5">
-                Congratulations! Activate your Plus membership now.
+                Congratulations! You have collected 20 Loyalty Points. FreshCart
+                Plus is now unlocked.
               </p>
 
               <button
@@ -200,61 +152,95 @@ const LoyaltyPage = () => {
               </div>
 
               <p className="text-sm text-gray-500">
-                Complete{" "}
+                Earn
                 <span className="font-semibold">
-                  {maxCycles - Math.min(streak, maxCycles)}
+                  {requiredPoints - Math.min(points, requiredPoints)}
                 </span>{" "}
-                more cycle
-                {maxCycles - Math.min(streak, maxCycles) !== 1 && "s"} to unlock
-                FreshCart Plus.
+                more loyalty points to unlock FreshCart Plus.
+                {requiredPoints - Math.min(points, requiredPoints) !== 1 &&
+                  "s"}{" "}
+                to unlock FreshCart Plus.
               </p>
             </div>
           )}
         </div>
 
-        {/* How to Earn Plus */}
+        {/* Plus Membership Benefits */}
 
-        {!isPlus && (
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
-            <h2 className="text-lg font-semibold text-gray-800 mb-5">
-              How to Earn Plus
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+          <div className="flex items-center gap-2 mb-5">
+            <Crown className="text-yellow-500" size={24} />
+            <h2 className="text-lg font-semibold text-gray-800">
+              FreshCart Plus Benefits
             </h2>
+          </div>
 
-            <div className="space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-green-100 text-[#6FAF8E] font-bold flex items-center justify-center">
-                  1
-                </div>
-                <p className="text-gray-600">
-                  Spend ₹500 or more in one order.
-                </p>
-              </div>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between border-b pb-3">
+              <span className="text-gray-600">Extra Discount</span>
+              <span className="font-semibold text-green-600">+5% OFF</span>
+            </div>
 
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-green-100 text-[#6FAF8E] font-bold flex items-center justify-center">
-                  2
-                </div>
-                <p className="text-gray-600">Shop once every 14 days.</p>
-              </div>
+            <div className="flex items-center justify-between border-b pb-3">
+              <span className="text-gray-600">Free Delivery</span>
+              <span className="font-semibold text-green-600">Available</span>
+            </div>
 
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-green-100 text-[#6FAF8E] font-bold flex items-center justify-center">
-                  3
-                </div>
-                <p className="text-gray-600">Complete 4 shopping cycles.</p>
-              </div>
+            <div className="flex items-center justify-between border-b pb-3">
+              <span className="text-gray-600">Priority Offers</span>
+              <span className="font-semibold text-green-600">
+                Exclusive Deals
+              </span>
+            </div>
 
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-green-100 text-[#6FAF8E] font-bold flex items-center justify-center">
-                  4
-                </div>
-                <p className="text-gray-600">
-                  Activate FreshCart Plus for free.
-                </p>
-              </div>
+            <div className="flex items-center justify-between">
+              <span className="text-gray-600">Membership Validity</span>
+              <span className="font-semibold text-gray-800">30 Days</span>
             </div>
           </div>
-        )}
+        </div>
+
+        {/* How to Earn Plus */}
+
+        <div className="space-y-4">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-full bg-green-100 text-[#6FAF8E] font-bold flex items-center justify-center">
+              1
+            </div>
+
+            <p className="text-gray-600">
+              Earn loyalty points from every successful order.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-full bg-green-100 text-[#6FAF8E] font-bold flex items-center justify-center">
+              2
+            </div>
+
+            <p className="text-gray-600">
+              Reach <strong>20 Loyalty Points</strong>.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-full bg-green-100 text-[#6FAF8E] font-bold flex items-center justify-center">
+              3
+            </div>
+
+            <p className="text-gray-600">Activate FreshCart Plus.</p>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-full bg-green-100 text-[#6FAF8E] font-bold flex items-center justify-center">
+              4
+            </div>
+
+            <p className="text-gray-600">
+              Enjoy Plus benefits for <strong>30 Days</strong>.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
