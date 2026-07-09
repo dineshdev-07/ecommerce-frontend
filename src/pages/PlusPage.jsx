@@ -4,7 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { Crown, Flame, Lock } from "lucide-react";
 const API = import.meta.env.VITE_API_URL;
 
-const config = { withCredentials: true };
+const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
+const config = {
+  headers: {
+    Authorization: `Bearer ${userInfo.token}`,
+  },
+  withCredentials: true,
+};
 
 const LoyaltyPage = () => {
   const navigate = useNavigate();
