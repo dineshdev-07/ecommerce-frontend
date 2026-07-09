@@ -175,16 +175,7 @@ const { data } = await axios.get(
             </div>
           </div>
           <div className="flex flex-wrap gap-2 w-full sm:w-auto shrink-0">
-            {showDeliverBtn && (
-              <button
-                disabled={btnLoading}
-                onClick={() => updateOrderStatus("deliver")}
-                className="flex-1 sm:flex-none bg-[#6FAF8E] text-white px-3 sm:px-5 py-2.5 rounded-xl font-black text-[10px] sm:text-xs flex items-center justify-center gap-1.5 hover:bg-green-600 transition disabled:opacity-60"
-              >
-                <CheckCircle size={13} />
-                <span className="hidden xs:inline">MARK </span>DELIVERED
-              </button>
-            )}
+            
             {showCancelBtn && (
               <button
                 disabled={btnLoading}

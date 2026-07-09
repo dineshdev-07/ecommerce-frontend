@@ -9,7 +9,6 @@ import {
   useNavigate,
   useSearchParams,
 } from "react-router-dom";
-
 import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
 import Cart from "./pages/Cart";
@@ -29,7 +28,6 @@ import SearchResultsPage from "./pages/SearchResultsPage";
 import WishlistPage from "./pages/WishlistPage";
 import SplashScreen from "./components/SplashScreen";
 import { UserRound } from "lucide-react";
-
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Heart,
@@ -605,12 +603,12 @@ justify-center"
                               </button>
                               <button
                                 onClick={() => {
-                                  navigate("/myorders");
+                                  navigate("/admin/orders");
                                   setProfileOpen(false);
                                 }}
                                 className="w-full text-left px-4 py-3 hover:bg-green-50"
                               >
-                                My Orders
+                                Orders
                               </button>
                             </>
                           )}
@@ -644,7 +642,7 @@ justify-center"
                   to="/myorders"
                   className="font-semibold text-[#795548] hover:text-[#2E7D32]"
                 >
-                  Orders
+                  My Orders
                 </Link>
 
                 <Link

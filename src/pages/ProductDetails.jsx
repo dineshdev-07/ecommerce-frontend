@@ -350,6 +350,7 @@ const ProductDetails = () => {
           order_id: rzpData.id,
           handler: async (res) => {
             try {
+              console.log("Mongo Order ID:", mongoOrderId);
               await axios.post(
                 `${API}/api/orders/verify`,
                 {
