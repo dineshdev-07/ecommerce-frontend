@@ -63,10 +63,14 @@ function AdminOrders() {
     if (!window.confirm("Mark this order as delivered?")) return;
     try {
       await axios.put(
-        `${API}/api/orders/${id}/deliver`,
-        {},
-        { withCredentials: true },
-      );
+    `${API}/api/orders/${id}/deliver`,
+    {},
+    {
+        headers:{
+            Authorization:`Bearer ${userInfo.token}`
+        }
+    }
+);
       fetchOrders();
     } catch {
       alert("Delivery update failed");
@@ -77,10 +81,14 @@ function AdminOrders() {
     if (!window.confirm("Confirm refund has been processed?")) return;
     try {
       await axios.put(
-        `${API}/api/orders/${id}/refund`,
-        {},
-        { withCredentials: true },
-      );
+  `${API}/api/orders/${order._id}/refund`,
+  {},
+  {
+    headers: {
+      Authorization: `Bearer ${userInfo.token}`,
+    },
+  }
+);
       alert("Order marked as Refunded");
       fetchOrders();
     } catch {
