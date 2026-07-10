@@ -370,7 +370,7 @@ const Cart = () => {
               `${API}/api/payment/verify`,
               {
                 ...response,
-                orderData: buildOrderPayload("ONLINE", true),
+                orderId: order._id,
               },
               config,
             );
@@ -464,10 +464,12 @@ const Cart = () => {
       {cartItems.length === 0 ? (
         <div className="flex min-h-[45vh] items-center justify-center px-6">
           <div className="max-w-sm text-center">
-            <h2 className="mt-6 text-2xl font-bold text-gray-900 mb-5">Your Cart is Empty</h2>
+            <h2 className="mt-6 text-2xl font-bold text-gray-900 mb-5">
+              Your Cart is Empty
+            </h2>
             <button
               onClick={() => navigate("/")}
-               className="flex-1 rounded-xl border border-[#2E7D32] bg-[#2E7D32] py-3 px-3 font-semibold text-white hover:bg-[#1B5E20] transition"
+              className="flex-1 rounded-xl border border-[#2E7D32] bg-[#2E7D32] py-3 px-3 font-semibold text-white hover:bg-[#1B5E20] transition"
             >
               Continue Shopping
             </button>
