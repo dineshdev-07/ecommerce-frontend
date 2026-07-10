@@ -60,20 +60,23 @@ function AdminOrders() {
   }, [loading, orders]);
 
   const deliverHandler = async (id) => {
-    if (!window.confirm("Mark this order as delivered?")) return;
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
     try {
       await axios.put(
-    `${API}/api/orders/${id}/deliver`,
-    {},
-    {
-        headers:{
-            Authorization:`Bearer ${userInfo.token}`
-        }
-    }
-);
+        `${API}/api/orders/${id}/deliver`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        },
+      );
+
       fetchOrders();
-    } catch {
-      alert("Delivery update failed");
+    } catch (err) {
+      console.log(err.response);
+      alert(err.response?.data?.message || "Delivery update failed");
     }
   };
 
@@ -81,22 +84,28 @@ function AdminOrders() {
     if (!window.confirm("Confirm refund has been processed?")) return;
     try {
       await axios.put(
-  `${API}/api/orders/${order._id}/refund`,
-  {},
-  {
-    headers: {
-      Authorization: `Bearer ${userInfo.token}`,
-    },
-  }
-);
+        `${API}/api/orders/${id}/refund`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        },
+      );
+      console.log(userInfo);
+      console.log(userInfo.token);
+      console.log(id);
       alert("Order marked as Refunded");
       fetchOrders();
-    } catch {
-      alert("Refund update failed");
+    } catch (err) {
+      console.log(err.response);
+
+      alert(err.response?.data?.message || "Refund update failed");
     }
   };
 
   const resetDatabaseHandler = async () => {
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     if (
       !window.confirm(
         "CRITICAL: This will archive all orders for Admin view. User history is preserved. Continue?",
@@ -139,7 +148,7 @@ function AdminOrders() {
     return d === selectedDistrict;
   });
 
-   if (loading) {
+  if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
         <div className="animate-spin h-10 w-10 border-t-2 border-b-2 border-[#6FAF8E] rounded-full"></div>
@@ -147,49 +156,42 @@ function AdminOrders() {
     );
   }
 
-
   return (
     <div className="min-h-screen bg-[#FFFBEA] p-5 rounded-2xl">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="bg-white rounded-xl border border-gray-200 p-4 sm:p-6 mb-6 sm:mb-8">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+            {/* Title */}
+            <div>
+              <h1 className="text-xl sm:text-2xl font-bold text-[#2E7D32]">
+                Order Details
+              </h1>
 
-  <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+              <p className="text-sm text-gray-500 mt-1">
+                Manage all customer orders
+              </p>
+            </div>
 
-    {/* Title */}
-    <div>
-      <h1 className="text-xl sm:text-2xl font-bold text-[#2E7D32]">
-        Order Details
-      </h1>
+            {/* Search + Button */}
+            <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+              <input
+                type="text"
+                placeholder="Search Order / Customer"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full sm:w-72 h-11 px-4 border border-gray-300 rounded-lg outline-none focus:border-[#6FAF8E]"
+              />
 
-      <p className="text-sm text-gray-500 mt-1">
-        Manage all customer orders
-      </p>
-    </div>
-
-    {/* Search + Button */}
-    <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
-
-      <input
-        type="text"
-        placeholder="Search Order / Customer"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className="w-full sm:w-72 h-11 px-4 border border-gray-300 rounded-lg outline-none focus:border-[#6FAF8E]"
-      />
-
-      <button
-        onClick={resetDatabaseHandler}
-        className="w-full sm:w-auto h-11 px-5 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
-      >
-        Reset Orders
-      </button>
-
-    </div>
-
-  </div>
-
-</div>
+              <button
+                onClick={resetDatabaseHandler}
+                className="w-full sm:w-auto h-11 px-5 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
+              >
+                Reset Orders
+              </button>
+            </div>
+          </div>
+        </div>
 
         {/* Count */}
         <div className="mb-5 text-gray-600 font-medium">
