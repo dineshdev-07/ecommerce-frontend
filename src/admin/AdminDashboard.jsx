@@ -65,6 +65,7 @@ const AdminDashboard = () => {
     codOrders: data?.codOrders ?? 0,
     productsCount: data?.productsCount ?? 0,
     lowStockProducts: data?.lowStockProducts || [],
+    pendingRefunds: data?.pendingRefunds ?? 0,
   };
 
   const handleResetMonthly = async () => {
@@ -91,8 +92,6 @@ const AdminDashboard = () => {
       alert("Reset failed ❌");
     }
   };
-
-
 
   if (error)
     return (
@@ -152,13 +151,16 @@ const AdminDashboard = () => {
             <MiniCard title="Paid Orders" value={normalizedData.paidOrders} />
 
             <MiniCard
-              title="Refunded"
-              value={`₹${normalizedData.totalRefunded}`}
-            />
-
-            <MiniCard
               title="Cancelled"
               value={normalizedData.cancelledOrders}
+            />
+            <MiniCard
+              title="Pending Refunds"
+              value={normalizedData.pendingRefunds}
+            />
+            <MiniCard
+              title="Refunded"
+              value={`₹${normalizedData.totalRefunded}`}
             />
 
             <MiniCard title="COD Orders" value={normalizedData.codOrders} />
@@ -210,17 +212,14 @@ const AdminDashboard = () => {
               ))}
             </div>
           )}
-         
-
-
         </div>
-            <button
-              onClick={handleResetMonthly}
-              className="flex-1 border border-red-300 text-red-600 hover:bg-red-600 hover:text-white py-3 rounded-lg font-medium transition mt-5 p-5"
-            >
-              <FontAwesomeIcon  />
-              Reset Monthly Data
-            </button>
+        <button
+          onClick={handleResetMonthly}
+          className="flex-1 border border-red-300 text-red-600 hover:bg-red-600 hover:text-white py-3 rounded-lg font-medium transition mt-5 p-5"
+        >
+          <FontAwesomeIcon />
+          Reset Monthly Data
+        </button>
       </div>
     </div>
   );

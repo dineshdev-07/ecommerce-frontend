@@ -73,14 +73,13 @@ const MyOrders = () => {
     }
   };
 
-   if (loading) {
+  if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
         <div className="animate-spin h-10 w-10 border-t-2 border-b-2 border-[#6FAF8E] rounded-full"></div>
       </div>
     );
   }
-
 
   return (
     <div className="min-h-screen bg-[#FFFBEA] p-5 rounded-2xl">
@@ -211,13 +210,22 @@ const MyOrders = () => {
 
                 {order.isCancelled && order.isPaid && (
                   <div className="mt-6 border-t border-[#E8E8E8] pt-5">
-                    {order.isRefunded ? (
-                      <div className="bg-green-50 text-green-700 rounded-xl px-4 py-3 font-medium">
-                        ✅ Refund completed successfully.
+                    {order.refundStatus === "Pending" && (
+                      <div className="bg-yellow-50 text-yellow-700 rounded-xl px-4 py-3">
+                        ⏳ Refund request sent. Waiting for admin approval.
                       </div>
-                    ) : (
-                      <div className="bg-blue-50 text-blue-700 rounded-xl px-4 py-3 font-medium">
-                        💰 Refund is processing (3–5 business days).
+                    )}
+
+                    {order.refundStatus === "Approved" && (
+                      <div className="bg-green-50 text-green-700 rounded-xl px-4 py-3">
+                        ✅ Refund approved. Amount will be credited within 3–5
+                        business days.
+                      </div>
+                    )}
+
+                    {order.refundStatus === "Rejected" && (
+                      <div className="bg-red-50 text-red-700 rounded-xl px-4 py-3">
+                        ❌ Refund request rejected.
                       </div>
                     )}
                   </div>

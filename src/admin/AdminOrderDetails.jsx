@@ -25,7 +25,6 @@ import {
 
 const API = import.meta.env.VITE_API_URL;
 
-
 const Row = ({ icon, label, value, color }) => {
   const colors = {
     blue: "bg-blue-50 border-blue-100 text-blue-700",
@@ -68,14 +67,11 @@ const AdminOrderDetails = () => {
       setLoading(true);
       const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
-const { data } = await axios.get(
-  `${API}/api/orders/admin/${id}`,
-  {
-    headers: {
-      Authorization: `Bearer ${userInfo.token}`,
-    },
-  }
-);
+      const { data } = await axios.get(`${API}/api/orders/admin/${id}`, {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      });
       setOrder(data);
     } catch {
       setError("Order not found ❌");
@@ -128,7 +124,7 @@ const { data } = await axios.get(
 
   const showDeliverBtn = !order.isDelivered && !order.isCancelled;
   const showCancelBtn = !order.isDelivered && !order.isCancelled;
-  const showRefundBtn = order.isPaid && order.isCancelled && !order.isRefunded;
+  const showRefundBtn = order.refundStatus === "Pending";
 
   const statusChips = [
     {
@@ -136,7 +132,11 @@ const { data } = await axios.get(
       label: `Paid · ${order.paymentMethod}`,
       bg: "bg-green-100 text-green-700",
     },
-    { show: !order.isPaid, label: "Unpaid", bg: "bg-red-100 text-red-600" },
+    {
+      show: !order.isPaid,
+      label: "Unpaid",
+      bg: "bg-red-100 text-red-600",
+    },
     {
       show: order.isDelivered,
       label: "Delivered",
@@ -148,14 +148,19 @@ const { data } = await axios.get(
       bg: "bg-orange-100 text-orange-700",
     },
     {
-      show: order.isRefunded,
-      label: "Refunded",
-      bg: "bg-purple-100 text-purple-700",
+      show: order.refundStatus === "Pending",
+      label: "Refund Pending",
+      bg: "bg-yellow-100 text-yellow-700",
+    },
+    {
+      show: order.refundStatus === "Approved",
+      label: "Refund Approved",
+      bg: "bg-green-100 text-green-700",
     },
   ].filter((s) => s.show);
 
   return (
-   <div className="min-h-screen bg-[#FFFBEA] p-5 rounded-2xl">
+    <div className="min-h-screen bg-[#FFFBEA] p-5 rounded-2xl">
       <header className="sticky top-0 bg-white/95 backdrop-blur-md border-b px-3 sm:px-6 lg:px-8 py-3 sm:py-4 z-40 shadow-sm">
         <div className="max-w-[1400px] mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div className="flex items-center gap-2 sm:gap-3 min-w-0">
@@ -175,7 +180,6 @@ const { data } = await axios.get(
             </div>
           </div>
           <div className="flex flex-wrap gap-2 w-full sm:w-auto shrink-0">
-            
             {showCancelBtn && (
               <button
                 disabled={btnLoading}
@@ -285,6 +289,30 @@ const { data } = await axios.get(
               </div>
             ))}
           </div>
+          {order.isPaid && order.isCancelled && (
+            <div className="bg-white rounded-3xl border border-gray-200 p-5 mt-5 shadow-sm">
+              <h3 className="text-sm font-bold text-gray-700 mb-3">
+                Refund Status
+              </h3>
+
+              <p className="text-lg font-semibold text-[#2E7D32]">
+                {order.refundStatus}
+              </p>
+
+              {order.refundRequestedAt && (
+                <p className="text-sm text-gray-500 mt-2">
+                  Requested on:{" "}
+                  {new Date(order.refundRequestedAt).toLocaleString()}
+                </p>
+              )}
+
+              {order.refundedAt && (
+                <p className="text-sm text-gray-500">
+                  Approved on: {new Date(order.refundedAt).toLocaleString()}
+                </p>
+              )}
+            </div>
+          )}
 
           <div className="bg-white rounded-[28px] sm:rounded-[40px] border border-gray-100 overflow-visible shadow-sm">
             <div className="px-4 sm:px-6 py-4 border-b bg-gray-50/50 flex justify-between items-center rounded-t-[28px] sm:rounded-t-[40px]">
@@ -316,7 +344,6 @@ const { data } = await axios.get(
                         <h4 className="text-xs sm:text-sm font-bold truncate">
                           {item.name}
                         </h4>
-                        
                       </div>
                       <p className="text-[9px] sm:text-[10px] text-gray-400 font-black mt-0.5">
                         ₹{item.price} × {item.qty}
@@ -433,4 +460,3 @@ const { data } = await axios.get(
 };
 
 export default AdminOrderDetails;
-
