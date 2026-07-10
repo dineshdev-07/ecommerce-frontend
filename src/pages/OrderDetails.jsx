@@ -524,27 +524,40 @@ const OrderDetails = () => {
           </div>
 
           {/* Price Summary */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-            <div className="bg-white rounded-xl shadow-sm border p-6">
-              <span>Actual Price</span>
-              <span>₹{actualPrice.toFixed(2)}</span>
+          {/* Price Summary */}
+          <div className="bg-white rounded-xl shadow-sm border p-6">
+            <div className="flex items-center gap-3 mb-5">
+              <Package className="text-green-600" size={22} />
+              <h2 className="text-lg font-semibold">Price Summary</h2>
             </div>
 
-            <div className="flex justify-between">
-              <span>Discount</span>
-              <span className="text-green-600">- ₹{discount.toFixed(2)}</span>
-            </div>
+            <div className="space-y-3 text-sm">
+              <div className="flex justify-between">
+                <span className="text-gray-500">Actual Price</span>
+                <span className="font-medium">₹{actualPrice.toFixed(2)}</span>
+              </div>
 
-            <div className="flex justify-between">
-              <span>Delivery Charge</span>
-              <span>
-                {deliveryCharge === 0 ? "FREE" : `₹${deliveryCharge}`}
-              </span>
-            </div>
+              <div className="flex justify-between">
+                <span className="text-gray-500">Discount</span>
+                <span className="font-medium text-green-600">
+                  - ₹{discount.toFixed(2)}
+                </span>
+              </div>
 
-            <div className="border-t pt-3 flex justify-between font-bold text-lg">
-              <span>Total Paid</span>
-              <span>₹{order.totalPrice.toFixed(2)}</span>
+              <div className="flex justify-between">
+                <span className="text-gray-500">Delivery Charge</span>
+                <span className="font-medium">
+                  {deliveryCharge === 0 ? "FREE" : `₹${deliveryCharge}`}
+                </span>
+              </div>
+
+              <div className="border-t pt-3 flex justify-between">
+                <span className="font-semibold text-gray-800">Total Paid</span>
+
+                <span className="font-bold text-lg text-green-700">
+                  ₹{order.totalPrice.toFixed(2)}
+                </span>
+              </div>
             </div>
           </div>
         </div>
