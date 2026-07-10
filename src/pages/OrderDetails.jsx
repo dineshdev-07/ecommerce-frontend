@@ -437,7 +437,7 @@ const OrderDetails = () => {
                     <p className="font-semibold text-gray-800">₹{item.price}</p>
 
                     <p className="text-sm text-gray-500">
-                      Total: ₹{(item.price * item.qty).toFixed(2)}  
+                      Total: ₹{(item.price * item.qty).toFixed(2)}
                     </p>
                   </div>
                 </div>
@@ -524,8 +524,8 @@ const OrderDetails = () => {
           </div>
 
           {/* Price Summary */}
-          <div className="space-y-3">
-            <div className="flex justify-between">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+            <div className="bg-white rounded-xl shadow-sm border p-6">
               <span>Actual Price</span>
               <span>₹{actualPrice.toFixed(2)}</span>
             </div>
