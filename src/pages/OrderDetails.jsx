@@ -144,7 +144,6 @@ const OrderDetails = () => {
 
   const isPlusMember = order.user?.isPlusMember || localUser?.isPlusMember;
 
-  const deliveryCharge = isPlusMember || itemsPriceSum >= 299 ? 0 : 39;
 
   const totalSavings = order.orderItems.reduce(
     (total, item) =>
