@@ -138,12 +138,11 @@ const OrderDetails = () => {
 
   const discount = actualPrice - sellingPrice;
 
-  const deliveryCharge = sellingPrice >= 299 || isPlusMember ? 0 : 39;
-
   const localUser = JSON.parse(localStorage.getItem("userInfo") || "{}");
 
   const isPlusMember = order.user?.isPlusMember || localUser?.isPlusMember;
 
+  const deliveryCharge = sellingPrice >= 299 || isPlusMember ? 0 : 39;
 
   const totalSavings = order.orderItems.reduce(
     (total, item) =>
@@ -202,7 +201,7 @@ const OrderDetails = () => {
   const summaryData = [
     {
       label: "Items Total",
-      value: `₹${itemsPriceSum}`,
+      value: `₹${sellingPrice.toFixed(2)}`,
     },
 
     {
@@ -438,7 +437,7 @@ const OrderDetails = () => {
                     <p className="font-semibold text-gray-800">₹{item.price}</p>
 
                     <p className="text-sm text-gray-500">
-                      Total: ₹ ₹{itemsPriceSum.toFixed(2)}
+                      Total: ₹{(item.price * item.qty).toFixed(2)}  
                     </p>
                   </div>
                 </div>
