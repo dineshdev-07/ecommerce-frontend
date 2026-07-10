@@ -289,25 +289,6 @@ const OrderDetails = () => {
           </div>
         )}
 
-        {/* Refund Completed */}
-        {order.isRefunded && (
-          <div className="bg-green-50 border border-green-300 rounded-lg p-4 flex gap-3">
-            <CheckCircle size={22} className="text-green-600 mt-1" />
-
-            <div>
-              <h3 className="font-semibold text-green-800">Refund Completed</h3>
-
-              <p className="text-sm text-green-700">
-                ₹{order.totalPrice} has been refunded successfully.
-              </p>
-
-              <p className="text-xs text-gray-500 mt-1">
-                Refunded on{" "}
-                {new Date(order.refundedAt).toLocaleDateString("en-IN")}
-              </p>
-            </div>
-          </div>
-        )}
         {/* Order Information */}
 
         <Section title="Order Information">
@@ -449,6 +430,26 @@ const OrderDetails = () => {
             )}
           </div>
         </div>
+
+        {/* Refund Completed */}
+        {order.isRefunded && (
+          <div className="bg-green-50 border border-green-300 rounded-lg p-4 flex gap-3">
+            <CheckCircle size={22} className="text-green-600 mt-1" />
+
+            <div>
+              <h3 className="font-semibold text-green-800">Refund Completed</h3>
+
+              <p className="text-sm text-green-700">
+                ₹{order.totalPrice} has been refunded successfully.
+              </p>
+
+              <p className="text-xs text-gray-500 mt-1">
+                Refunded on{" "}
+                {new Date(order.refundedAt).toLocaleDateString("en-IN")}
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* Payment Details */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
