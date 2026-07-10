@@ -332,14 +332,22 @@ const Cart = () => {
 
         return;
       }
+      const { data: order } = await axios.post(
+        `${API}/api/orders`,
+        buildOrderPayload("ONLINE", false),
+        config,
+      );
 
+      const mongoOrderId = order._id;
       // ---------------- ONLINE ----------------
 
       setLoadingText("Creating payment...");
 
       const { data: razorpayOrder } = await axios.post(
         `${API}/api/payment/create-order`,
-        { amount: grandTotal },
+        {
+          amount: grandTotal,
+        },
         config,
       );
 
@@ -365,16 +373,19 @@ const Cart = () => {
         handler: async (response) => {
           try {
             setLoading(true);
-
             await axios.post(
               `${API}/api/payment/verify`,
               {
-                ...response,
-                orderId: order._id,
+                orderId: mongoOrderId,
+
+                razorpay_order_id: response.razorpay_order_id,
+
+                razorpay_payment_id: response.razorpay_payment_id,
+
+                razorpay_signature: response.razorpay_signature,
               },
               config,
             );
-
             setCartItems([]);
             setOrderSuccess(true);
 
