@@ -18,7 +18,6 @@ const WishlistProductCard = ({
   const { isWishlisted } = useWishlist();
   const liked = isWishlisted(product._id);
 
-  const userInfo = JSON.parse(localStorage.getItem("userInfo") || "null");
   const loyaltyPoints = Number(userInfo?.loyaltyPoints || 0);
   const isNewUser = !!(userInfo && userInfo.firstOrderCompleted === false);
   const isLoyal = loyaltyPoints >= 20;
@@ -169,7 +168,7 @@ const WishlistPage = () => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo") || "null");
 
   const config = {
-    headers: { Authorization: `Bearer ${userInfo?.token}` },
+    headers: { Authorization: `Bearer ${userInfo.token}` },
   };
 
   useEffect(() => {
