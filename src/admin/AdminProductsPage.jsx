@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, Pin, PinOff, ArrowLeft, LayoutGrid ,ChevronLeft} from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 
 const CACHE_KEY = "FreshCart_home";
 const bustCache = () => sessionStorage.removeItem(CACHE_KEY);
@@ -22,6 +22,7 @@ const AdminProductsPage = () => {
         credentials: "include",
       });
       const data = await res.json();
+      console.log(data[0]);
       setAllProducts(data);
       bustCache();
     } catch (err) {
@@ -67,17 +68,15 @@ const AdminProductsPage = () => {
       setTogglingId(null);
     }
   };
+  const filteredProducts = allProducts.filter((product) => {
+    const name = product.name?.toLowerCase() || "";
+    const category = product.category?.toLowerCase() || "";
 
-  const filteredProducts = useMemo(() => {
-    const filtered = allProducts.filter(
-      (p) =>
-        p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        p.category.toLowerCase().includes(searchTerm.toLowerCase()),
+    return (
+      name.includes(searchTerm.toLowerCase()) ||
+      category.includes(searchTerm.toLowerCase())
     );
-    return [...filtered].sort((a, b) =>
-      a.isPinned === b.isPinned ? 0 : a.isPinned ? -1 : 1,
-    );
-  }, [allProducts, searchTerm]);
+  });
 
   const pinnedPct = Math.min((pinnedCount / 50) * 100, 100);
   const isFull = pinnedCount >= 50;
@@ -90,12 +89,14 @@ const AdminProductsPage = () => {
         <div className="bg-white rounded-xl border border-gray-200 p-6 mb-8 flex justify-between">
           <div className="flex">
             <button
-            onClick={() => navigate(-1)}
-            className="p-4 hover:bg-gray-100 rounded-xl text-gray-500 transition"
-          >
-            <ChevronLeft size={30} />
-          </button>
-            <h2 className="text-2xl font-bold text-[#2E7D32] mt-3">Homepage Products</h2>
+              onClick={() => navigate(-1)}
+              className="p-4 hover:bg-gray-100 rounded-xl text-gray-500 transition"
+            >
+              <ChevronLeft size={30} />
+            </button>
+            <h2 className="text-2xl font-bold text-[#2E7D32] mt-3">
+              Homepage Products
+            </h2>
           </div>
           <div
             className={`text-xl font-bold mt-3 ${
@@ -126,7 +127,7 @@ const AdminProductsPage = () => {
                 : `${API}${imgPath?.startsWith("/") ? "" : "/"}${imgPath || ""}`;
 
               const isToggling = togglingId === product._id;
-return (
+              return (
                 <div
                   key={product._id}
                   className={`relative rounded-xl border overflow-hidden bg-white shadow-sm transition border-gray-200`}
