@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
+import { ChevronLeft } from "lucide-react";
 
 const API = import.meta.env.VITE_API_URL;
 
@@ -56,23 +57,20 @@ const CategoryPage = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-3 sm:px-5 py-4 pb-20">
+     <div className="min-h-screen bg-[#FFFBEA] p-5 rounded-2xl">
       {/* Header */}
-      <div className="flex items-center gap-3 mb-5">
+     <div className="bg-white rounded-xl border border-gray-200 p-6 mb-5 flex">
         <button
-          onClick={() => navigate(-1)}
-          className="w-9 h-9 flex items-center justify-center rounded-full border hover:bg-gray-100 transition"
-        >
-          ←
-        </button>
+            onClick={() => navigate(-1)}
+            className="p-4 hover:bg-gray-100 rounded-xl text-gray-500 transition"
+          >
+            <ChevronLeft size={30} />
+          </button>
 
         <div>
-          <h1 className="text-xl sm:text-2xl font-bold capitalize text-gray-800">
-            {categoryName}
+          <h1 className="text-2xl font-bold text-[#2E7D32] mt-3">
+           {categoryName?.charAt(0).toUpperCase() + categoryName?.slice(1)}
           </h1>
-          <p className="text-sm text-gray-500">
-            {filteredProducts.length} Products
-          </p>
         </div>
       </div>
 
@@ -84,7 +82,7 @@ const CategoryPage = () => {
           </p>
           <button
             onClick={() => navigate("/")}
-            className="mt-4 bg-[#6FAF8E] text-white px-5 py-2 rounded-lg hover:bg-green-600"
+            className="mt-4 bg-[#2E7D32] text-white px-5 py-2 rounded-lg hover:bg-green-600"
           >
             Back to Home
           </button>
