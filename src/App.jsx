@@ -465,16 +465,16 @@ function AppContent() {
   }, [isAdmin, fetchAdminAlerts]);
 
   const isAuthPage =
-    location.pathname === "/login" || location.pathname === "/register";
+    location.pathname === "/login" ||
+    location.pathname === "/register" ||
+    location.pathname === "/forgot-password";
 
   const isActive = (path) => location.pathname === path;
 
   const totalAdminBadge = deliveryAlertCount + refundAlertCount + lowStockCount;
 
   return (
-    <div
-      className="bg-white border border-brand-light/30"
-    >
+    <div className="bg-white border border-brand-light/30">
       <style>{`
         .nav-link-anim { position: relative; }
         .nav-link-anim::after {
@@ -521,7 +521,32 @@ function AppContent() {
 
               <div className="flex items-center gap-5">
                 <Link to="/wishlist" className="relative hover:text-[#2E7D32]">
-                  <Heart size={21} />
+                  <Heart
+                    size={21}
+                    className={
+                      wishlistCount > 0 ? "fill-red-500 text-red-500" : ""
+                    }
+                  />
+
+                  {wishlistCount > 0 && (
+                    <span
+                      className=" absolute
+                -top-2
+                -right-2
+                bg-red-500
+                text-white
+                text-[10px]
+                w-5
+                h-5
+                rounded-full
+                flex
+                items-center
+                justify-center
+            "
+                    >
+                      {wishlistCount > 9 ? "9+" : wishlistCount}
+                    </span>
+                  )}
                 </Link>
 
                 <Link to="/cart" className="relative hover:text-[#2E7D32]">
@@ -665,6 +690,7 @@ justify-center"
                   onChange={(e) => {
                     setSearch(e.target.value);
                     fetchSuggestions(e.target.value);
+                    lodash.debounce();
                   }}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
@@ -700,7 +726,7 @@ justify-center"
             }
           />
           <Route path="/register" element={<Register />} />
-          <Route path="forgot-password" element={<ForgotPassword />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/category/:categoryName" element={<CategoryPage />} />
           <Route path="/admin/products" element={<AdminProductsPage />} />
           <Route path="/product/:id" element={<ProductDetails />} />

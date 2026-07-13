@@ -442,7 +442,7 @@ const Home = ({ search = "" }) => {
 
             {isAdmin && (
               <p className="text-sm text-gray-500 mt-1">
-                {products.filter((p) => p.isPinned).length}/30 Products
+                {products.filter((p) => p.isPinned).length}/50 Products
               </p>
             )}
           </div>
@@ -458,7 +458,7 @@ const Home = ({ search = "" }) => {
         </div>
 
         {/* Products */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
           {pinnedProducts.length > 0 ? (
             pinnedProducts.map((product) => (
               <div key={product._id} className="relative group">
@@ -520,14 +520,6 @@ const Home = ({ search = "" }) => {
                   Shop Categories
                 </button>
               </li>
-              <li>
-                <button
-                  onClick={() => navigate("/myorders")}
-                  className="hover:text-white transition"
-                >
-                  Track Order
-                </button>
-              </li>
             </ul>
           </div>
 
@@ -538,24 +530,16 @@ const Home = ({ search = "" }) => {
             <div className="text-[11px] sm:text-xs md:text-sm space-y-1.5 sm:space-y-2 text-[#FFF9C4]/75">
               <p>
                 <span className="text-[#81C784]">Email:</span>{" "}
-                support@freshcart.com
+                freshcart1234@gmail.com
               </p>
               <p>
-                <span className="text-[#81C784]">Call:</span> +91 98765 43210
+                <span className="text-[#81C784]">Call:</span> +91 78100 70xxx
               </p>
-              <div className="sm:pt-4 flex justify-center sm:justify-start gap-2 sm:gap-3">
-                <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#795548] flex items-center justify-center text-[10px] sm:text-xs hover:bg-[#81C784] hover:text-[#2E7D32] cursor-pointer transition">
-                  IG
-                </span>
-                <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#795548] flex items-center justify-center text-[10px] sm:text-xs hover:bg-[#81C784] hover:text-[#2E7D32] cursor-pointer transition">
-                  FB
-                </span>
-              </div>
             </div>
           </div>
         </div>
         <div className="max-w-7xl m-auto px-4 sm:px-6 md:px-8 border-t border-[#81C784]/25  sm:mt-10 md:mt-8 pt-4 sm:pt-5 flex flex-col xs:flex-row justify-between items-center gap-3">
-          <p className="text-[8px] sm:text-[9px] md:text-[10px] text-[#FFF9C4]/60 tracking-widest uppercase text-center">
+          <p className="text-[14px] sm:text-[9px] md:text-[10px] text-[#FFF9C4]/60 tracking-widest uppercase text-center">
             @Copyright {new Date().getFullYear()} FreshCart. All Rights
             Reserved.
           </p>

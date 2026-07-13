@@ -186,10 +186,12 @@ const WishlistPage = () => {
     fetchWishlist();
   }, []);
 
-  const handleRemove = (productId) => {
-    toggleWishlist(productId);
-    setProducts((prev) => prev.filter((p) => p._id !== productId));
-  };
+  const handleRemove = async (productId) => {
+  await toggleWishlist(productId);
+
+  const { data } = await axios.get(`${API}/api/wishlist`, config);
+  setProducts(data);
+};
 
   return (
     <div className="min-h-screen bg-[#FFFBEA] p-5 rounded-2xl">
@@ -210,7 +212,7 @@ const WishlistPage = () => {
 
               <button
                 onClick={() => navigate("/")}
-                    className="flex-1 rounded-xl border border-[#2E7D32] bg-[#2E7D32] py-3 px-3 font-semibold text-white hover:bg-[#1B5E20] transition"
+                className="flex-1 rounded-xl border border-[#2E7D32] bg-[#2E7D32] py-3 px-3 font-semibold text-white hover:bg-[#1B5E20] transition"
               >
                 Explore Products
               </button>

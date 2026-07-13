@@ -92,194 +92,195 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F4F7F6] flex items-center justify-center px-4 py-10">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen bg-[#f4f7f6] flex items-center justify-center px-4 py-8">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
+        {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-14 h-14 bg-gray-900 rounded-2xl mb-4 shadow-xl">
-            <KeyRound size={26} className="text-[#6FAF8E]" />
-          </div>
-          <h1 className="text-2xl sm:text-2xl font-black text-gray-900 tracking-tight">
-            Reset Password
-          </h1>
-          <p className="text-gray-400 text-sm mt-1">
-            Don't worry, it happens to the best of us.
-          </p>
+          <h1 className="text-3xl font-bold text-green-700">FreshCart</h1>
+
+          <p className="text-gray-500 mt-2">Reset your password</p>
         </div>
 
-        <div className="flex items-center gap-2 mb-6">
+        {/* Progress */}
+        <div className="flex gap-2 mb-6">
           <div
-            className={`flex-1 h-1.5 rounded-full transition-colors duration-500 ${step >= 1 ? "bg-gray-900" : "bg-gray-200"}`}
+            className={`h-2 flex-1 rounded-full ${
+              step >= 1 ? "bg-green-600" : "bg-gray-200"
+            }`}
           />
           <div
-            className={`flex-1 h-1.5 rounded-full transition-colors duration-500 ${step >= 2 ? "bg-[#6FAF8E]" : "bg-gray-200"}`}
+            className={`h-2 flex-1 rounded-full ${
+              step >= 2 ? "bg-green-600" : "bg-gray-200"
+            }`}
           />
         </div>
 
+        {/* Error */}
         {error && (
-          <div className="mb-4 bg-red-50 border border-red-100 text-red-600 text-xs sm:text-sm font-medium px-4 py-3 rounded-xl">
-            {error}
+          <p className="text-red-500 text-sm text-center mb-5">{error}</p>
+        )}
+
+        {/* STEP 1 */}
+        {step === 1 && (
+          <div className="space-y-5">
+            <div className="text-center">
+              <h2 className="text-xl font-semibold text-gray-800">
+                Forgot Password?
+              </h2>
+
+              <p className="text-sm text-gray-500 mt-2">
+                Enter your registered email to receive an OTP.
+              </p>
+            </div>
+
+            <div className="relative">
+              <Mail
+                size={18}
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+              />
+
+              <input
+                type="email"
+                placeholder="Email Address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleSendOTP()}
+                className="w-full border rounded-lg pl-11 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+            </div>
+
+            <button
+              onClick={handleSendOTP}
+              disabled={loading}
+              className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold transition"
+            >
+              {loading ? "Sending OTP..." : "Send OTP"}
+            </button>
+
+            <div className="text-center text-sm text-gray-600">
+              Remember your password?{" "}
+              <Link
+                to="/login"
+                className="text-green-600 font-semibold hover:underline"
+              >
+                Login
+              </Link>
+            </div>
           </div>
         )}
 
-        <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 sm:p-8">
-          {step === 1 && (
-            <div className="space-y-5">
-              <div>
-                <p className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-gray-400 mb-3">
-                  Step 1 — Identity
-                </p>
-                <h2 className="text-lg sm:text-xl font-black text-gray-900">
-                  Find your account
-                </h2>
-                <p className="text-xs sm:text-sm text-gray-400 mt-1">
-                  Enter your email to receive a recovery code.
-                </p>
-              </div>
+        {/* STEP 2 */}
+        {step === 2 && (
+          <form onSubmit={handleReset} className="space-y-4">
+            <div className="text-center">
+              <h2 className="text-xl font-semibold text-gray-800">
+                Reset Password
+              </h2>
 
-              <div className="relative">
-                <Mail
-                  size={15}
-                  className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"
-                />
-                <input
-                  type="email"
-                  placeholder="you@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  onKeyDown={(e) => e.key === "Enter" && handleSendOTP()}
-                  className="w-full pl-10 pr-4 py-3 text-sm border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-[#6FAF8E]/40 focus:border-[#6FAF8E] transition bg-gray-50"
-                />
-              </div>
+              <p className="text-sm text-gray-500 mt-2">OTP sent to</p>
 
-              <button
-                onClick={handleSendOTP}
-                disabled={loading}
-                className="w-full flex items-center justify-center gap-2 bg-gray-900 hover:bg-gray-800 text-white font-black text-sm py-3 rounded-xl transition disabled:opacity-60"
-              >
-                {loading ? (
-                  <>
-                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />{" "}
-                    Sending...
-                  </>
-                ) : (
-                  <>
-                    {" "}
-                    Send Recovery Code <ArrowRight size={16} />
-                  </>
-                )}
-              </button>
-
-              <p className="text-center text-xs text-gray-400">
-                Remembered?{" "}
-                <Link
-                  to="/login"
-                  className="text-[#6FAF8E] font-bold hover:underline"
-                >
-                  Back to Login
-                </Link>
-              </p>
+              <p className="font-semibold text-green-700">{email}</p>
             </div>
-          )}
 
-          {step === 2 && (
-            <form onSubmit={handleReset} className="space-y-4">
+            {/* OTP */}
+            <div className="relative">
+              <Lock
+                size={18}
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+              />
+
+              <input
+                type="text"
+                placeholder="Enter OTP"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+                required
+                className="w-full border rounded-lg pl-11 pr-4 py-3 tracking-widest focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+            </div>
+
+            {/* Password */}
+            <div className="relative">
+              <KeyRound
+                size={18}
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+              />
+
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="New Password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                required
+                className="w-full border rounded-lg pl-11 pr-11 py-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500"
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
+
+            {/* Password Strength */}
+            {newPassword && (
               <div>
-                <p className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-gray-400 mb-3">
-                  Step 2 — New Credentials
+                <div className="flex gap-1">
+                  {[1, 2, 3, 4].map((i) => (
+                    <div
+                      key={i}
+                      className={`flex-1 h-2 rounded ${
+                        i <= strength ? "bg-green-600" : "bg-gray-200"
+                      }`}
+                    />
+                  ))}
+                </div>
+
+                <p className="text-xs text-gray-500 mt-1">
+                  Password Strength:{" "}
+                  <span className="font-semibold">
+                    {strengthLabels[strength]}
+                  </span>
                 </p>
-                <h2 className="text-lg sm:text-xl font-black text-gray-900">
-                  Set new password
-                </h2>
-                <div className="flex items-center gap-2 mt-1">
-                  <ShieldCheck size={12} className="text-[#6FAF8E]" />
-                  <p className="text-xs text-gray-500">
-                    Code sent to{" "}
-                    <span className="font-bold text-gray-700">{email}</span>
-                  </p>
-                </div>
               </div>
+            )}
 
-              <div className="relative">
-                <Lock
-                  size={15}
-                  className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"
-                />
-                <input
-                  placeholder="Enter 6-digit OTP"
-                  value={otp}
-                  onChange={(e) => setOtp(e.target.value)}
-                  required
-                  className="w-full pl-10 pr-4 py-3 text-sm border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-[#6FAF8E]/40 focus:border-[#6FAF8E] transition bg-gray-50 tracking-widest font-bold"
-                />
-              </div>
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold transition"
+            >
+              {loading ? "Updating..." : "Update Password"}
+            </button>
 
-              <div className="space-y-2">
-                <div className="relative">
-                  <KeyRound
-                    size={15}
-                    className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"
-                  />
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    placeholder="New Password"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    required
-                    className="w-full pl-10 pr-10 py-3 text-sm border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-[#6FAF8E]/40 focus:border-[#6FAF8E] transition bg-gray-50"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                  >
-                    {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
-                  </button>
-                </div>
+            <button
+              type="button"
+              onClick={handleSendOTP}
+              className="w-full border border-gray-300 py-3 rounded-lg hover:bg-gray-100 transition"
+            >
+              Resend OTP
+            </button>
 
-                {newPassword && (
-                  <div className="space-y-1.5">
-                    <div className="flex gap-1">
-                      {[1, 2, 3, 4].map((i) => (
-                        <div
-                          key={i}
-                          className={`h-1 flex-1 rounded-full transition-colors duration-300 ${i <= strength ? strengthColors[strength] : "bg-gray-100"}`}
-                        />
-                      ))}
-                    </div>
-                    <p className="text-[10px] text-gray-400">
-                      {strengthLabels[strength]} strength
-                    </p>
-                  </div>
-                )}
-              </div>
+            <button
+              type="button"
+              onClick={() => setStep(1)}
+              className="w-full text-sm text-gray-500 hover:text-green-600"
+            >
+              ← Change Email
+            </button>
 
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full flex items-center justify-center gap-2 bg-[#6FAF8E] hover:bg-green-600 text-white font-black text-sm py-3 rounded-xl transition shadow-lg shadow-green-100"
+            <div className="text-center text-sm text-gray-600">
+              <Link
+                to="/login"
+                className="text-green-600 font-semibold hover:underline"
               >
-                {loading ? "Updating..." : "Update Password"}{" "}
-                <ArrowRight size={16} />
-              </button>
-
-              <button
-                type="button"
-                onClick={handleSendOTP}
-                className="w-full flex items-center justify-center gap-2 border border-gray-200 hover:bg-gray-50 text-gray-500 font-bold text-xs py-2.5 rounded-xl transition"
-              >
-                <RotateCcw size={12} /> Resend OTP
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setStep(1)}
-                className="w-full text-center text-xs text-gray-400 hover:text-gray-600 transition"
-              >
-                ← Wrong email?
-              </button>
-            </form>
-          )}
-        </div>
+                Back to Login
+              </Link>
+            </div>
+          </form>
+        )}
       </div>
     </div>
   );

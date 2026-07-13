@@ -17,7 +17,7 @@ const MyOrders = () => {
       setLoading(true);
       const { data } = await axios.get(`${API}/api/orders/myorders`, {
         headers: {
-          Authorization: `Bearer ${userInfo?.token}`,
+          Authorization: `Bearer ${userInfo.token}`,
         },
       });
       setOrders(Array.isArray(data) ? data : []);

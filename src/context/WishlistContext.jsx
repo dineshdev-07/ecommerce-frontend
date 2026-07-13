@@ -5,21 +5,25 @@ const WishlistContext = createContext();
 
 const API = import.meta.env.VITE_API_URL;
 
-const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
 export const WishlistProvider = ({ children }) => {
   const [wishlist, setWishlist] = useState([]);
-
+  
   const fetchWishlist = async () => {
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     try {
       const { data } = await axios.get(`${API}/api/wishlist`, {
         headers: {
-          Authorization: `Bearer ${userInfo?.token}`,
+          Authorization: `Bearer ${userInfo.token}`,
         },
       });
 
       if (Array.isArray(data)) {
-        setWishlist(data.map((p) => (typeof p === "object" ? p._id : p)));
+        setWishlist(
+  Array.isArray(data)
+    ? data.map((p) => p._id)
+    : []
+);
       } else {
         console.log("Data is not an array:", data);
         setWishlist([]);
@@ -29,35 +33,29 @@ export const WishlistProvider = ({ children }) => {
     }
   };
 
-  const toggleWishlist = async (productId) => {
-    setWishlist((prev) =>
-      prev.includes(productId)
-        ? prev.filter((id) => id !== productId)
-        : [...prev, productId],
+ const toggleWishlist = async (productId) => {
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
+  try {
+    await axios.post(
+      `${API}/api/wishlist/${productId}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      }
     );
 
-    try {
-      await axios.post(
-        `${API}/api/wishlist/${productId}`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${userInfo?.token}`,
-          },
-          withCredentials: true,
-        },
-      );
-    } catch (err) {
-      fetchWishlist();
-      console.error("Toggle wishlist error:", err);
-    }
-  };
+    await fetchWishlist(); // refresh after backend update
+  } catch (err) {
+    console.error(err);
+  }
+};
 
   const isWishlisted = (productId) => wishlist.includes(productId);
 
-  useEffect(() => {
-    fetchWishlist();
-  }, []);
+  fetchWishlist();
 
   return (
     <WishlistContext.Provider

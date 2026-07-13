@@ -1,3 +1,4 @@
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { Heart } from "lucide-react";
@@ -17,7 +18,6 @@ const ProductCard = ({ product, isLowestPriceItem = false }) => {
   const isLoyal = loyaltyPoints >= 20;
   const isPlusMember = userInfo?.isPlusMember || false;
 
-  // ── Clamp stock: negative DB values treated as 0 ────────────────────────────
   const stock = Math.max(0, Number(product.quantity) || 0);
   const isOutOfStock = stock === 0;
   const isLowStock = stock >= 1 && stock <= 10;
@@ -75,14 +75,15 @@ const ProductCard = ({ product, isLowestPriceItem = false }) => {
   return (
     <div
       onClick={() => navigate(`/product/${product._id}`)}
-      className="group cursor-pointer overflow-hidden rounded-2xl border border-gray-200 bg-white transition hover:-translate-y-1 hover:shadow-lg"
+      className="group cursor-pointer overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm"
     >
       {/* Product Image */}
       <div className="relative bg-gray-50">
         <img
-          src={product.images?.[0] || "https://via.placeholder.com/250"}
+        loading="lazy"
+          src={product.images?.[0]}
           alt={product.name}
-          className="h-44 w-full object-contain p-4 transition duration-300 group-hover:scale-105"
+          className="h-44 w-full object-contain p-4"
         />
 
         {/* Wishlist Bottom Right */}
@@ -91,7 +92,7 @@ const ProductCard = ({ product, isLowestPriceItem = false }) => {
             e.stopPropagation();
             toggleWishlist(product._id);
           }}
-          className="absolute bottom-3 right-3 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-md transition hover:scale-110"
+          className="absolute bottom-3 right-3 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-md"
         >
           <Heart
             size={20}
@@ -147,4 +148,4 @@ const ProductCard = ({ product, isLowestPriceItem = false }) => {
   );
 };
 
-export default ProductCard;
+export default React.memo(ProductCard);

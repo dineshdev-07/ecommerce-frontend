@@ -428,17 +428,15 @@ const Cart = () => {
             Order Confirmed
           </h1>
 
-          <p className="mt-3 text-gray-500 leading-7">
-            Your order has been placed successfully. You can track delivery
-            anytime from
-            <span className="font-semibold text-gray-700"> My Orders</span>.
-          </p>
+          <h4 className="mt-3 text-gray-500 leading-7">
+            Your order has been placed successfully. 
+          </h4>
 
           <button
             onClick={() => navigate("/myorders")}
-            className="mt-8 w-full rounded-xl bg-[#6FAF8E] py-3 font-semibold text-white transition hover:bg-[#5d9c7b]"
+            className="mt-8 w-full rounded-xl bg-[#2E7D32] hover:bg-[#1B5E20] py-3 font-semibold text-white transition"
           >
-            View My Orders
+            View Orders
           </button>
 
           <button
@@ -499,7 +497,7 @@ const Cart = () => {
                 <img
                   src={item.image}
                   alt={item.name}
-                  className="w-24 h-24 object-contain bg-gray-100 rounded-lg p-2"
+                  className="w-24 h-24 object-contain bg-gray-100 rounded-lg mt-5"
                 />
 
                 {/* Details */}
@@ -536,7 +534,7 @@ const Cart = () => {
                           item.quantity - 1,
                         )
                       }
-                      className="w-9 h-9 rounded border hover:bg-gray-100"
+                      className="w-9 h-9 rounded border hover:bg-gray-100 pl-2"
                     >
                       <Minus size={16} />
                     </button>
@@ -550,7 +548,7 @@ const Cart = () => {
                           item.quantity + 1,
                         )
                       }
-                      className="w-9 h-9 rounded border hover:bg-gray-100"
+                      className="w-9 h-9 rounded border hover:bg-gray-100 pl-2"
                     >
                       <Plus size={16} />
                     </button>
@@ -563,9 +561,9 @@ const Cart = () => {
                   onClick={() =>
                     removeFromCart(item.product?._id || item.product)
                   }
-                  className="text-red-500 hover:text-red-700"
+                  className="text-red-500 hover:text-red-700 font-bold mt-32"
                 >
-                  <Trash2 size={22} />
+              Remove
                 </button>
               </div>
             ))}
