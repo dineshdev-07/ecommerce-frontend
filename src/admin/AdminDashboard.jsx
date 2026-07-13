@@ -66,6 +66,7 @@ const AdminDashboard = () => {
     productsCount: data?.productsCount ?? 0,
     lowStockProducts: data?.lowStockProducts || [],
     pendingRefunds: data?.pendingRefunds ?? 0,
+    expiryTimeline: data?.expiryTimeline || [],
   };
 
   const handleResetMonthly = async () => {
@@ -175,10 +176,6 @@ const AdminDashboard = () => {
               <h2 className="text-lg font-semibold text-gray-700">
                 Low Stock Products
               </h2>
-
-              <p className="text-sm text-gray-500">
-                Products that need restocking
-              </p>
             </div>
 
             <span className="bg-red-100 text-red-600 px-3 py-1 rounded-full text-sm font-medium">
@@ -210,6 +207,55 @@ const AdminDashboard = () => {
                   </span>
                 </div>
               ))}
+            </div>
+          )}
+        </div>
+        {/* Expiry Timeline */}
+
+        {/* Expiry Timeline */}
+        <div className="bg-white rounded-xl border border-gray-200 mt-8">
+          <div className="p-5 border-b">
+            <h2 className="text-lg font-semibold text-gray-700">
+              Expiry Timeline
+            </h2>
+            <p className="text-sm text-gray-500">
+              Products ordered by expiry date
+            </p>
+          </div>
+
+          {normalizedData.expiryTimeline.length === 0 ? (
+            <div className="text-center py-10 text-gray-500">
+              No expiry products found
+            </div>
+          ) : (
+            <div className="divide-y">
+              {normalizedData.expiryTimeline.map((product) => {
+                const daysLeft = product.daysLeft;
+
+                return (
+                  <div
+                    key={product._id}
+                    className="flex justify-between items-center p-5"
+                  >
+                    <div>
+                      <h3 className="font-semibold text-gray-700">
+                        {product.name}
+                      </h3>
+
+                      <p className="text-sm text-gray-500">
+                        Expiry:{" "}
+                        {new Date(product.expiryDate).toLocaleDateString(
+                          "en-IN",
+                        )}
+                      </p>
+                    </div>
+
+                    <span className="bg-orange-100 text-orange-600 px-3 py-1 rounded-full font-semibold">
+                      {daysLeft <= 0 ? "Expired" : `${daysLeft} days left`}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>
