@@ -154,7 +154,6 @@ const Home = ({ search = "" }) => {
 
   const handleRemoveFromHome = async (id) => {
     if (!window.confirm("Remove this product from homepage?")) return;
-    console.log("Token:", userInfo?.token);
     try {
       const res = await fetch(`${API}/api/products/${id}/pin`, {
         method: "PUT",

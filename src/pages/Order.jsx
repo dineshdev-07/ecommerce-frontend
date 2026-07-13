@@ -92,9 +92,6 @@ function AdminOrders() {
           },
         },
       );
-      console.log(userInfo);
-      console.log(userInfo.token);
-      console.log(id);
       alert("Order marked as Refunded");
       fetchOrders();
     } catch (err) {

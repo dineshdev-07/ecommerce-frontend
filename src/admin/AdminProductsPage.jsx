@@ -22,7 +22,7 @@ const AdminProductsPage = () => {
         credentials: "include",
       });
       const data = await res.json();
-      console.log(data[0]);
+     
       setAllProducts(data);
       bustCache();
     } catch (err) {

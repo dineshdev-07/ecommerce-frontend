@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Crown, Flame, Lock } from "lucide-react";
+import { Crown, Flame, Lock,ChevronLeft } from "lucide-react";
 const API = import.meta.env.VITE_API_URL;
 
 const LoyaltyPage = () => {
@@ -65,15 +65,15 @@ const config = {
       <div className="max-w-3xl mx-auto px-4 py-5">
         {/* Header */}
         <div className="flex items-center gap-3 mb-6">
-          <button
+           <button
             onClick={() => navigate(-1)}
-            className="w-10 h-10 rounded-full border border-gray-300 bg-white hover:bg-gray-100 transition"
+            className="p-4 hover:bg-gray-100 rounded-xl text-gray-500 transition"
           >
-            ←
+            <ChevronLeft size={30} />
           </button>
 
           <div>
-            <h1 className="text-2xl font-bold text-gray-800">
+            <h1 className="text-2xl font-bold text-[#2E7D32]">
               Loyalty Rewards
             </h1>
             <p className="text-sm text-gray-500">
@@ -88,13 +88,13 @@ const config = {
             <div>
               <p className="text-gray-500 text-sm">Available Points</p>
 
-              <h2 className="text-4xl font-bold text-[#6FAF8E] mt-1">
+              <h2 className="text-4xl font-bold text-[#2E7D32] mt-1">
                 {points}
               </h2>
             </div>
 
             <div className="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center">
-              <Crown className="text-[#6FAF8E]" size={28} />
+              <Crown className="text-[#2E7D32]" size={28} />
             </div>
           </div>
 
@@ -160,20 +160,16 @@ const config = {
             </div>
           ) : (
             <div>
-              <div className="flex items-center gap-2 mb-3">
+              <div className="flex items-center gap-3 mb-3">
                 <Lock size={18} className="text-gray-500" />
                 <h3 className="font-semibold text-gray-800">Plus Locked</h3>
               </div>
 
-              <p className="text-sm text-gray-500">
-                Earn
-                <span className="font-semibold">
-                  {requiredPoints - Math.min(points, requiredPoints)}
-                </span>{" "}
-                more loyalty points to unlock FreshCart Plus.
-                {requiredPoints - Math.min(points, requiredPoints) !== 1 &&
-                  "s"}{" "}
-                to unlock FreshCart Plus.
+              <p className="text-base text-gray-500 ml-6">
+                Earn 20
+               
+                more loyalty points to unlock FreshCart Plus
+               
               </p>
             </div>
           )}
