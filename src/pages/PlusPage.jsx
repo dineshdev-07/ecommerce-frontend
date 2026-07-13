@@ -4,15 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { Crown, Flame, Lock } from "lucide-react";
 const API = import.meta.env.VITE_API_URL;
 
-const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
-
-const config = {
-  headers: {
-    Authorization: `Bearer ${userInfo.token}`,
-  },
-  withCredentials: true,
-};
-
 const LoyaltyPage = () => {
   const navigate = useNavigate();
   const [points, setPoints] = useState(0);
@@ -20,7 +11,18 @@ const LoyaltyPage = () => {
   const [expiryDate, setExpiry] = useState(null);
   const [processing, setProcessing] = useState(false);
 
+  const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
+
+const config = {
+  headers: {
+    Authorization: `Bearer ${userInfo?.token}`,
+  },
+  withCredentials: true,
+};
+
  useEffect(() => {
+  const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
+
   if (!userInfo?.token) {
     navigate("/login");
     return;
