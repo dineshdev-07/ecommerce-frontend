@@ -425,7 +425,7 @@ function AppContent() {
 
       const { data } = await axios.get(`${API}/api/orders/admin`, {
         headers: {
-          Authorization: `Bearer ${userInfo.token}`,
+          Authorization: `Bearer ${userInfo?.token}`,
         },
       });
 
@@ -443,7 +443,7 @@ function AppContent() {
         `${API}/api/orders/admin/dashboard`,
         {
           headers: {
-            Authorization: `Bearer ${userInfo.token}`,
+            Authorization: `Bearer ${userInfo?.token}`,
           },
         },
       );

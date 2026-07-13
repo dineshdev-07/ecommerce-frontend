@@ -69,7 +69,7 @@ const AdminOrderDetails = () => {
 
       const { data } = await axios.get(`${API}/api/orders/admin/${id}`, {
         headers: {
-          Authorization: `Bearer ${userInfo.token}`,
+          Authorization: `Bearer ${userInfo?.token}`,
         },
       });
       setOrder(data);

@@ -131,7 +131,7 @@ function Admin() {
       const authConfig = {
         withCredentials: true,
         headers: {
-          Authorization: `Bearer ${userInfo.token}`,
+          Authorization: `Bearer ${userInfo?.token}`,
         },
       };
       await axios.post(`${API}/api/products`, fd, {
@@ -156,15 +156,14 @@ function Admin() {
 
   return (
     <div className="min-h-screen bg-[#FFFBEA] p-5 rounded-2xl">
-        {/* Header */}
-        <div className="bg-white rounded-xl border border-gray-200 p-6 mb-8  gap-2">
-            <h1 className="text-2xl font-bold text-[#2E7D32]">Add Product</h1>
-            <p className="text-gray-500 text-sm mt-1">
-              Create a new product for your store.
-            </p>
-        </div>
+      {/* Header */}
+      <div className="bg-white rounded-xl border border-gray-200 p-6 mb-8  gap-2">
+        <h1 className="text-2xl font-bold text-[#2E7D32]">Add Product</h1>
+        <p className="text-gray-500 text-sm mt-1">
+          Create a new product for your store.
+        </p>
+      </div>
       <div className="max-w-6xl mx-auto">
-
         <form onSubmit={submitHandler}>
           <div className="grid lg:grid-cols-3 gap-4">
             {/* LEFT */}

@@ -28,7 +28,7 @@ function AdminOrders() {
 
       const { data } = await axios.get(`${API}/api/orders/admin`, {
         headers: {
-          Authorization: `Bearer ${userInfo.token}`,
+          Authorization: `Bearer ${userInfo?.token}`,
         },
       });
       setOrders(data.orders ? data.orders : data);
@@ -68,7 +68,7 @@ function AdminOrders() {
         {},
         {
           headers: {
-            Authorization: `Bearer ${userInfo.token}`,
+            Authorization: `Bearer ${userInfo?.token}`,
           },
         },
       );
@@ -88,7 +88,7 @@ function AdminOrders() {
         {},
         {
           headers: {
-            Authorization: `Bearer ${userInfo.token}`,
+            Authorization: `Bearer ${userInfo?.token}`,
           },
         },
       );

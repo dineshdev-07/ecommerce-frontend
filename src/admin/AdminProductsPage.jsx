@@ -22,7 +22,7 @@ const AdminProductsPage = () => {
         credentials: "include",
       });
       const data = await res.json();
-     
+
       setAllProducts(data);
       bustCache();
     } catch (err) {
@@ -47,7 +47,7 @@ const AdminProductsPage = () => {
       const res = await fetch(`${API}/api/products/${productId}/pin`, {
         method: "PUT",
         headers: {
-          Authorization: `Bearer ${userInfo.token}`,
+          Authorization: `Bearer ${userInfo?.token}`,
         },
       });
       if (!res.ok) {

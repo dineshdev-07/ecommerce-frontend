@@ -80,7 +80,7 @@ const OrderDetails = () => {
 
       const { data } = await axios.get(`${API}/api/orders/${id}`, {
         headers: {
-          Authorization: `Bearer ${userInfo.token}`,
+          Authorization: `Bearer ${userInfo?.token}`,
         },
       });
 

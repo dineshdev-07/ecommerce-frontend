@@ -103,7 +103,7 @@ const ProductDetails = () => {
     return {
       withCredentials: true,
       headers: {
-        Authorization: `Bearer ${userInfo.token}`,
+        Authorization: `Bearer ${userInfo?.token}`,
       },
     };
   }, []);
@@ -350,7 +350,6 @@ const ProductDetails = () => {
           order_id: rzpData.id,
           handler: async (res) => {
             try {
-             
               await axios.post(
                 `${API}/api/orders/verify`,
                 {

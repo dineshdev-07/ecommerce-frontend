@@ -28,7 +28,7 @@ const AdminDashboard = () => {
     try {
       const res = await axios.get(`${API}/api/orders/admin/dashboard`, {
         headers: {
-          Authorization: `Bearer ${userInfo.token}`,
+          Authorization: `Bearer ${userInfo?.token}`,
         },
       });
       setData(res.data);

@@ -8,6 +8,8 @@ import { calculateDiscountedPrice } from "../utils/offerUtils";
 
 const API = import.meta.env.VITE_API_URL;
 
+const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
+
 const WishlistProductCard = ({
   product,
   isLowestPriceItem = false,
@@ -165,32 +167,42 @@ const WishlistPage = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const userInfo = JSON.parse(localStorage.getItem("userInfo") || "null");
 
-  const config = {
-    headers: { Authorization: `Bearer ${userInfo.token}` },
+ useEffect(() => {
+  if (!userInfo?.token) {
+    navigate("/login");
+    return;
+  }
+
+  const fetchWishlist = async () => {
+    try {
+      const { data } = await axios.get(`${API}/api/wishlist`, {
+        headers: {
+          Authorization: `Bearer ${userInfo?.token}`,
+        },
+      });
+
+      setProducts(data);
+    } catch (err) {
+      console.error("Wishlist fetch error:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  useEffect(() => {
-    const fetchWishlist = async () => {
-      try {
-        const { data } = await axios.get(`${API}/api/wishlist`, config);
-        setProducts(data);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchWishlist();
-  }, []);
+  fetchWishlist();
+}, [navigate]);
 
   const handleRemove = async (productId) => {
-  await toggleWishlist(productId);
+    await toggleWishlist(productId);
 
-  const { data } = await axios.get(`${API}/api/wishlist`, config);
-  setProducts(data);
-};
+    const { data } = await axios.get(`${API}/api/wishlist`, {
+          headers: {
+          Authorization: `Bearer ${userInfo?.token}`,
+        },
+        });
+    setProducts(data);
+  };
 
   return (
     <div className="min-h-screen bg-[#FFFBEA] p-5 rounded-2xl">
