@@ -74,11 +74,12 @@ function Login({ setIsLoggedIn, setIsAdmin }) {
       </p>
     )}
 
-    <form onSubmit={submitHandler} className="space-y-4">
+   <form onSubmit={submitHandler} className="space-y-4" autoComplete="off">
 
       <input
         type="email"
         placeholder="Email Address"
+        autoComplete="off"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         className="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500"
@@ -89,6 +90,7 @@ function Login({ setIsLoggedIn, setIsAdmin }) {
         <input
           type={showPassword ? "text" : "password"}
           placeholder="Password"
+          autoComplete="off"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           className="w-full border rounded-lg px-4 py-3 pr-12 focus:outline-none focus:ring-2 focus:ring-green-500"
