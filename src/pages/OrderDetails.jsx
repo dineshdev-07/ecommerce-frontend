@@ -3,7 +3,6 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   ChevronLeft,
-  Truck,
   Clock,
   XCircle,
   CheckCircle,
@@ -24,47 +23,6 @@ const Section = ({ title, children }) => (
   </div>
 );
 
-const DeliveryTracker = ({ order }) => {
-  if (order.isCancelled) return null;
-
-  const steps = ["Order Placed", "In Transit", "Out for Delivery", "Delivered"];
-
-  const currentStep = order.isDelivered
-    ? 3
-    : order.orderStatus === "Out for Delivery"
-      ? 2
-      : order.orderStatus === "In Transit"
-        ? 1
-        : 0;
-
-  return (
-    <Section title="Order Tracking">
-      <div className="space-y-4">
-        {steps.map((step, index) => {
-          const completed = index <= currentStep;
-
-          return (
-            <div key={step} className="flex items-center gap-4">
-              {completed ? (
-                <CheckCircle size={20} className="text-green-600" />
-              ) : (
-                <div className="w-5 h-5 rounded-full border-2 border-gray-300" />
-              )}
-
-              <p
-                className={`text-sm ${
-                  completed ? "text-green-700 font-semibold" : "text-gray-500"
-                }`}
-              >
-                {step}
-              </p>
-            </div>
-          );
-        })}
-      </div>
-    </Section>
-  );
-};
 
 const OrderDetails = () => {
   const { id } = useParams();
@@ -126,104 +84,27 @@ const OrderDetails = () => {
       </div>
     );
 
-  const actualPrice = order.orderItems.reduce(
-    (sum, item) => sum + Number(item.mrp || item.price) * item.qty,
-    0,
-  );
-
-  const sellingPrice = order.orderItems.reduce(
-    (sum, item) => sum + Number(item.price) * item.qty,
-    0,
-  );
-
-  const discount = actualPrice - sellingPrice;
-
   const localUser = JSON.parse(localStorage.getItem("userInfo") || "{}");
 
   const isPlusMember = order.user?.isPlusMember || localUser?.isPlusMember;
 
-  const deliveryCharge = sellingPrice >= 299 || isPlusMember ? 0 : 39;
+  const deliveryCharge = order.itemsPrice >= 299 || isPlusMember ? 0 : 39;
 
-  const totalSavings = order.orderItems.reduce(
-    (total, item) =>
-      total +
-      ((Number(item.mrp) || Number(item.price)) - Number(item.price)) *
-        item.qty,
-    0,
+  const actualPrice =
+  order.itemsPrice ??
+  order.orderItems.reduce(
+    (sum, item) => sum + (item.mrp || item.price) * item.qty,
+    0
   );
 
-  const offerLabel =
-    order.orderItems.find((item) => item.offerDetails?.appliedLabel)
-      ?.offerDetails?.appliedLabel || "Offer";
+const sellingPrice =
+  order.orderItems.reduce(
+    (sum, item) => sum + item.price * item.qty,
+    0
+  );
 
-  const customerDetails = [
-    {
-      label: "Customer",
-      value: order.user?.name || "Guest",
-    },
-    {
-      label: "Email",
-      value: order.user?.email || "Not Available",
-    },
-  ];
-
-  const addressDetails = [
-    {
-      label: "Address",
-      value:
-        order.shippingAddress?.fullAddress || order.shippingAddress?.address,
-    },
-    {
-      label: "City",
-      value: order.shippingAddress?.city,
-    },
-    {
-      label: "Pincode",
-      value: order.shippingAddress?.pinCode,
-    },
-    {
-      label: "Phone",
-      value: order.shippingAddress?.phone,
-    },
-  ];
-
-  const paymentDetails = [
-    {
-      label: "Method",
-      value: order.paymentMethod,
-    },
-    {
-      label: "Status",
-      value: order.isRefunded ? "Refunded" : order.isPaid ? "Paid" : "Pending",
-    },
-  ];
-
-  const summaryData = [
-    {
-      label: "Items Total",
-      value: `₹${sellingPrice.toFixed(2)}`,
-    },
-
-    {
-      label: "Savings",
-      value: totalSavings > 0 ? `- ₹${Math.round(totalSavings)}` : "₹0",
-    },
-
-    {
-      label: "Delivery",
-      value:
-        deliveryCharge === 0
-          ? isPlusMember
-            ? "FREE (Plus)"
-            : "FREE"
-          : `₹${deliveryCharge}`,
-    },
-
-    {
-      label: "Total",
-      value: `₹${order.totalPrice}`,
-    },
-  ];
+const discount =
+  actualPrice - sellingPrice;
 
   const orderInfo = [
     {
@@ -415,7 +296,20 @@ const OrderDetails = () => {
 
                   {/* Price */}
                   <div className="text-right">
-                    <p className="font-semibold text-gray-800">₹{item.price}</p>
+                    <p className="font-semibold text-gray-800">
+                      ₹{item.price}
+                      {item.mrp > item.price && (
+                        <span className="ml-2 text-sm text-gray-400 line-through">
+                          ₹{item.mrp}
+                        </span>
+                      )}
+                    </p>
+
+                    {item.mrp > item.price && (
+                      <p className="text-xs text-green-600">
+                        Saved ₹{(item.mrp - item.price) * item.qty}
+                      </p>
+                    )}
 
                     <p className="text-sm text-gray-500">
                       Total: ₹{(item.price * item.qty).toFixed(2)}
@@ -556,7 +450,7 @@ const OrderDetails = () => {
                 <span className="font-semibold text-gray-800">Total Paid</span>
 
                 <span className="font-bold text-lg text-green-700">
-                  ₹{order.totalPrice.toFixed(2)}
+                  ₹{(order.totalPrice || 0).toFixed(2)}
                 </span>
               </div>
             </div>

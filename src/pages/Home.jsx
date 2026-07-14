@@ -364,9 +364,6 @@ const Home = ({ search = "" }) => {
             Get <span className="font-bold text-green-600">20% OFF</span> on
             your first order.
           </p>
-          <button className="mt-10 bg-green-600 text-white px-4 py-2 rounded-xl hover:bg-green-700">
-            Shop Now
-          </button>
         </div>
 
         <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
@@ -376,9 +373,6 @@ const Home = ({ search = "" }) => {
             Extra <span className="font-bold text-green-600">5% OFF</span> +
             Free Delivery.
           </p>
-          <button className="mt-10 bg-green-600 text-white px-4 py-2 rounded-xl hover:bg-green-700">
-            Join Plus
-          </button>
         </div>
 
         <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
@@ -387,9 +381,6 @@ const Home = ({ search = "" }) => {
           <p className="text-gray-600 mt-2">
             Earn points on every purchase and redeem discounts.
           </p>
-          <button className="mt-5 bg-green-600 text-white px-4 py-2 rounded-xl hover:bg-green-700">
-            View Rewards
-          </button>
         </div>
       </div>
 
