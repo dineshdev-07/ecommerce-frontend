@@ -231,7 +231,7 @@ const AdminOrderDetails = () => {
                   ? `PAID (${order.paymentMethod})`
                   : "UNPAID",
                 bg: order.isPaid
-                  ? "bg-green-50 border-green-100"
+                  ? "bg-green-50 border-gray-200"
                   : "bg-red-50 border-red-100",
               },
               {

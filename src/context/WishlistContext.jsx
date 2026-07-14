@@ -50,7 +50,9 @@ export const WishlistProvider = ({ children }) => {
 
   const isWishlisted = (productId) => wishlist.includes(productId);
 
+ useEffect(() => {
   fetchWishlist();
+}, []);
 
   return (
     <WishlistContext.Provider

@@ -1,7 +1,15 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
-import { Leaf, ShieldCheck, Sprout, Truck } from "lucide-react";
+import {
+  Leaf,
+  ShieldCheck,
+  Sprout,
+  Truck,
+  Gift,
+  Crown,
+  Award,
+} from "lucide-react";
 import fruitsImg from "../assets/cat/Fruits.png";
 import vegeImg from "../assets/cat/Vege.png";
 import dairyImg from "../assets/cat/dairy.png";
@@ -348,84 +356,42 @@ const Home = ({ search = "" }) => {
         </div>
       </section>
 
-      <section className="my-6 sm:my-10" id="offers-section ">
-        <div className="flex justify-between items-start gap-3 mb-3 sm:mb-5 md:mb-6 ">
-          <SectionTitle eyebrow="Save naturally" title="Special Offers" />
-          {isAdmin && (
-            <label className=" font-semibold px-4 py-2 bg-[#2E7D32] text-white rounded-lg hover:bg-[#1B5E20] transition">
-              New Offer
-              <input
-                type="file"
-                hidden
-                accept="image/*"
-                onChange={async (e) => {
-                  const file = e.target.files[0];
-                  if (!file) return;
-                  const fd = new FormData();
-                  fd.append("image", file);
-                  await fetch(`${API}/api/offers`, {
-                    method: "POST",
-                    credentials: "include",
-                    body: fd,
-                  });
-                  bustCache();
-                  fetchData(true);
-                }}
-              />
-            </label>
-          )}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 ">
+          <Gift className="text-green-600 mb-4" size={36} />
+          <h3 className="text-xl font-bold">New User Offer</h3>
+          <p className="text-gray-600 mt-2">
+            Get <span className="font-bold text-green-600">20% OFF</span> on
+            your first order.
+          </p>
+          <button className="mt-10 bg-green-600 text-white px-4 py-2 rounded-xl hover:bg-green-700">
+            Shop Now
+          </button>
         </div>
 
-        <div className="flex gap-3 sm:gap-4 overflow-x-auto pb-3 sm:pb-4 scrollbar-hide ">
-          {offers.map((offer) => (
-            <div
-              key={offer._id}
-              className="relative shrink-0 w-[80%] xs:w-[75%] sm:w-[60%] md:w-[48%] lg:w-[32%] aspect-[16/9] rounded-xl sm:rounded-2xl overflow-hidden border border-[#81C784]/30 shadow-[0_14px_35px_rgba(46,125,50,0.16)] group cursor-pointer bg-[#FFF9C4]"
-              onClick={() => offer.link && navigate(offer.link)}
-            >
-              <img
-                src={offer.image}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                alt="Offer border "
-              />
-              {isAdmin && (
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2 sm:gap-3">
-                  <label className="bg-white text-black px-3 sm:px-4 py-1.5 sm:py-2 rounded-full cursor-pointer font-bold text-[10px] sm:text-xs">
-                    Change Image
-                    <input
-                      type="file"
-                      hidden
-                      onChange={(e) => {
-                        e.stopPropagation();
-                        updateOfferImage(offer._id, e.target.files[0]);
-                      }}
-                    />
-                  </label>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      deleteOffer(offer._id);
-                    }}
-                    className="bg-red-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-[10px] sm:text-xs font-bold"
-                  >
-                    Delete
-                  </button>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      const lnk = prompt("Enter link:", offer.link);
-                      if (lnk !== null) updateOfferLink(offer._id, lnk);
-                    }}
-                    className="bg-blue-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-[10px] sm:text-xs font-bold"
-                  >
-                    Set Link
-                  </button>
-                </div>
-              )}
-            </div>
-          ))}
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
+          <Crown className="text-yellow-500 mb-4" size={36} />
+          <h3 className="text-xl font-bold">Plus Membership</h3>
+          <p className="text-gray-600 mt-2">
+            Extra <span className="font-bold text-green-600">5% OFF</span> +
+            Free Delivery.
+          </p>
+          <button className="mt-10 bg-green-600 text-white px-4 py-2 rounded-xl hover:bg-green-700">
+            Join Plus
+          </button>
         </div>
-      </section>
+
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
+          <Award className="text-orange-500 mb-4" size={36} />
+          <h3 className="text-xl font-bold">Loyalty Rewards</h3>
+          <p className="text-gray-600 mt-2">
+            Earn points on every purchase and redeem discounts.
+          </p>
+          <button className="mt-5 bg-green-600 text-white px-4 py-2 rounded-xl hover:bg-green-700">
+            View Rewards
+          </button>
+        </div>
+      </div>
 
       <section className="my-8 rounded-xl bg-white border border-gray-200 p-5">
         {/* Header */}

@@ -786,49 +786,70 @@ const ProductDetails = () => {
               </button>
             </div>
 
-            {/* ---------- PART 2B STARTS HERE ---------- */}
-            {/* ---------- PART 2B ---------- */}
-
             {/* Order Summary */}
 
             <div className="mt-6 rounded-2xl bg-gray-50 p-4">
               <h3 className="text-lg font-semibold mb-4">Order Summary</h3>
 
-              <div className="space-y-2 text-sm">
+              <div className="space-y-3 text-sm">
                 <div className="flex justify-between">
                   <span>Items</span>
-                  <span>{buyNow ? 1 : cartItems.length}</span>
+                  <span>{cartItems.length}</span>
                 </div>
 
                 <div className="flex justify-between">
-                  <span>Subtotal</span>
-                  <span>₹{subtotal}</span>
+                  <span>MRP Total</span>
+                  <span>₹{mrpTotal}</span>
+                </div>
+
+                <div className="flex justify-between text-green-600">
+                  <span>Base Discount</span>
+                  <span>-₹{Math.round(baseDiscount)}</span>
+                </div>
+
+                <div className="flex justify-between text-green-600">
+                  <span>Expiry Discount</span>
+                  <span>-₹{Math.round(expiryDiscount)}</span>
+                </div>
+
+                {specialDiscount > 0 && (
+                  <div className="flex justify-between text-green-600">
+                    <span>
+                      {userInfo?.isPlusMember
+                        ? "Plus Discount"
+                        : userInfo?.firstOrderCompleted === false
+                          ? "New User Offer"
+                          : userInfo?.loyaltyPoints >= 20
+                            ? "Loyalty Discount"
+                            : "Special Discount"}
+                    </span>
+
+                    <span>-₹{Math.round(specialDiscount)}</span>
+                  </div>
+                )}
+
+                <hr />
+
+                <div className="flex justify-between font-semibold text-[#2E7D32]">
+                  <span>Total Savings</span>
+                  <span>₹{Math.round(totalSavings)}</span>
                 </div>
 
                 <div className="flex justify-between">
-                  <span>Discount</span>
-                  <span className="text-green-600">-₹{discount}</span>
-                </div>
+                  <span>Delivery Charge</span>
 
-                <div className="flex justify-between">
-                  <span>Delivery</span>
-
-                  <span
-                    className={
-                      deliveryCharge === 0 ? "text-green-600 font-semibold" : ""
-                    }
-                  >
+                  <span className="font-semibold text-green-600">
                     {deliveryCharge === 0 ? "FREE" : `₹${deliveryCharge}`}
                   </span>
                 </div>
-              </div>
 
-              <hr className="my-4" />
+                <hr />
 
-              <div className="flex justify-between text-lg font-bold">
-                <span>Total</span>
+                <div className="flex justify-between text-xl font-bold">
+                  <span>Final Amount</span>
 
-                <span className="text-[#6FAF8E]">₹{grandTotal}</span>
+                  <span>₹{grandTotal}</span>
+                </div>
               </div>
             </div>
 

@@ -5,9 +5,9 @@ import { Package } from "lucide-react";
 
 const API = import.meta.env.VITE_API_URL;
 
-const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
 const MyOrders = () => {
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingCancel, setLoadingCancel] = useState({});

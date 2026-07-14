@@ -116,9 +116,17 @@ export const calculateDiscountedPrice = (
     daysUntilExpiry,
     appliedLabel,
     offerDetails: {
+      baseDiscountAmount: Math.round((mrp * baseDiscount) / 100),
+      expiryDiscountAmount: Math.round((mrp * expiryDiscount) / 100),
+      newUserDiscountAmount: isNewUserOffer ? Math.round((mrp * 20) / 100) : 0,
+      loyaltyDiscountAmount: isLoyalOffer
+        ? Math.round((mrp * loyalExtraPercent) / 100)
+        : 0,
+      plusDiscountAmount: isPlusOffer
+        ? Math.round((mrp * plusExtraPercent) / 100)
+        : 0,
+
       appliedLabel,
-      baseDiscount,
-      expiryDiscount,
       expiryDate: product?.expiryDate || null,
       daysUntilExpiry,
       isNewUserOffer,

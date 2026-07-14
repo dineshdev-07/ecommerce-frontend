@@ -82,6 +82,7 @@ const Cart = () => {
   });
   const [locating, setLocating] = useState(false);
   const [editingAddress, setEditingAddress] = useState(null);
+
   const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
 
   const config = {
@@ -161,9 +162,8 @@ const Cart = () => {
         displayPrice: firstPrice,
         restQtyPrice: restPrice,
         totalItemPrice: total,
-        offerLabel: firstResult.appliedLabel,
-        firstDiscount: firstResult.totalDiscount,
         mrp: firstResult.mrp,
+        totalSavings: firstResult.offerDetails.totalSavings,
         offerDetails: firstResult.offerDetails,
       };
     });
@@ -175,6 +175,32 @@ const Cart = () => {
   );
   const deliveryCharge = calculateDeliveryCharge(totalPrice, dbUser);
   const grandTotal = totalPrice + deliveryCharge;
+
+  const mrpTotal = cartItems.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0,
+  );
+
+  const baseDiscount = cartWithPrices.reduce(
+    (sum, item) => sum + (item.offerDetails?.baseDiscountAmount || 0),
+    0,
+  );
+
+  const expiryDiscount = cartWithPrices.reduce(
+    (sum, item) => sum + (item.offerDetails?.expiryDiscountAmount || 0),
+    0,
+  );
+
+  const specialDiscount = cartWithPrices.reduce(
+    (sum, item) =>
+      sum +
+      (item.offerDetails?.newUserDiscountAmount || 0) +
+      (item.offerDetails?.loyaltyDiscountAmount || 0) +
+      (item.offerDetails?.plusDiscountAmount || 0),
+    0,
+  );
+
+  const totalSavings = baseDiscount + expiryDiscount + specialDiscount;
 
   const updateQuantity = async (productId, qty) => {
     if (qty < 1) return;
@@ -306,6 +332,7 @@ const Cart = () => {
       district: selectedAddress.district || "",
     },
   });
+
   const processPayment = async () => {
     if (!selectedAddress) {
       alert("Select a delivery address");
@@ -317,7 +344,6 @@ const Cart = () => {
     setShowAddressForm(false);
 
     try {
-      // ---------------- COD ----------------
       if (paymentMethod === "COD") {
         const { data } = await axios.post(
           `${API}/api/orders`,
@@ -339,7 +365,6 @@ const Cart = () => {
       );
 
       const mongoOrderId = order._id;
-      // ---------------- ONLINE ----------------
 
       setLoadingText("Creating payment...");
 
@@ -411,6 +436,7 @@ const Cart = () => {
       alert("Checkout failed");
     }
   };
+
   if (orderSuccess)
     return (
       <motion.div
@@ -429,25 +455,26 @@ const Cart = () => {
           </h1>
 
           <h4 className="mt-3 text-gray-500 leading-7">
-            Your order has been placed successfully. 
+            Your order has been placed successfully.
           </h4>
 
           <button
             onClick={() => navigate("/myorders")}
-            className="mt-8 w-full rounded-xl bg-[#2E7D32] hover:bg-[#1B5E20] py-3 font-semibold text-white transition"
+            className="mt-8 w-1/2 rounded-xl bg-[#2E7D32] hover:bg-[#1B5E20] py-3 font-semibold text-white transition"
           >
             View Orders
           </button>
 
           <button
             onClick={() => navigate("/")}
-            className="mt-3 w-full rounded-xl border border-gray-300 py-3 font-semibold text-gray-700 transition hover:bg-gray-100"
+            className="mt-3 w-1/2 rounded-xl border border-gray-300 py-3 font-semibold text-gray-700 transition hover:bg-gray-100"
           >
             Continue Shopping
           </button>
         </div>
       </motion.div>
     );
+
   if (loading) {
     return (
       <div className="fixed inset-0 z-[9999] bg-white flex flex-col items-center justify-center">
@@ -563,7 +590,7 @@ const Cart = () => {
                   }
                   className="text-red-500 hover:text-red-700 font-bold mt-32"
                 >
-              Remove
+                  Remove
                 </button>
               </div>
             ))}
@@ -577,21 +604,54 @@ const Cart = () => {
                 Order Summary
               </h2>
 
-              <div className="space-y-4">
-                <div className="flex justify-between text-gray-600">
+              <div className="space-y-3 text-sm">
+                <div className="flex justify-between">
                   <span>Items</span>
                   <span>{cartItems.length}</span>
                 </div>
 
-                <div className="flex justify-between text-gray-600">
-                  <span>Subtotal</span>
-                  <span>₹{totalPrice}</span>
+                <div className="flex justify-between">
+                  <span>MRP Total</span>
+                  <span>₹{mrpTotal}</span>
                 </div>
 
-                <div className="flex justify-between text-gray-600">
-                  <span>Delivery</span>
+                <div className="flex justify-between text-green-600">
+                  <span>Base Discount</span>
+                  <span>-₹{Math.round(baseDiscount)}</span>
+                </div>
 
-                  <span className="font-medium text-green-600">
+                <div className="flex justify-between text-green-600">
+                  <span>Expiry Discount</span>
+                  <span>-₹{Math.round(expiryDiscount)}</span>
+                </div>
+
+                {specialDiscount > 0 && (
+                  <div className="flex justify-between text-green-600">
+                    <span>
+                      {userInfo?.isPlusMember
+                        ? "Plus Discount"
+                        : userInfo?.firstOrderCompleted === false
+                          ? "New User Offer"
+                          : userInfo?.loyaltyPoints >= 20
+                            ? "Loyalty Discount"
+                            : "Special Discount"}
+                    </span>
+
+                    <span>-₹{Math.round(specialDiscount)}</span>
+                  </div>
+                )}
+
+                <hr />
+
+                <div className="flex justify-between font-semibold text-[#2E7D32]">
+                  <span>Total Savings</span>
+                  <span>₹{Math.round(totalSavings)}</span>
+                </div>
+
+                <div className="flex justify-between">
+                  <span>Delivery Charge</span>
+
+                  <span className="font-semibold text-green-600">
                     {deliveryCharge === 0 ? "FREE" : `₹${deliveryCharge}`}
                   </span>
                 </div>
@@ -599,7 +659,8 @@ const Cart = () => {
                 <hr />
 
                 <div className="flex justify-between text-xl font-bold">
-                  <span>Total</span>
+                  <span>Final Amount</span>
+
                   <span>₹{grandTotal}</span>
                 </div>
               </div>
