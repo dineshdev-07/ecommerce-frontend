@@ -122,8 +122,6 @@ const config = {
           )}
         </div>
 
-        {/* Activate Plus */}
-
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
           {isPlus ? (
             <div className="text-center">
@@ -174,8 +172,6 @@ const config = {
             </div>
           )}
         </div>
-
-        {/* Plus Membership Benefits */}
 
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
           <div className="flex items-center gap-2 mb-5">
