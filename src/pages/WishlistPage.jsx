@@ -167,45 +167,39 @@ const WishlistPage = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    const fetchWishlist = async () => {
+      try {
+        const { data } = await axios.get(`${API}/api/wishlist`, {
+          headers: {
+            Authorization: `Bearer ${userInfo?.token}`,
+          },
+        });
 
- useEffect(() => {
-  if (!userInfo?.token) {
-    navigate("/login");
-    return;
-  }
+        setProducts(data);
+      } catch (err) {
+        console.error("Wishlist fetch error:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const fetchWishlist = async () => {
-    try {
-      const { data } = await axios.get(`${API}/api/wishlist`, {
-        headers: {
-          Authorization: `Bearer ${userInfo?.token}`,
-        },
-      });
-
-      setProducts(data);
-    } catch (err) {
-      console.error("Wishlist fetch error:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  fetchWishlist();
-}, [navigate]);
+    fetchWishlist();
+  }, []);
 
   const handleRemove = async (productId) => {
     await toggleWishlist(productId);
 
     const { data } = await axios.get(`${API}/api/wishlist`, {
-          headers: {
-          Authorization: `Bearer ${userInfo?.token}`,
-        },
-        });
+      headers: {
+        Authorization: `Bearer ${userInfo?.token}`,
+      },
+    });
     setProducts(data);
   };
 
   return (
-    <div className="min-h-screen bg-[#FFFBEA] p-5 rounded-2xl">
+    <div className="min-h-screen bg-[#f6fdb7] p-5 rounded-2xl">
       <div className="bg-white rounded-xl border border-gray-200 p-6 mb-8 flex justify-between">
         <h1 className="text-2xl font-bold text-[#2E7D32]">Wishlist</h1>
         <span className="bg-green-100 text-green-700 px-4 py-2 rounded-full font-medium">

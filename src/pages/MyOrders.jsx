@@ -5,7 +5,6 @@ import { Package } from "lucide-react";
 
 const API = import.meta.env.VITE_API_URL;
 
-
 const MyOrders = () => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   const [orders, setOrders] = useState([]);
@@ -82,7 +81,7 @@ const MyOrders = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#FFFBEA] p-5 rounded-2xl">
+    <div className="min-h-screen p-5 rounded-2xl bg-[#f6fdb7]">
       {/* Header */}
       <div className="bg-white rounded-xl border border-gray-200 p-6 mb-8 flex gap-5">
         <div className="h-12 w-12 rounded-xl bg-[#2F7D32] flex items-center justify-center">

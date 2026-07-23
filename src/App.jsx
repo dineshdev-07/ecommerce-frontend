@@ -498,8 +498,8 @@ function AppContent() {
       />
 
       {!isAuthPage && (
-        <nav className="sticky top-0 z-50 bg-[#FFF8E7] border-b  shadow-sm">
-          <div className="max-w-7xl mx-auto">
+        <nav className="sticky top-0 z-50 bg-[#f9ffa8] border-b  shadow-sm">
+          <div className="max-w-7xl mx-4">
             {/* Top */}
 
             <div className="h-16 flex items-center justify-between">
@@ -519,7 +519,7 @@ function AppContent() {
 
               {/* Right Icons */}
 
-              <div className="flex items-center gap-5">
+              <div className="flex items-center gap-5 ">
                 <Link to="/wishlist" className="relative hover:text-[#2E7D32]">
                   <Heart
                     size={21}
@@ -672,7 +672,7 @@ justify-center"
 
                 <Link
                   to="/plus"
-                  className="px-4 py-1 rounded-full bg-yellow-100 text-yellow-700 text-sm font-bold"
+                  className="px-4 py-1 rounded-full  text-yellow-700 text-sm font-bold"
                 >
                   Plus
                 </Link>
@@ -680,7 +680,7 @@ justify-center"
 
               {/* Search */}
 
-              <div className="relative w-full max-w-xs sm:max-w-sm md:max-w-md">
+              <div className="relative w-80 max-w-xs sm:max-w-sm md:max-w-md">
                 <Search
                   size={18}
                   className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"

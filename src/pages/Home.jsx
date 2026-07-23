@@ -240,7 +240,7 @@ const Home = ({ search = "" }) => {
 
   return (
     <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 pb-0 text-[#2E2A22]">
-      <section className="relative mt-2 sm:mt-4 overflow-hidden rounded-2xl border border-[#81C784]/40 bg-[#FFF9C4] shadow-[0_18px_45px_rgba(46,125,50,0.12)]">
+      <section className="relative mt-2 sm:mt-4 overflow-hidden rounded-2xl border border-[#81C784]/40  shadow-[0_18px_45px_rgba(46,125,50,0.12)]">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(129,199,132,0.3),transparent_28%),linear-gradient(135deg,rgba(255,249,196,0.98),rgba(255,255,255,0.75))]" />
         <div className="relative grid min-h-[360px] md:min-h-[420px] lg:grid-cols-[0.92fr_1.08fr]">
           <div className="flex flex-col justify-center p-5 sm:p-8 md:p-10">
@@ -313,7 +313,7 @@ const Home = ({ search = "" }) => {
                   aria-label={`Show produce slide ${i + 1}`}
                   className={`h-2 rounded-full transition-all ${
                     i === currentProduceAd
-                      ? "w-8 bg-[#FFF9C4]"
+                      ? "w-8 bg-[#f6fdb7]"
                       : "w-2 bg-white/70"
                   }`}
                 />
@@ -324,7 +324,7 @@ const Home = ({ search = "" }) => {
       </section>
 
       <section
-        className="my-6 rounded-2xl border border-[#81C784]/30 bg-[#FFF9C4]/70 p-4 sm:my-10 sm:p-6 md:my-12"
+        className="my-6 rounded-2xl border border-[#81C784]/30 bg-[#f6fdb7] p-4 sm:my-10 sm:p-6 md:my-12"
         id="category-section"
       >
         <SectionTitle eyebrow="Shop fresh" title="Category" />
@@ -356,35 +356,35 @@ const Home = ({ search = "" }) => {
         </div>
       </section>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 ">
-          <Gift className="text-green-600 mb-4" size={36} />
-          <h3 className="text-xl font-bold">New User Offer</h3>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 ">
+        <div className="bg-[#f9ffa8] rounded-2xl border border-gray-200 shadow-sm p-6 ">
+          <Gift className="text-yellow-700 mb-4" size={36} />
+          <h3 className="text-xl font-bold text-[#2E7D32]">New User Offer</h3>
           <p className="text-gray-600 mt-2">
             Get <span className="font-bold text-green-600">20% OFF</span> on
             your first order.
           </p>
         </div>
 
-        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
-          <Crown className="text-yellow-500 mb-4" size={36} />
-          <h3 className="text-xl font-bold">Plus Membership</h3>
+        <div className="bg-[#f9ffa8] rounded-2xl border border-gray-200 shadow-sm p-6">
+          <Crown className="text-yellow-700 mb-4" size={36} />
+          <h3 className="text-xl font-bold text-[#2E7D32]">Plus Membership</h3>
           <p className="text-gray-600 mt-2">
             Extra <span className="font-bold text-green-600">5% OFF</span> +
             Free Delivery.
           </p>
         </div>
 
-        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
-          <Award className="text-orange-500 mb-4" size={36} />
-          <h3 className="text-xl font-bold">Loyalty Rewards</h3>
+        <div className="bg-[#f9ffa8] rounded-2xl border border-gray-200 shadow-sm p-6">
+          <Award className="text-yellow-700 mb-4" size={36} />
+          <h3 className="text-xl font-bold text-[#2E7D32]">Loyalty Rewards</h3>
           <p className="text-gray-600 mt-2">
             Earn points on every purchase and redeem discounts.
           </p>
         </div>
       </div>
 
-      <section className="my-8 rounded-xl bg-white border border-gray-200 p-5">
+      <section className="my-8 rounded-xl bg-[#f6fdb7] border border-gray-200 p-5">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div>

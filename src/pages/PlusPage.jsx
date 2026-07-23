@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Crown, Flame, Lock,ChevronLeft } from "lucide-react";
+import { Crown, Flame, Lock, ChevronLeft } from "lucide-react";
 const API = import.meta.env.VITE_API_URL;
 
 const LoyaltyPage = () => {
@@ -13,23 +13,23 @@ const LoyaltyPage = () => {
 
   const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
 
-const config = {
-  headers: {
-    Authorization: `Bearer ${userInfo?.token}`,
-  },
-  withCredentials: true,
-};
+  const config = {
+    headers: {
+      Authorization: `Bearer ${userInfo?.token}`,
+    },
+    withCredentials: true,
+  };
 
- useEffect(() => {
-  const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
+  useEffect(() => {
+    const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
 
-  if (!userInfo?.token) {
-    navigate("/login");
-    return;
-  }
+    if (!userInfo?.token) {
+      navigate("/login");
+      return;
+    }
 
-  fetchUserData();
-}, []);
+    fetchUserData();
+  }, []);
 
   const fetchUserData = async () => {
     try {
@@ -61,11 +61,11 @@ const config = {
 
   const progress = Math.min(points, requiredPoints) / requiredPoints;
   return (
-    <div className="min-h-screen bg-[#FFFBEA] p-5 rounded-2xl">
+    <div className="min-h-screen bg-[#f6fdb7] p-5 rounded-2xl">
       <div className="max-w-3xl mx-auto px-4 py-5">
         {/* Header */}
         <div className="flex items-center gap-3 mb-6">
-           <button
+          <button
             onClick={() => navigate(-1)}
             className="p-4 hover:bg-gray-100 rounded-xl text-gray-500 transition"
           >
@@ -104,7 +104,7 @@ const config = {
             <span
               className={`px-3 py-1 rounded-full text-xs font-semibold ${
                 isPlus
-                  ? "bg-yellow-100 text-yellow-700"
+                  ? "bg-[#f6fdb7] text-yellow-700"
                   : "bg-gray-100 text-gray-700"
               }`}
             >
@@ -125,7 +125,7 @@ const config = {
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
           {isPlus ? (
             <div className="text-center">
-              <div className="w-16 h-16 mx-auto rounded-full bg-yellow-100 flex items-center justify-center">
+              <div className="w-16 h-16 mx-auto rounded-full bg-[#f6fdb7] flex items-center justify-center">
                 <Crown className="text-yellow-600" size={30} />
               </div>
 
@@ -164,10 +164,7 @@ const config = {
               </div>
 
               <p className="text-base text-gray-500 ml-6">
-                Earn 20
-               
-                more loyalty points to unlock FreshCart Plus
-               
+                Earn 20 more loyalty points to unlock FreshCart Plus
               </p>
             </div>
           )}

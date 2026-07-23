@@ -150,7 +150,7 @@ const AdminOrderDetails = () => {
     {
       show: order.refundStatus === "Pending",
       label: "Refund Pending",
-      bg: "bg-yellow-100 text-yellow-700",
+      bg: "bg-[#f6fdb7] text-yellow-700",
     },
     {
       show: order.refundStatus === "Approved",
@@ -160,7 +160,7 @@ const AdminOrderDetails = () => {
   ].filter((s) => s.show);
 
   return (
-    <div className="min-h-screen bg-[#FFFBEA] p-5 rounded-2xl">
+    <div className="min-h-screen bg-[#f6fdb7] p-5 rounded-2xl">
       <header className="sticky top-0 bg-white/95 backdrop-blur-md border-b px-3 sm:px-6 lg:px-8 py-3 sm:py-4 z-40 shadow-sm">
         <div className="max-w-[1400px] mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div className="flex items-center gap-2 sm:gap-3 min-w-0">

@@ -23,7 +23,6 @@ const Section = ({ title, children }) => (
   </div>
 );
 
-
 const OrderDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -91,20 +90,18 @@ const OrderDetails = () => {
   const deliveryCharge = order.itemsPrice >= 299 || isPlusMember ? 0 : 39;
 
   const actualPrice =
-  order.itemsPrice ??
-  order.orderItems.reduce(
-    (sum, item) => sum + (item.mrp || item.price) * item.qty,
-    0
-  );
+    order.itemsPrice ??
+    order.orderItems.reduce(
+      (sum, item) => sum + (item.mrp || item.price) * item.qty,
+      0,
+    );
 
-const sellingPrice =
-  order.orderItems.reduce(
+  const sellingPrice = order.orderItems.reduce(
     (sum, item) => sum + item.price * item.qty,
-    0
+    0,
   );
 
-const discount =
-  actualPrice - sellingPrice;
+  const discount = actualPrice - sellingPrice;
 
   const orderInfo = [
     {
@@ -134,7 +131,7 @@ const discount =
     order.isPaid && order.isCancelled && !order.isRefunded;
 
   return (
-    <div className="min-h-screen bg-[#FFFBEA] p-5 rounded-2xl">
+    <div className="min-h-screen bg-[#f6fdb7] p-5 rounded-2xl">
       {/* Header */}
 
       <div className="bg-white rounded-xl border border-gray-200 p-6 mb-8 flex gap-2">

@@ -33,7 +33,7 @@ export default function SearchResultsPage() {
   }, [searchTerm]);
 
   return (
-    <div className="min-h-screen bg-[#FFFBEA] p-5 rounded-2xl">
+    <div className="min-h-screen bg-[#f6fdb7] p-5 rounded-2xl">
       <div className="max-w-7xl mx-auto px-4 py-6">
         {/* Header */}
         <div className="flex items-center gap-6 mb-5">
@@ -44,13 +44,13 @@ export default function SearchResultsPage() {
             <ArrowLeft size={20} />
           </button>
           <div>
-            <h1 className="text-2xl font-bold text-[#2E7D32]">Search Results</h1>
+            <h1 className="text-2xl font-bold text-[#2E7D32]">
+              Search Results
+            </h1>
 
             <p className="text-sm text-gray-500">
               Showing results for{" "}
-              <span className="font-semibold text-grey">
-                "{searchTerm}"
-              </span>
+              <span className="font-semibold text-grey">"{searchTerm}"</span>
             </p>
 
             {!loading && (

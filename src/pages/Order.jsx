@@ -154,7 +154,7 @@ function AdminOrders() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FFFBEA] p-5 rounded-2xl">
+    <div className="min-h-screen bg-[#f6fdb7] p-5 rounded-2xl">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="bg-white rounded-xl border border-gray-200 p-4 sm:p-6 mb-6 sm:mb-8">
@@ -210,7 +210,7 @@ function AdminOrders() {
                   (order.discountPrice > 0 ? "Discount Applied" : null);
 
                 let payment = "Unpaid";
-                let paymentColor = "bg-yellow-100 text-yellow-700";
+                let paymentColor = "bg-[#f6fdb7] text-yellow-700";
 
                 if (order.isPaid) {
                   payment = "Paid";
